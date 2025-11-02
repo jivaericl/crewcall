@@ -1,0 +1,51 @@
+PLANNR - Deployment Package Files
+==================================
+
+DEPLOYMENT DOCUMENTATION:
+- DEPLOYMENT_GUIDE.md          - Complete step-by-step deployment guide
+- DEPLOYMENT_CHECKLIST.md      - Deployment checklist for tracking progress
+- DEPLOYMENT_README.md          - Quick start guide for the deployment package
+- .env.production               - Production environment template
+
+FEATURE DOCUMENTATION:
+- RUN_OF_SHOW_DOCUMENTATION.md  - Run of Show feature complete guide
+- RUN_OF_SHOW_QUICK_REFERENCE.md - Quick reference for developers
+- RUN_OF_SHOW_SCHEMA.md         - Database schema design
+- SPEAKER_MANAGEMENT_DOCUMENTATION.md - Speaker module guide
+- SPEAKER_QUICK_REFERENCE.md    - Speaker module quick reference
+- SPEAKER_MODULE_SUMMARY.md     - Speaker implementation summary
+
+APPLICATION FILES:
+- All Laravel application files
+- Compiled frontend assets (public/build/)
+- Database migrations
+- Livewire components
+- Blade views
+- Models and controllers
+
+DEPLOYMENT PACKAGE:
+- plannr-deployment-YYYYMMDD.tar.gz (26MB)
+  Located at: /home/ubuntu/
+
+WHAT TO DO NEXT:
+1. Download the deployment package (plannr-deployment-YYYYMMDD.tar.gz)
+2. Read DEPLOYMENT_GUIDE.md for complete instructions
+3. Use DEPLOYMENT_CHECKLIST.md to track your progress
+4. Follow DEPLOYMENT_README.md for quick start
+
+SERVER REQUIREMENTS:
+- Ubuntu 22.04 LTS (or similar)
+- PHP 8.1+
+- MySQL 8.0+ or MariaDB 10.3+
+- Redis 6.0+
+- Nginx or Apache
+- Node.js 18.x+
+- 2GB RAM minimum (4GB recommended)
+
+DEPLOYMENT OPTIONS:
+1. Laravel Forge (easiest, paid)
+2. Ploi (easy, paid)
+3. Manual deployment (free, requires setup)
+4. Docker (containerized)
+
+For detailed instructions, see DEPLOYMENT_GUIDE.md

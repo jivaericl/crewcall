@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Livewire\Comments;
+
+use App\Models\Comment;
+use App\Models\User;
+use Livewire\Component;
+use Livewire\Attributes\On;
+
+class CommentSection extends Component
+{
+    public $commentable;
+    public $eventId;
+    public $newComment = '';
+    public $replyingTo = null;
+    public $editingComment = null;
+    public $editText = '';
+    public $searchUsers = '';
+    public $showUserSuggestions = false;
+    public $userSuggestions = [];
+
+    public function mount($commentable, $eventId)
+    {
+        $this->commentable = $commentable;
+        $this->eventId = $eventId;
+    }
+
+    public function updatedNewComment($value)
+    {
+        // Check for @mention being typed
+        if (preg_match('/@(\w*)$/', $value, $matches)) {
+            $this->searchUsers = $matches[1];
+            $this->loadUserSuggestions();
+        } else {
+            $this->showUserSuggestions = false;
+        }
+    }
+
+    public function loadUserSuggestions()
+    {
+        if (strlen($this->searchUsers) >= 1) {
+            // Get users assigned to this event
+            $this->userSuggestions = User::whereHas('events', function($query) {
+                    $query->where('events.id', $this->eventId);
+                })
+                ->where('name', 'like', $this->searchUsers . '%')
+                ->where('id', '!=', auth()->id())
+                ->limit(5)
+                ->get(['id', 'name', 'email']);
+            
+            $this->showUserSuggestions = $this->userSuggestions->isNotEmpty();
+        } else {
+            $this->showUserSuggestions = false;
+        }
+    }
+
+    public function selectUser($username)
+    {
+        // Replace the partial @mention with the full username
+        $this->newComment = preg_replace('/@\w*$/', '@' . $username . ' ', $this->newComment);
+        $this->showUserSuggestions = false;
+        $this->searchUsers = '';
+    }
+
+    public function addComment()
+    {
+        $this->validate([
+            'newComment' => 'required|string|max:5000',
+        ]);
+
+        Comment::create([
+            'event_id' => $this->eventId,
+            'user_id' => auth()->id(),
+            'commentable_type' => get_class($this->commentable),
+            'commentable_id' => $this->commentable->id,
+            'comment' => $this->newComment,
+            'parent_id' => $this->replyingTo,
+        ]);
+
+        $this->newComment = '';
+        $this->replyingTo = null;
+        
+        session()->flash('comment-success', 'Comment added successfully!');
+        $this->dispatch('comment-added');
+    }
+
+    public function startReply($commentId)
+    {
+        $this->replyingTo = $commentId;
+    }
+
+    public function cancelReply()
+    {
+        $this->replyingTo = null;
+        $this->newComment = '';
+    }
+
+    public function startEdit($commentId, $currentText)
+    {
+        $this->editingComment = $commentId;
+        $this->editText = $currentText;
+    }
+
+    public function saveEdit()
+    {
+        $this->validate([
+            'editText' => 'required|string|max:5000',
+        ]);
+
+        $comment = Comment::find($this->editingComment);
+        
+        if ($comment && $comment->user_id === auth()->id()) {
+            $comment->update(['comment' => $this->editText]);
+            session()->flash('comment-success', 'Comment updated successfully!');
+        }
+
+        $this->editingComment = null;
+        $this->editText = '';
+        $this->dispatch('comment-updated');
+    }
+
+    public function cancelEdit()
+    {
+        $this->editingComment = null;
+        $this->editText = '';
+    }
+
+    public function deleteComment($commentId)
+    {
+        $comment = Comment::find($commentId);
+        
+        if ($comment && ($comment->user_id === auth()->id() || auth()->user()->isSuperAdmin())) {
+            $comment->delete();
+            session()->flash('comment-success', 'Comment deleted successfully!');
+            $this->dispatch('comment-deleted');
+        }
+    }
+
+    #[On('comment-added')]
+    #[On('comment-updated')]
+    #[On('comment-deleted')]
+    public function refreshComments()
+    {
+        // Trigger re-render
+    }
+
+    public function render()
+    {
+        $comments = $this->commentable->comments()
+            ->with('user', 'replies.user')
+            ->latest()
+            ->get();
+
+        return view('livewire.comments.comment-section', [
+            'comments' => $comments,
+        ]);
+    }
+}

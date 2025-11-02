@@ -1,0 +1,196 @@
+<div>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ $cueId ? 'Edit Cue' : 'Create Cue' }} - {{ $segment->name }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                <form wire:submit.prevent="save" class="p-6 space-y-6">
+                    <!-- Cue Name -->
+                    <div>
+                        <flux:label for="name" required>Cue Name</flux:label>
+                        <flux:input 
+                            wire:model.live="name" 
+                            id="name" 
+                            type="text" 
+                            placeholder="e.g., Lights Up, Play Video, Speaker Intro"
+                            class="w-full"
+                        />
+                        @error('name') <flux:error>{{ $message }}</flux:error> @enderror
+                    </div>
+
+                    <!-- Code and Type -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <flux:label for="code">Cue Code</flux:label>
+                            <flux:input 
+                                wire:model="code" 
+                                id="code" 
+                                type="text" 
+                                placeholder="e.g., LX-01, AUD-01"
+                                class="w-full"
+                            />
+                            <flux:description>Optional identifier</flux:description>
+                            @error('code') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="cue_type_id" required>Cue Type</flux:label>
+                            <flux:select wire:model="cue_type_id" id="cue_type_id" class="w-full">
+                                <option value="">Select type...</option>
+                                @foreach($cueTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            @error('cue_type_id') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <flux:label for="description">Description</flux:label>
+                        <flux:textarea 
+                            wire:model="description" 
+                            id="description" 
+                            rows="3"
+                            placeholder="Detailed description of the cue..."
+                            class="w-full"
+                        />
+                        @error('description') <flux:error>{{ $message }}</flux:error> @enderror
+                    </div>
+
+                    <!-- Time, Status, Priority -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <flux:label for="time">Time</flux:label>
+                            <flux:input 
+                                wire:model="time" 
+                                id="time" 
+                                type="time" 
+                                class="w-full"
+                            />
+                            <flux:description>Cue execution time</flux:description>
+                            @error('time') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="status" required>Status</flux:label>
+                            <flux:select wire:model="status" id="status" class="w-full">
+                                <option value="standby">Standby</option>
+                                <option value="go">Go</option>
+                                <option value="complete">Complete</option>
+                                <option value="skip">Skip</option>
+                            </flux:select>
+                            @error('status') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="priority" required>Priority</flux:label>
+                            <flux:select wire:model="priority" id="priority" class="w-full">
+                                <option value="low">Low</option>
+                                <option value="normal">Normal</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical</option>
+                            </flux:select>
+                            @error('priority') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    </div>
+
+                    <!-- Filename and Operator -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <flux:label for="filename">Filename</flux:label>
+                            <flux:input 
+                                wire:model="filename" 
+                                id="filename" 
+                                type="text" 
+                                placeholder="e.g., intro-video.mp4, background-music.mp3"
+                                class="w-full"
+                            />
+                            <flux:description>For audio/video content</flux:description>
+                            @error('filename') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <div>
+                            <flux:label for="operator_id">Operator</flux:label>
+                            <flux:select wire:model="operator_id" id="operator_id" class="w-full">
+                                <option value="">Select operator...</option>
+                                @foreach($operators as $operator)
+                                    <option value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            <flux:description>Assigned team member</flux:description>
+                            @error('operator_id') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div>
+                        <flux:label for="notes">Notes</flux:label>
+                        <flux:textarea 
+                            wire:model="notes" 
+                            id="notes" 
+                            rows="3"
+                            placeholder="Additional notes or instructions..."
+                            class="w-full"
+                        />
+                        @error('notes') <flux:error>{{ $message }}</flux:error> @enderror
+                    </div>
+
+                    <!-- Tags -->
+                    <div>
+                        <flux:label>Tags</flux:label>
+                        <flux:description class="mb-3">Select tags to categorize this cue (max 10)</flux:description>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            @foreach($allTags as $tag)
+                                <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 {{ in_array($tag->id, $selectedTags) ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600' }}">
+                                    <input 
+                                        type="checkbox" 
+                                        wire:model="selectedTags" 
+                                        value="{{ $tag->id }}"
+                                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        {{ count($selectedTags) >= 10 && !in_array($tag->id, $selectedTags) ? 'disabled' : '' }}
+                                    >
+                                    <span class="ml-2 text-sm font-medium" style="color: {{ $tag->color }}">
+                                        {{ $tag->name }}
+                                    </span>
+                                </label>
+                            @endforeach
+                        </div>
+                        @if(count($selectedTags) >= 10)
+                            <p class="mt-2 text-sm text-amber-600 dark:text-amber-400">Maximum of 10 tags reached</p>
+                        @endif
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <flux:button href="{{ route('segments.cues.index', $segmentId) }}" variant="ghost">
+                            Cancel
+                        </flux:button>
+                        <flux:button type="submit" variant="primary">
+                            {{ $cueId ? 'Update Cue' : 'Create Cue' }}
+                        </flux:button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Comment Section -->
+            @if($cueId)
+                @php
+                    $cue = \App\Models\Cue::with('segment.session.event')->find($cueId);
+                @endphp
+                @if($cue && $cue->segment && $cue->segment->session && $cue->segment->session->event)
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mt-8 p-8">
+                        @livewire('comments.comment-section', [
+                            'commentable' => $cue,
+                            'eventId' => $cue->segment->session->event_id
+                        ])
+                    </div>
+                @endif
+            @endif
+        </div>
+    </div>
+</div>
