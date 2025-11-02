@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('session_states', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_id')->unique()->constrained()->onDelete('cascade');
+            $table->foreignId('session_id')->unique()->constrained('event_sessions')->onDelete('cascade');
             $table->foreignId('active_segment_id')->nullable()->constrained('segments')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();

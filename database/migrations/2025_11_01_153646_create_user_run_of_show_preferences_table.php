@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_run_of_show_preferences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('session_id')->constrained()->onDelete('cascade');
+            $table->foreignId('session_id')->constrained('event_sessions')->onDelete('cascade');
             $table->json('visible_columns')->default(json_encode([
                 'order',
                 'name',
