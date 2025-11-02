@@ -15,16 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('session_id')->constrained('event_sessions')->onDelete('cascade');
-            $table->json('visible_columns')->default(json_encode([
-                'order',
-                'name',
-                'start_time',
-                'end_time',
-                'duration',
-                'type',
-                'status',
-                'notes'
-            ]));
+            $table->json('visible_columns')->nullable();
             $table->timestamps();
 
             // Unique constraint: one preference record per user per session

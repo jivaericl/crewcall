@@ -20,6 +20,27 @@ class UserRunOfShowPreference extends Model
     ];
 
     /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'visible_columns' => null,
+    ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (is_null($model->visible_columns)) {
+                $model->visible_columns = static::defaultColumns();
+            }
+        });
+    }
+
+    /**
      * Get the user that owns the preference.
      */
     public function user()
