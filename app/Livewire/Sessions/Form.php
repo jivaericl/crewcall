@@ -192,14 +192,14 @@ class Form extends Component
     {
         // Get contacts for client/producer selection
         $clients = Contact::where('event_id', $this->eventId)
-            ->where('type', 'client')
+            ->where('contact_type', 'client')
             ->where('is_active', true)
             ->orderBy('first_name')
             ->orderBy('last_name')
             ->get();
 
         $producers = Contact::where('event_id', $this->eventId)
-            ->whereIn('type', ['producer', 'staff'])
+            ->whereIn('contact_type', ['producer', 'staff'])
             ->where('is_active', true)
             ->orderBy('first_name')
             ->orderBy('last_name')

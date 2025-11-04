@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             
             // Contact type and status
-            $table->enum('type', ['client', 'producer', 'vendor', 'staff', 'other'])->default('other');
+            $table->enum('contact_type', ['client', 'producer', 'vendor', 'staff', 'other'])->default('other');
             $table->boolean('is_active')->default(true);
             
             // Notes
@@ -48,7 +48,7 @@ return new class extends Migration
             
             // Indexes
             $table->index('event_id');
-            $table->index('type');
+            $table->index('contact_type');
             $table->index('is_active');
             $table->index(['last_name', 'first_name']);
         });
