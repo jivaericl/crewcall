@@ -134,7 +134,7 @@ class Index extends Component
     {
         $segments = Segment::where('session_id', $this->sessionId)
             ->with(['creator', 'cues'])
-            ->orderBy('order')
+            ->orderBy('sort_order')
             ->orderBy('start_time')
             ->get();
 
