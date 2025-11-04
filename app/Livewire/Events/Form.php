@@ -162,11 +162,14 @@ class Form extends Component
                 'timezone' => $this->timezone,
             ]);
             
-            // Automatically assign creator as admin
-            $event->assignedUsers()->attach(auth()->id(), [
-                'role_id' => 1, // Admin role
-                'is_admin' => true,
-            ]);
+            // Automatically assign creator as admin (if roles exist)
+            $adminRole = \App\Models\Role::where('slug', 'admin')->orWhere('id', 1)->first();
+            if ($adminRole) {
+                $event->assignedUsers()->attach(auth()->id(), [
+                    'role_id' => $adminRole->id,
+                    'is_admin' => true,
+                ]);
+            }
             
             $message = 'Event "' . $event->name . '" created successfully.';
         }
