@@ -3,6 +3,7 @@
 namespace App\Livewire\AuditLogs;
 
 use App\Models\AuditLog;
+use App\Models\Event;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -10,24 +11,28 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $filterEvent = '';
+    public $eventId;
+    public $event;
     public $filterModel = '';
     public $filterUser = '';
     public $search = '';
     public $selectedLog = null;
     public $showDetailsModal = false;
 
-    protected $queryString = ['filterEvent', 'filterModel', 'filterUser', 'search'];
+    protected $queryString = ['filterModel', 'filterUser', 'search'];
+
+    public function mount($eventId)
+    {
+        $this->eventId = $eventId;
+        $this->event = Event::findOrFail($eventId);
+    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function updatingFilterEvent()
-    {
-        $this->resetPage();
-    }
+
 
     public function updatingFilterModel()
     {
@@ -53,12 +58,8 @@ class Index extends Component
 
     public function render()
     {
-        $query = AuditLog::with(['user', 'auditable']);
-
-        // Apply filters
-        if ($this->filterEvent) {
-            $query->where('event', $this->filterEvent);
-        }
+        $query = AuditLog::with(['user', 'auditable'])
+            ->where('event_id', $this->eventId);
 
         if ($this->filterModel) {
             $query->where('auditable_type', $this->filterModel);

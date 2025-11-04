@@ -1,16 +1,17 @@
 <div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Audit Logs') }}
-        </h2>
-    </x-slot>
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Audit Logs</h2>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            Activity log for {{ $event->name }}
+        </p>
+    </div>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     <!-- Filters Section -->
-                    <div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Search -->
                         <div>
                             <flux:input 
@@ -20,14 +21,6 @@
                                 class="w-full"
                             />
                         </div>
-
-                        <!-- Event Filter -->
-                        <div>
-                            <flux:select wire:model.live="filterEvent">
-                                <option value="">All Events</option>
-                                <option value="created">Created</option>
-                                <option value="updated">Updated</option>
-                                <option value="deleted">Deleted</option>
                                 <option value="restored">Restored</option>
                             </flux:select>
                         </div>
