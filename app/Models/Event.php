@@ -87,6 +87,11 @@ class Event extends Model
      */
     public function isAdmin(User $user): bool
     {
+        // Event creator is always an admin
+        if ($this->created_by === $user->id) {
+            return true;
+        }
+
         return $this->assignedUsers()
             ->where('user_id', $user->id)
             ->wherePivot('is_admin', true)
