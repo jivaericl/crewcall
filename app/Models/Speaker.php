@@ -17,6 +17,8 @@ class Speaker extends Model
         'event_id',
         'user_id',
         'name',
+        'first_name',
+        'last_name',
         'title',
         'company',
         'bio',

@@ -87,6 +87,11 @@ class Session extends Model
         return $this->hasMany(Segment::class);
     }
 
+    public function speakers()
+    {
+        return $this->belongsToMany(Speaker::class, 'session_speaker')->withTimestamps();
+    }
+
     // Helper method to get custom field value
     public function getCustomFieldValue($customFieldId)
     {

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->foreignId('client_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('producer_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('client_id')->nullable()->constrained('contacts')->onDelete('set null');
+            $table->foreignId('producer_id')->nullable()->constrained('contacts')->onDelete('set null');
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();

@@ -29,6 +29,7 @@ class Contact extends Model
         'zip',
         'country',
         'type',
+        'contact_type',
         'is_active',
         'notes',
         'created_by',

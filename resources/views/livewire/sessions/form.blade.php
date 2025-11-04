@@ -192,7 +192,6 @@
                                                     @elseif($field->field_type === 'select')
                                                         <flux:select 
                                                             wire:model="customFieldValues.{{ $field->id }}"
-                                                            @if($field->is_required) required @endif
                                                         >
                                                             <option value="">-- Select --</option>
                                                             @foreach($field->options as $option)
