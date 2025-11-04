@@ -53,12 +53,12 @@ class Session extends Model
 
     public function client()
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(Contact::class, 'client_id');
     }
 
     public function producer()
     {
-        return $this->belongsTo(User::class, 'producer_id');
+        return $this->belongsTo(Contact::class, 'producer_id');
     }
 
     public function creator()
