@@ -154,7 +154,7 @@
 
     <!-- Details Modal -->
     @if($showDetailsModal && $selectedLog)
-        <flux:modal wire:model="showDetailsModal">
+        <flux:modal wire:model.live="showDetailsModal">
             <flux:modal.content>
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">

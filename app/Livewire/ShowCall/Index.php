@@ -42,7 +42,6 @@ class Index extends Component
             // Select first session by default
             $firstSession = Session::where('event_id', $eventId)
                 ->orderBy('start_date')
-                ->orderBy('start_time')
                 ->first();
             
             if ($firstSession) {
@@ -168,9 +167,7 @@ class Index extends Component
     {
         // Get all sessions for this event
         $sessions = Session::where('event_id', $this->eventId)
-            ->with(['client', 'producer'])
             ->orderBy('start_date')
-            ->orderBy('start_time')
             ->get();
         
         $segments = collect();
