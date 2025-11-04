@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
+use App\Traits\EventScoped;
 
 class Session extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable;
+    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped;
 
     protected $table = 'event_sessions';
 
