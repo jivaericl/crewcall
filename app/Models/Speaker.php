@@ -44,11 +44,19 @@ class Speaker extends Model
                 $model->created_by = auth()->id();
                 $model->updated_by = auth()->id();
             }
+            // Auto-populate name from first_name and last_name
+            if (empty($model->name) && ($model->first_name || $model->last_name)) {
+                $model->name = trim($model->first_name . ' ' . $model->last_name);
+            }
         });
 
         static::updating(function ($model) {
             if (auth()->check()) {
                 $model->updated_by = auth()->id();
+            }
+            // Auto-update name from first_name and last_name
+            if ($model->isDirty(['first_name', 'last_name'])) {
+                $model->name = trim($model->first_name . ' ' . $model->last_name);
             }
         });
     }
@@ -96,6 +104,11 @@ class Speaker extends Model
             return asset('storage/' . $this->headshot_path);
         }
         return null;
+    }
+
+    public function getFullNameAttribute()
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 
     public function getFullTitleAttribute()

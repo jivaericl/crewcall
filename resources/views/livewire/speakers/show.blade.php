@@ -84,7 +84,7 @@
                                     <p class="text-sm text-gray-500">{{ $session->location }}</p>
                                 @endif
                             </div>
-                            <flux:button size="sm" href="{{ route('sessions.edit', ['eventId' => $eventId, 'sessionId' => $session->id]) }}" variant="ghost">
+                            <flux:button size="sm" href="{{ route('events.sessions.edit', ['eventId' => $eventId, 'sessionId' => $session->id]) }}" variant="ghost">
                                 View
                             </flux:button>
                         </div>

@@ -9,10 +9,27 @@
                 <flux:heading size="lg" class="mb-4">Basic Information</flux:heading>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <flux:input wire:model="name" label="Name *" placeholder="John Doe" />
-                    <flux:input wire:model="title" label="Title" placeholder="CEO" />
-                    <flux:input wire:model="company" label="Company" placeholder="Acme Corp" />
-                    <flux:input wire:model="email" label="Email" type="email" placeholder="john@acme.com" />
+                    <flux:input wire:model.blur="first_name" label="First Name *" placeholder="John" />
+                    <flux:input wire:model.blur="last_name" label="Last Name *" placeholder="Doe" />
+                    <flux:input wire:model.blur="title" label="Title" placeholder="CEO" />
+                    
+                    <div>
+                        <flux:label>Company</flux:label>
+                        <input 
+                            type="text" 
+                            wire:model.blur="company" 
+                            list="companies-list"
+                            placeholder="Acme Corp"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800"
+                        />
+                        <datalist id="companies-list">
+                            @foreach($companies as $comp)
+                                <option value="{{ $comp }}">
+                            @endforeach
+                        </datalist>
+                    </div>
+                    
+                    <flux:input wire:model.blur="email" label="Email" type="email" placeholder="john@acme.com" />
                 </div>
             </flux:card>
 
@@ -22,7 +39,23 @@
                 <div class="space-y-4">
                     <flux:textarea wire:model="bio" label="Biography" rows="6" placeholder="Speaker biography..." />
                     <flux:textarea wire:model="notes" label="Internal Notes" rows="4" placeholder="Internal notes about this speaker..." />
-                    <flux:input wire:model="contact_person" label="Contact Person" placeholder="Jane Smith" />
+                    
+                    <div>
+                        <flux:label>Contact Person</flux:label>
+                        <input 
+                            type="text" 
+                            wire:model.blur="contact_person" 
+                            list="contact-persons-list"
+                            placeholder="Jane Smith"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800"
+                        />
+                        <datalist id="contact-persons-list">
+                            @foreach($contactPersons as $person)
+                                <option value="{{ $person }}">
+                            @endforeach
+                        </datalist>
+                        <flux:description>Start typing to see suggestions from event contacts</flux:description>
+                    </div>
                 </div>
             </flux:card>
 
@@ -63,7 +96,10 @@
                 <div class="space-y-2">
                     @forelse($sessions as $session)
                         <flux:checkbox wire:model="selectedSessions" value="{{ $session->id }}">
-                            {{ $session->name }} ({{ $session->start_time }})
+                            {{ $session->name }} 
+                            @if($session->start_date)
+                                ({{ $session->start_date->format('M d, Y g:i A') }})
+                            @endif
                         </flux:checkbox>
                     @empty
                         <p class="text-gray-500">No sessions available for this event.</p>

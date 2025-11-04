@@ -23,7 +23,8 @@ class Form extends Component
     public $speaker;
 
     // Speaker fields
-    public $name = '';
+    public $first_name = '';
+    public $last_name = '';
     public $title = '';
     public $company = '';
     public $bio = '';
@@ -49,7 +50,8 @@ class Form extends Component
     protected function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'title' => 'nullable|string|max:255',
             'company' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
@@ -73,7 +75,8 @@ class Form extends Component
             $this->speakerId = $speakerId;
             $this->speaker = Speaker::with(['tags', 'sessions', 'contentFiles'])->findOrFail($speakerId);
             
-            $this->name = $this->speaker->name;
+            $this->first_name = $this->speaker->first_name;
+            $this->last_name = $this->speaker->last_name;
             $this->title = $this->speaker->title;
             $this->company = $this->speaker->company;
             $this->bio = $this->speaker->bio;
@@ -95,7 +98,8 @@ class Form extends Component
 
         $data = [
             'event_id' => $this->eventId,
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'title' => $this->title,
             'company' => $this->company,
             'bio' => $this->bio,
@@ -128,7 +132,7 @@ class Form extends Component
             $password = $this->autoGeneratePassword ? Str::random(12) : $this->customPassword;
             
             $user = User::create([
-                'name' => $this->name,
+                'name' => trim($this->first_name . ' ' . $this->last_name),
                 'email' => $this->email,
                 'password' => Hash::make($password),
             ]);
@@ -167,11 +171,18 @@ class Form extends Component
         $allTags = Tag::orderBy('name')->get();
         $sessions = Session::where('event_id', $this->eventId)->orderBy('start_date')->get();
         $contentFiles = ContentFile::where('event_id', $this->eventId)->orderBy('name')->get();
+        
+        // Get unique contact persons and companies from event contacts for autosuggest
+        $contacts = \App\Models\Contact::where('event_id', $this->eventId)->get();
+        $contactPersons = $contacts->pluck('name')->filter()->unique()->values()->toArray();
+        $companies = $contacts->pluck('company')->filter()->unique()->values()->toArray();
 
         return view('livewire.speakers.form', [
             'allTags' => $allTags,
             'sessions' => $sessions,
             'contentFiles' => $contentFiles,
+            'contactPersons' => $contactPersons,
+            'companies' => $companies,
         ]);
     }
 }
