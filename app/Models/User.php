@@ -71,6 +71,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Alias for assignedEvents() for convenience.
+     */
+    public function events()
+    {
+        return $this->assignedEvents();
+    }
+
+    /**
      * Get the roles assigned to this user for events.
      */
     public function eventRoles()
