@@ -64,13 +64,23 @@ Route::middleware([
     Route::get('/segments/{segmentId}/cues/{cueId}/edit', App\Livewire\Cues\Form::class)->name('segments.cues.edit');
 
     // Content management routes
-    Route::get('/events/{eventId}/content', App\Livewire\Content\Index::class)->name('content.index');
+    Route::get('/events/{eventId}/content', App\Livewire\Content\Index::class)->name('events.content.index');
 
     // Speaker routes
     Route::get('/events/{eventId}/speakers', App\Livewire\Speakers\Index::class)->name('events.speakers.index');
     Route::get('/events/{eventId}/speakers/create', App\Livewire\Speakers\Form::class)->name('events.speakers.create');
     Route::get('/events/{eventId}/speakers/{speakerId}/edit', App\Livewire\Speakers\Form::class)->name('events.speakers.edit');
     Route::get('/events/{eventId}/speakers/{speakerId}', App\Livewire\Speakers\Show::class)->name('events.speakers.show');
+
+    // Contact routes
+    Route::get('/events/{eventId}/contacts', App\Livewire\Contacts\Index::class)->name('events.contacts.index');
+    Route::get('/events/{eventId}/contacts/create', App\Livewire\Contacts\Form::class)->name('events.contacts.create');
+    Route::get('/events/{eventId}/contacts/{contactId}/edit', App\Livewire\Contacts\Form::class)->name('events.contacts.edit');
+    Route::get('/events/{eventId}/contacts/{contactId}', App\Livewire\Contacts\Show::class)->name('events.contacts.show');
+
+    // Event-specific Tags and Audit routes
+    Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
+    Route::get('/events/{eventId}/audit-logs', App\Livewire\AuditLogs\Index::class)->name('events.audit-logs.index');
 
     // Show calling routes
     Route::get('/events/{eventId}/show-call', App\Livewire\ShowCall\Index::class)->name('show-call.index');
