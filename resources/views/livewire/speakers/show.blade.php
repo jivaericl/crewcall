@@ -78,7 +78,7 @@
                             <div>
                                 <h4 class="font-semibold">{{ $session->name }}</h4>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    {{ $session->start_time }} - {{ $session->end_time }}
+                                    {{ $session->start_date->format('M d, Y g:i A') }} - {{ $session->end_date->format('g:i A') }}
                                 </p>
                                 @if($session->location)
                                     <p class="text-sm text-gray-500">{{ $session->location }}</p>
@@ -139,8 +139,7 @@
                 <flux:heading size="lg" class="mb-4">Comments</flux:heading>
                 
                 @livewire('comments.comment-section', [
-                    'commentableType' => get_class($speaker),
-                    'commentableId' => $speaker->id,
+                    'commentable' => $speaker,
                     'eventId' => $eventId
                 ])
             </flux:card>
