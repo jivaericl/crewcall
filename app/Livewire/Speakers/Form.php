@@ -165,7 +165,7 @@ class Form extends Component
     public function render()
     {
         $allTags = Tag::orderBy('name')->get();
-        $sessions = Session::where('event_id', $this->eventId)->orderBy('start_time')->get();
+        $sessions = Session::where('event_id', $this->eventId)->orderBy('start_date')->get();
         $contentFiles = ContentFile::where('event_id', $this->eventId)->orderBy('name')->get();
 
         return view('livewire.speakers.form', [
