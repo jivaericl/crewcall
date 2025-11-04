@@ -5,6 +5,7 @@ namespace App\Livewire\Sessions;
 use App\Models\Session;
 use App\Models\Event;
 use App\Models\User;
+use App\Models\Contact;
 use App\Models\CustomField;
 use App\Models\Tag;
 use App\Models\Speaker;
@@ -38,8 +39,8 @@ class Form extends Component
             'location' => 'nullable|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'client_id' => 'nullable|exists:users,id',
-            'producer_id' => 'nullable|exists:users,id',
+            'client_id' => 'nullable|exists:contacts,id',
+            'producer_id' => 'nullable|exists:contacts,id',
         ];
     }
 
@@ -189,17 +190,20 @@ class Form extends Component
 
     public function render()
     {
-        // Get client users (users with 'Client' role)
-        $clientRole = \App\Models\Role::where('slug', 'client')->first();
-        $clients = User::whereHas('assignedEvents', function ($query) use ($clientRole) {
-            $query->where('event_id', $this->eventId)
-                  ->where('role_id', $clientRole?->id);
-        })->orderBy('name')->get();
+        // Get contacts for client/producer selection
+        $clients = Contact::where('event_id', $this->eventId)
+            ->where('contact_type', 'client')
+            ->where('is_active', true)
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->get();
 
-        // Get all users assigned to this event as potential producers
-        $producers = User::whereHas('assignedEvents', function ($query) {
-            $query->where('event_id', $this->eventId);
-        })->orderBy('name')->get();
+        $producers = Contact::where('event_id', $this->eventId)
+            ->whereIn('contact_type', ['producer', 'staff'])
+            ->where('is_active', true)
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->get();
 
         // Get custom fields for this event
         $customFields = CustomField::forEvent($this->eventId)->ordered()->get();

@@ -72,11 +72,11 @@
                                     <flux:select wire:model="client_id">
                                         <option value="">-- Select Client --</option>
                                         @foreach($clients as $client)
-                                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                            <option value="{{ $client->id }}">{{ $client->full_name }}@if($client->company) - {{ $client->company }}@endif</option>
                                         @endforeach
                                     </flux:select>
                                     @error('client_id') <flux:error>{{ $message }}</flux:error> @enderror
-                                    <flux:description>Assign a client user to this session</flux:description>
+                                    <flux:description>Assign a client contact to this session</flux:description>
                                 </flux:field>
                             </div>
 
@@ -87,11 +87,11 @@
                                     <flux:select wire:model="producer_id">
                                         <option value="">-- Select Producer --</option>
                                         @foreach($producers as $producer)
-                                            <option value="{{ $producer->id }}">{{ $producer->name }}</option>
+                                            <option value="{{ $producer->id }}">{{ $producer->full_name }}@if($producer->company) - {{ $producer->company }}@endif</option>
                                         @endforeach
                                     </flux:select>
                                     @error('producer_id') <flux:error>{{ $message }}</flux:error> @enderror
-                                    <flux:description>Assign a producer to this session</flux:description>
+                                    <flux:description>Assign a producer contact to this session</flux:description>
                                 </flux:field>
                             </div>
 
