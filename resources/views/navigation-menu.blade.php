@@ -18,6 +18,11 @@
                     <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.*')">
                         {{ __('Events') }}
                     </x-nav-link>
+                    
+                    <!-- Event Selector -->
+                    <div class="flex items-center">
+                        @livewire('event-selector')
+                    </div>
                     <x-nav-link href="{{ route('audit-logs.index') }}" :active="request()->routeIs('audit-logs.*')">
                         {{ __('Audit Logs') }}
                     </x-nav-link>

@@ -33,9 +33,22 @@
             @endif
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            <div class="flex">
+                <!-- Sidebar Navigation (only show when event is selected) -->
+                @if(session('selected_event_id'))
+                    <aside class="hidden lg:block w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-screen">
+                        <div class="p-4">
+                            <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Event Navigation</h3>
+                            @livewire('event-navigation')
+                        </div>
+                    </aside>
+                @endif
+                
+                <!-- Main Content Area -->
+                <main class="flex-1">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
 
         @stack('modals')
