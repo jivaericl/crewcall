@@ -91,7 +91,7 @@ class Index extends Component
 
         // Apply type filter
         if ($this->filterType) {
-            $query->where('type', $this->filterType);
+            $query->where('contact_type', $this->filterType);
         }
         
         // Apply status filter

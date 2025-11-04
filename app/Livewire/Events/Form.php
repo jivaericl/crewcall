@@ -162,6 +162,12 @@ class Form extends Component
                 'timezone' => $this->timezone,
             ]);
             
+            // Automatically assign creator as admin
+            $event->assignedUsers()->attach(auth()->id(), [
+                'role_id' => 1, // Admin role
+                'is_admin' => true,
+            ]);
+            
             $message = 'Event "' . $event->name . '" created successfully.';
         }
 

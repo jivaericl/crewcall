@@ -172,22 +172,19 @@
 
                                                     @if($field->field_type === 'text')
                                                         <flux:input 
-                                                            wire:model="customFieldValues.{{ $field->id }}" 
+                                                            wire:model.blur="customFieldValues.{{ $field->id }}" 
                                                             type="text"
-                                                            @if($field->is_required) required @endif
                                                         />
                                                     @elseif($field->field_type === 'number')
                                                         <flux:input 
-                                                            wire:model="customFieldValues.{{ $field->id }}" 
+                                                            wire:model.blur="customFieldValues.{{ $field->id }}" 
                                                             type="number"
                                                             step="any"
-                                                            @if($field->is_required) required @endif
                                                         />
                                                     @elseif($field->field_type === 'date')
                                                         <flux:input 
-                                                            wire:model="customFieldValues.{{ $field->id }}" 
+                                                            wire:model.blur="customFieldValues.{{ $field->id }}" 
                                                             type="date"
-                                                            @if($field->is_required) required @endif
                                                         />
                                                     @elseif($field->field_type === 'select')
                                                         <flux:select 

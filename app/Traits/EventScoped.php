@@ -21,10 +21,15 @@ trait EventScoped
                 return;
             }
             
-            // Regular users only see events they're assigned to
+            // Regular users only see events they're assigned to OR created
             if ($user) {
                 $eventIds = $user->events()->pluck('events.id');
-                $builder->whereIn('event_id', $eventIds);
+                $builder->where(function($q) use ($eventIds, $user) {
+                    $q->whereIn('event_id', $eventIds)
+                      ->orWhereHas('event', function($eq) use ($user) {
+                          $eq->where('created_by', $user->id);
+                      });
+                });
             } else {
                 // Not authenticated - see nothing
                 $builder->whereRaw('1 = 0');

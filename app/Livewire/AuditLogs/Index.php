@@ -21,10 +21,12 @@ class Index extends Component
 
     protected $queryString = ['filterModel', 'filterUser', 'search'];
 
-    public function mount($eventId)
+    public function mount($eventId = null)
     {
         $this->eventId = $eventId;
-        $this->event = Event::findOrFail($eventId);
+        if ($eventId) {
+            $this->event = Event::findOrFail($eventId);
+        }
     }
 
     public function updatingSearch()
@@ -58,8 +60,11 @@ class Index extends Component
 
     public function render()
     {
-        $query = AuditLog::with(['user', 'auditable'])
-            ->where('event_id', $this->eventId);
+        $query = AuditLog::with(['user', 'auditable']);
+        
+        if ($this->eventId) {
+            $query->where('event_id', $this->eventId);
+        }
 
         if ($this->filterModel) {
             $query->where('auditable_type', $this->filterModel);

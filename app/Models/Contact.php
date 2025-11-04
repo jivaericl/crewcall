@@ -28,7 +28,6 @@ class Contact extends Model
         'state',
         'zip',
         'country',
-        'type',
         'contact_type',
         'is_active',
         'notes',
@@ -91,7 +90,7 @@ class Contact extends Model
      */
     public function scopeOfType($query, $type)
     {
-        return $query->where('type', $type);
+        return $query->where('contact_type', $type);
     }
 
     /**
@@ -107,7 +106,7 @@ class Contact extends Model
      */
     public function scopeClients($query)
     {
-        return $query->where('type', 'client');
+        return $query->where('contact_type', 'client');
     }
 
     /**
@@ -115,7 +114,7 @@ class Contact extends Model
      */
     public function scopeProducers($query)
     {
-        return $query->where('type', 'producer');
+        return $query->where('contact_type', 'producer');
     }
 
     /**

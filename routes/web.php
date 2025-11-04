@@ -23,7 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return redirect()->route('events.index');
     })->name('dashboard');
 
     // Event routes
@@ -81,7 +81,7 @@ Route::middleware([
 
     // Event-specific Tags and Audit routes
     // TODO: Create Tags\Index component
-    // Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
+    Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
     // TODO: Update AuditLogs\Index to accept eventId parameter
     // Route::get('/events/{eventId}/audit-logs', App\Livewire\AuditLogs\Index::class)->name('events.audit-logs.index');
 
