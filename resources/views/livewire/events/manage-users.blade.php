@@ -73,7 +73,7 @@
     </div>
 
     @if($showAddModal)
-        <flux:modal wire:model="showAddModal">
+        <flux:modal wire:model.live="showAddModal">
             <flux:modal.content>
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
