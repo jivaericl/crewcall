@@ -79,8 +79,10 @@ Route::middleware([
     Route::get('/events/{eventId}/contacts/{contactId}', App\Livewire\Contacts\Show::class)->name('events.contacts.show');
 
     // Event-specific Tags and Audit routes
-    Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
-    Route::get('/events/{eventId}/audit-logs', App\Livewire\AuditLogs\Index::class)->name('events.audit-logs.index');
+    // TODO: Create Tags\Index component
+    // Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
+    // TODO: Update AuditLogs\Index to accept eventId parameter
+    // Route::get('/events/{eventId}/audit-logs', App\Livewire\AuditLogs\Index::class)->name('events.audit-logs.index');
 
     // Show calling routes
     Route::get('/events/{eventId}/show-call', App\Livewire\ShowCall\Index::class)->name('show-call.index');
