@@ -29,6 +29,7 @@ Route::middleware([
     // Event routes
     Route::get('/events', App\Livewire\Events\Index::class)->name('events.index');
     Route::get('/events/create', App\Livewire\Events\Form::class)->name('events.create');
+    Route::get('/events/{eventId}', App\Livewire\Events\Dashboard::class)->name('events.dashboard');
     Route::get('/events/{eventId}/edit', App\Livewire\Events\Form::class)->name('events.edit');
     Route::get('/events/{eventId}/users', App\Livewire\Events\ManageUsers::class)->name('events.users');
 

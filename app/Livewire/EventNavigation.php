@@ -37,6 +37,12 @@ class EventNavigation extends Component
         if ($this->event) {
             $menuItems = [
                 [
+                    'label' => 'Dashboard',
+                    'icon' => 'home',
+                    'route' => 'events.dashboard',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'Sessions',
                     'icon' => 'calendar',
                     'route' => 'events.sessions.index',
