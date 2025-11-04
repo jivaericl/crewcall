@@ -79,6 +79,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the event_user pivot records for this user.
+     */
+    public function eventUsers()
+    {
+        return $this->hasMany(EventUser::class, 'user_id');
+    }
+
+    /**
      * Get the roles assigned to this user for events.
      */
     public function eventRoles()

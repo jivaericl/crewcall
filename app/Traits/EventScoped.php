@@ -27,7 +27,7 @@ trait EventScoped
                 $builder->where(function($q) use ($eventIds, $user) {
                     $q->whereIn('event_id', $eventIds)
                       ->orWhereHas('event', function($eq) use ($user) {
-                          $eq->where('created_by', $user->id);
+                          $eq->where('events.created_by', $user->id);
                       });
                 });
             } else {

@@ -55,6 +55,11 @@ class Segment extends Model
         return $this->belongsTo(Session::class);
     }
 
+    public function event()
+    {
+        return $this->hasOneThrough(Event::class, Session::class, 'id', 'id', 'session_id', 'event_id');
+    }
+
     public function producer()
     {
         return $this->belongsTo(User::class, 'producer_id');

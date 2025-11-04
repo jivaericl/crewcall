@@ -11,7 +11,7 @@ use App\Traits\EventScoped;
 
 class Cue extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped;
+    use HasFactory, SoftDeletes, Auditable, Commentable;
 
     protected $fillable = [
         'segment_id',
