@@ -91,10 +91,30 @@ class Index extends Component
             $filename = Str::slug($this->uploadName) . '-' . time() . '.' . $extension;
             $path = $file->storeAs('content/' . $this->eventId, $filename, 'public');
 
+            // Auto-categorize headshots
+            $categoryId = $this->uploadCategory;
+            if (empty($categoryId) && $this->uploadType === 'image' && 
+                (stripos($this->uploadName, 'headshot') !== false || 
+                 stripos($originalName, 'headshot') !== false)) {
+                // Find or create Headshots category
+                $headshotCategory = ContentCategory::firstOrCreate(
+                    [
+                        'event_id' => $this->eventId,
+                        'name' => 'Headshots',
+                    ],
+                    [
+                        'description' => 'Speaker and staff headshots',
+                        'color' => '#8B5CF6', // Purple
+                        'is_active' => true,
+                    ]
+                );
+                $categoryId = $headshotCategory->id;
+            }
+
             // Create content file record
             $contentFile = ContentFile::create([
                 'event_id' => $this->eventId,
-                'category_id' => $this->uploadCategory,
+                'category_id' => $categoryId,
                 'name' => $this->uploadName,
                 'description' => $this->uploadDescription,
                 'file_type' => $this->uploadType,
