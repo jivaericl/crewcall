@@ -81,11 +81,19 @@
             <flux:card>
                 <flux:heading size="lg" class="mb-4">Tags</flux:heading>
                 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                     @foreach($allTags as $tag)
-                        <flux:checkbox wire:model="selectedTags" value="{{ $tag->id }}">
-                            <span :style="'color: ' + '{{ $tag->color }}'">{{ $tag->name }}</span>
-                        </flux:checkbox>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                wire:model="selectedTags" 
+                                value="{{ $tag->id }}"
+                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                            >
+                            <span class="text-sm font-medium" style="color: {{ $tag->color }}">
+                                {{ $tag->name }}
+                            </span>
+                        </label>
                     @endforeach
                 </div>
             </flux:card>
