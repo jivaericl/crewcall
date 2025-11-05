@@ -15,11 +15,12 @@ class Index extends Component
     public $event;
     public $filterModel = '';
     public $filterUser = '';
+    public $filterEvent = '';
     public $search = '';
     public $selectedLog = null;
     public $showDetailsModal = false;
 
-    protected $queryString = ['filterModel', 'filterUser', 'search'];
+    protected $queryString = ['filterModel', 'filterUser', 'filterEvent', 'search'];
 
     public function mount($eventId = null)
     {
@@ -42,6 +43,11 @@ class Index extends Component
     }
 
     public function updatingFilterUser()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterEvent()
     {
         $this->resetPage();
     }
@@ -72,6 +78,10 @@ class Index extends Component
 
         if ($this->filterUser) {
             $query->where('user_id', $this->filterUser);
+        }
+
+        if ($this->filterEvent) {
+            $query->where('event', $this->filterEvent);
         }
 
         if ($this->search) {
