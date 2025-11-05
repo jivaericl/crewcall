@@ -83,6 +83,30 @@ class ContentFile extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function speakers()
+    {
+        return $this->belongsToMany(Speaker::class, 'content_file_speaker')
+            ->withTimestamps();
+    }
+
+    public function segments()
+    {
+        return $this->belongsToMany(Segment::class, 'content_file_segment')
+            ->withTimestamps();
+    }
+
+    public function cues()
+    {
+        return $this->belongsToMany(Cue::class, 'content_file_cue')
+            ->withTimestamps();
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'content_file_tag')
+            ->withTimestamps();
+    }
+
     // Scopes
     public function scopeActive($query)
     {
