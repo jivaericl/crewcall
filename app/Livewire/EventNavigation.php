@@ -89,6 +89,16 @@ class EventNavigation extends Component
                             'route' => 'events.tags.index',
                             'params' => [$this->eventId],
                         ],
+                        [
+                            'label' => 'Custom Fields',
+                            'route' => 'custom-fields.index',
+                            'params' => [$this->eventId],
+                        ],
+                        [
+                            'label' => 'Cue Types',
+                            'route' => 'events.cue-types.index',
+                            'params' => [$this->eventId],
+                        ],
                     ],
                 ],
             ];

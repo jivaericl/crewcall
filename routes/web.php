@@ -73,6 +73,11 @@ Route::middleware([
     Route::get('/events/{eventId}/content-categories', App\Livewire\ContentCategories\Index::class)->name('events.content-categories.index');
     Route::get('/events/{eventId}/content-categories/create', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.create');
     Route::get('/events/{eventId}/content-categories/{categoryId}/edit', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.edit');
+    
+    // Cue types routes
+    Route::get('/events/{eventId}/cue-types', App\Livewire\CueTypes\Index::class)->name('events.cue-types.index');
+    Route::get('/events/{eventId}/cue-types/create', App\Livewire\CueTypes\Form::class)->name('events.cue-types.create');
+    Route::get('/events/{eventId}/cue-types/{cueTypeId}/edit', App\Livewire\CueTypes\Form::class)->name('events.cue-types.edit');
 
     // Speaker routes
     Route::get('/events/{eventId}/speakers', App\Livewire\Speakers\Index::class)->name('events.speakers.index');
