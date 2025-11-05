@@ -130,7 +130,7 @@ class Form extends Component
         $this->validate();
 
         // Validate custom fields
-        $customFields = CustomField::forEvent($this->eventId)->get();
+        $customFields = CustomField::forEvent($this->eventId)->forModelType('session')->get();
         foreach ($customFields as $field) {
             if ($field->is_required && empty($this->customFieldValues[$field->id])) {
                 $this->addError('customFieldValues.' . $field->id, $field->name . ' is required.');
