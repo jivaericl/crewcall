@@ -81,6 +81,14 @@ class Contact extends Model
     {
         return $this->belongsToMany(Session::class, 'contact_session')->withTimestamps();
     }
+    
+    /**
+     * Get the content files associated with the contact.
+     */
+    public function contentFiles()
+    {
+        return $this->belongsToMany(ContentFile::class, 'contact_content_file')->withTimestamps();
+    }
 
     /**
      * Get the contact's full name.
