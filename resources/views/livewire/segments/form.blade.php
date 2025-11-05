@@ -101,6 +101,11 @@
                         @error('producer_id') <flux:error>{{ $message }}</flux:error> @enderror
                     </div>
 
+                    <!-- Custom Fields -->
+                    @if($customFieldsList->count() > 0)
+                        <x-custom-fields-form :fields="$customFieldsList" wire:model="customFields" />
+                    @endif
+
                     <!-- Tags -->
                     <div>
                         <flux:label>Tags</flux:label>

@@ -6,6 +6,7 @@ use App\Models\Segment;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\CustomField;
 use Livewire\Component;
 use Carbon\Carbon;
 
@@ -22,6 +23,7 @@ class Form extends Component
     public $producer_id = '';
     public $selectedTags = [];
     public $duration = '';
+    public $customFields = [];
 
     protected function rules()
     {
@@ -59,6 +61,11 @@ class Form extends Component
             
             // Load tags
             $this->selectedTags = $segment->tags->pluck('id')->toArray();
+            
+            // Load custom field values
+            foreach ($segment->customFieldValues as $value) {
+                $this->customFields[$value->custom_field_id] = $value->value;
+            }
             
             $this->calculateDuration();
         } else {
@@ -141,6 +148,9 @@ class Form extends Component
         
         // Sync tags
         $segment->tags()->sync($this->selectedTags);
+        
+        // Sync custom fields
+        $segment->syncCustomFields($this->customFields);
 
         session()->flash('message', $message);
         
@@ -163,11 +173,18 @@ class Form extends Component
         
         // Get all tags
         $allTags = Tag::orderBy('name')->get();
+        
+        // Get custom fields for segments
+        $customFieldsList = CustomField::forEvent($this->session->event_id)
+            ->forModelType('segment')
+            ->ordered()
+            ->get();
 
         return view('livewire.segments.form', [
             'clients' => $clients,
             'producers' => $producers,
             'allTags' => $allTags,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }
