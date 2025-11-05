@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\ContentFile;
 use App\Models\ContentCategory;
+use App\Models\CustomField;
 use App\Models\Event;
 use App\Models\Speaker;
 use App\Models\Segment;
@@ -38,6 +39,9 @@ class Edit extends Component
     public $showVersionModal = false;
     public $newVersionFile;
     public $changeNotes;
+    
+    // Custom fields
+    public $customFields = [];
 
     protected function rules()
     {
@@ -74,6 +78,11 @@ class Edit extends Component
         $this->selectedSpeakers = $this->content->speakers->pluck('id')->toArray();
         $this->selectedSegments = $this->content->segments->pluck('id')->toArray();
         $this->selectedCues = $this->content->cues->pluck('id')->toArray();
+        
+        // Load custom field values
+        foreach ($this->content->customFieldValues as $value) {
+            $this->customFields[$value->custom_field_id] = $value->value;
+        }
     }
 
     public function save()
@@ -92,6 +101,9 @@ class Edit extends Component
         $this->content->speakers()->sync($this->selectedSpeakers);
         $this->content->segments()->sync($this->selectedSegments);
         $this->content->cues()->sync($this->selectedCues);
+        
+        // Save custom field values
+        $this->content->saveCustomFields($this->customFields);
 
         session()->flash('message', 'Content updated successfully.');
         return redirect()->route('events.content.index', $this->eventId);
@@ -181,12 +193,19 @@ class Edit extends Component
             })
             ->orderBy('name')
             ->get();
+            
+        // Get custom fields for content
+        $customFieldsList = CustomField::forEvent($this->eventId)
+            ->forModelType('content')
+            ->ordered()
+            ->get();
 
         return view('livewire.content.edit', [
             'categories' => $categories,
             'allSpeakers' => $allSpeakers,
             'allSegments' => $allSegments,
             'allCues' => $allCues,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }
