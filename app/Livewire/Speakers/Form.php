@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Tag;
 use App\Models\Session;
 use App\Models\ContentFile;
+use App\Models\CustomField;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +47,9 @@ class Form extends Component
     public $autoGeneratePassword = true;
     public $customPassword = '';
     public $sendWelcomeEmail = true;
+    
+    // Custom fields
+    public $customFields = [];
 
     protected function rules()
     {
@@ -89,6 +93,11 @@ class Form extends Component
             $this->selectedTags = $this->speaker->tags->pluck('id')->toArray();
             $this->selectedSessions = $this->speaker->sessions->pluck('id')->toArray();
             $this->selectedContent = $this->speaker->contentFiles->pluck('id')->toArray();
+            
+            // Load custom field values
+            foreach ($this->speaker->customFieldValues as $value) {
+                $this->customFields[$value->custom_field_id] = $value->value;
+            }
         }
     }
 
@@ -126,6 +135,9 @@ class Form extends Component
         $speaker->tags()->sync($this->selectedTags);
         $speaker->sessions()->sync($this->selectedSessions);
         $speaker->contentFiles()->sync($this->selectedContent);
+        
+        // Save custom field values
+        $speaker->syncCustomFields($this->customFields);
 
         // Create user account if requested
         if ($this->createUser && !$speaker->user_id && $this->email) {
@@ -176,6 +188,12 @@ class Form extends Component
         $contacts = \App\Models\Contact::where('event_id', $this->eventId)->get();
         $contactPersons = $contacts->pluck('name')->filter()->unique()->values()->toArray();
         $companies = $contacts->pluck('company')->filter()->unique()->values()->toArray();
+        
+        // Get custom fields for speakers
+        $customFieldsList = CustomField::forEvent($this->eventId)
+            ->forModelType('speaker')
+            ->ordered()
+            ->get();
 
         return view('livewire.speakers.form', [
             'allTags' => $allTags,
@@ -183,6 +201,7 @@ class Form extends Component
             'contentFiles' => $contentFiles,
             'contactPersons' => $contactPersons,
             'companies' => $companies,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }
