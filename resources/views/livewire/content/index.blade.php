@@ -114,6 +114,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                             </svg>
                                         </flux:button>
+                                        <flux:button href="{{ route('events.content.edit', ['eventId' => $eventId, 'contentId' => $file->id]) }}" variant="ghost" size="sm" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </flux:button>
                                         <flux:button wire:click="viewVersions({{ $file->id }})" variant="ghost" size="sm" title="Versions">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -208,23 +213,69 @@
                                 <div>
                                     <flux:label>Assign to Speakers</flux:label>
                                     @if($allSpeakers->count() > 0)
-                                        <div class="flex flex-wrap gap-2 mt-2">
+                                        <div class="mt-2 space-y-1 max-h-32 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded p-2">
                                             @foreach($allSpeakers as $speaker)
-                                                <label class="inline-flex items-center">
+                                                <label class="flex items-center gap-2">
                                                     <input 
                                                         type="checkbox" 
                                                         wire:model="uploadSpeakers"
                                                         value="{{ $speaker->id }}"
                                                         class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                                                     >
-                                                    <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                                                        {{ $speaker->name }}
+                                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                                        {{ $speaker->full_name }}
                                                     </span>
                                                 </label>
                                             @endforeach
                                         </div>
                                     @else
                                         <p class="text-sm text-gray-500 mt-2">No speakers available.</p>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <flux:label>Assign to Segments</flux:label>
+                                    @if($allSegments->count() > 0)
+                                        <div class="mt-2 space-y-1 max-h-32 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded p-2">
+                                            @foreach($allSegments as $segment)
+                                                <label class="flex items-center gap-2">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        wire:model="uploadSegments"
+                                                        value="{{ $segment->id }}"
+                                                        class="rounded border-gray-300 text-blue-600 shadow-sm"
+                                                    >
+                                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                                        {{ $segment->name }}
+                                                    </span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p class="text-sm text-gray-500 mt-2">No segments available.</p>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <flux:label>Assign to Cues</flux:label>
+                                    @if($allCues->count() > 0)
+                                        <div class="mt-2 space-y-1 max-h-32 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded p-2">
+                                            @foreach($allCues as $cue)
+                                                <label class="flex items-center gap-2">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        wire:model="uploadCues"
+                                                        value="{{ $cue->id }}"
+                                                        class="rounded border-gray-300 text-blue-600 shadow-sm"
+                                                    >
+                                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                                        {{ $cue->name }}
+                                                    </span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p class="text-sm text-gray-500 mt-2">No cues available.</p>
                                     @endif
                                 </div>
                             </div>

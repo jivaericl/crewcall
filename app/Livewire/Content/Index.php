@@ -32,6 +32,8 @@ class Index extends Component
     public $uploadCategory;
     public $uploadType;
     public $uploadSpeakers = [];
+    public $uploadSegments = [];
+    public $uploadCues = [];
 
     protected $queryString = ['search', 'typeFilter', 'categoryFilter'];
 
@@ -59,13 +61,13 @@ class Index extends Component
     public function openUploadModal()
     {
         $this->showUploadModal = true;
-        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers']);
+        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
     }
 
     public function closeUploadModal()
     {
         $this->showUploadModal = false;
-        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers']);
+        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
     }
 
     public function uploadFileSubmit()
@@ -121,9 +123,15 @@ class Index extends Component
                 'uploaded_by' => auth()->id(),
             ]);
             
-            // Sync speakers
+            // Sync relationships
             if (!empty($this->uploadSpeakers)) {
                 $contentFile->speakers()->sync($this->uploadSpeakers);
+            }
+            if (!empty($this->uploadSegments)) {
+                $contentFile->segments()->sync($this->uploadSegments);
+            }
+            if (!empty($this->uploadCues)) {
+                $contentFile->cues()->sync($this->uploadCues);
             }
 
             session()->flash('message', 'File uploaded successfully.');
@@ -205,6 +213,21 @@ class Index extends Component
         // Get all speakers for this event
         $allSpeakers = Speaker::where('event_id', $this->eventId)
             ->where('is_active', true)
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->get();
+
+        // Get all segments for this event
+        $allSegments = \App\Models\Segment::whereHas('session', function($q) {
+                $q->where('event_id', $this->eventId);
+            })
+            ->orderBy('name')
+            ->get();
+
+        // Get all cues for this event
+        $allCues = \App\Models\Cue::whereHas('segment.session', function($q) {
+                $q->where('event_id', $this->eventId);
+            })
             ->orderBy('name')
             ->get();
 
@@ -213,6 +236,8 @@ class Index extends Component
             'categories' => $categories,
             'versionedFile' => $versionedFile,
             'allSpeakers' => $allSpeakers,
+            'allSegments' => $allSegments,
+            'allCues' => $allCues,
         ]);
     }
 }
