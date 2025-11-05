@@ -162,31 +162,35 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    @if($showDeleteModal)
-        <flux:modal wire:model="showDeleteModal">
-            <flux:modal.content>
-                <div class="p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900">
-                            <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Delete Custom Field</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Are you sure you want to delete this custom field? All associated data will be permanently removed.</p>
-                        </div>
+    <div x-data="{ show: @entangle('showDeleteModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
+            
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+                <div class="flex items-center mb-4">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900">
+                        <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
                     </div>
-                    <div class="flex justify-end gap-3">
-                        <flux:button wire:click="cancelDelete" variant="ghost">
-                            Cancel
-                        </flux:button>
-                        <flux:button wire:click="deleteField" variant="danger">
-                            Delete Field
-                        </flux:button>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Delete Custom Field</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Are you sure you want to delete this custom field? All associated data will be permanently removed.</p>
                     </div>
                 </div>
-            </flux:modal.content>
-        </flux:modal>
-    @endif
+                <div class="flex justify-end gap-3">
+                    <button @click="show = false" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+                        Cancel
+                    </button>
+                    <button wire:click="deleteField" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        Delete Field
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
