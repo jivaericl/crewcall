@@ -55,7 +55,7 @@ class Show extends Component
         if ($this->search) {
             $segmentsQuery->where(function($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
+                  ->orWhere('code', 'like', '%' . $this->search . '%');
             });
         }
 
