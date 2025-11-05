@@ -205,8 +205,8 @@ class Form extends Component
             ->orderBy('last_name')
             ->get();
 
-        // Get custom fields for this event
-        $customFields = CustomField::forEvent($this->eventId)->ordered()->get();
+        // Get custom fields for sessions in this event
+        $customFields = CustomField::forEvent($this->eventId)->forModelType('session')->ordered()->get();
         
         // Get all tags
         $allTags = Tag::orderBy('name')->get();
