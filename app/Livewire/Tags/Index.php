@@ -19,7 +19,6 @@ class Index extends Component
     public $name = '';
     public $color = '#3B82F6';
     public $model_type = 'event'; // Default to event
-    public $description = '';
     
     // Modal state
     public $showModal = false;
@@ -34,8 +33,7 @@ class Index extends Component
     protected $rules = [
         'name' => 'required|string|max:255',
         'color' => 'required|string|max:7',
-        'model_type' => 'required|in:event,session,segment,cue',
-        'description' => 'nullable|string',
+        'model_type' => 'required|in:event,session,segment,cue,content,contact,speaker',
     ];
 
     public function mount($eventId)
@@ -46,7 +44,7 @@ class Index extends Component
 
     public function openCreateModal()
     {
-        $this->reset(['tagId', 'name', 'color', 'model_type', 'description']);
+        $this->reset(['tagId', 'name', 'color', 'model_type']);
         $this->color = '#3B82F6';
         $this->model_type = 'event';
         $this->showModal = true;
@@ -59,14 +57,13 @@ class Index extends Component
         $this->name = $tag->name;
         $this->color = $tag->color;
         $this->model_type = $tag->model_type ?? 'event';
-        $this->description = $tag->description;
         $this->showModal = true;
     }
 
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset(['tagId', 'name', 'color', 'description']);
+        $this->reset(['tagId', 'name', 'color', 'model_type']);
     }
 
     public function save()
@@ -79,8 +76,6 @@ class Index extends Component
                 'name' => $this->name,
                 'color' => $this->color,
                 'model_type' => $this->model_type,
-                'description' => $this->description,
-                'updated_by' => auth()->id(),
             ]);
             session()->flash('message', 'Tag updated successfully.');
         } else {
@@ -89,9 +84,6 @@ class Index extends Component
                 'name' => $this->name,
                 'color' => $this->color,
                 'model_type' => $this->model_type,
-                'description' => $this->description,
-                'created_by' => auth()->id(),
-                'updated_by' => auth()->id(),
             ]);
             session()->flash('message', 'Tag created successfully.');
         }
@@ -131,10 +123,7 @@ class Index extends Component
     {
         $tags = Tag::where('event_id', $this->eventId)
             ->when($this->search, function($query) {
-                $query->where(function($q) {
-                    $q->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
-                });
+                $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->withCount(['events', 'sessions', 'segments', 'cues', 'speakers', 'contacts'])
             ->orderBy($this->sortBy, $this->sortDirection)
