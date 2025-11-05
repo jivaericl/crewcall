@@ -118,7 +118,7 @@
 
     <!-- Delete Confirmation Modal -->
     @if($showDeleteModal)
-        <flux:modal wire:model="showDeleteModal">
+        <flux:modal wire:model.live="showDeleteModal">
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">

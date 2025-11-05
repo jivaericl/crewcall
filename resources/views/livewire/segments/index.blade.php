@@ -160,7 +160,7 @@
 
     <!-- Delete Confirmation Modal -->
     @if($showDeleteModal)
-        <flux:modal wire:model="showDeleteModal">
+        <flux:modal wire:model.live="showDeleteModal">
             <flux:modal.content>
                 <div class="p-6">
                     <div class="flex items-start">

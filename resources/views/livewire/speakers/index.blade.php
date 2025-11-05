@@ -118,7 +118,7 @@
     </flux:card>
 
     @if($showDeleteModal)
-        <flux:modal wire:model="showDeleteModal">
+        <flux:modal wire:model.live="showDeleteModal">
             <flux:heading size="lg">Confirm Delete</flux:heading>
             <flux:text>Are you sure you want to delete this speaker? This action cannot be undone.</flux:text>
             
