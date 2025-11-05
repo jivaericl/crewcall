@@ -77,48 +77,62 @@
         </div>
     </div>
 
-    <!-- Modal (always rendered, controlled by wire:model.live) -->
-    <flux:modal wire:model.live="showAddModal">
-            <flux:modal.content>
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
-                    <form wire:submit.prevent="assignUser">
-                        <div class="mb-4">
-                            <flux:field>
-                                <flux:label>User *</flux:label>
-                                <flux:select wire:model="selectedUserId" required>
-                                    <option value="">Select a user</option>
-                                    @foreach($availableUsers as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
-                                    @endforeach
-                                </flux:select>
-                                @error('selectedUserId') <flux:error>{{ $message }}</flux:error> @enderror
-                            </flux:field>
-                        </div>
-                        <div class="mb-4">
-                            <flux:field>
-                                <flux:label>Role *</flux:label>
-                                <flux:select wire:model="selectedRoleId" required>
-                                    <option value="">Select a role</option>
-                                    @foreach($activeRoles as $role)
-                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                    @endforeach
-                                </flux:select>
-                                @error('selectedRoleId') <flux:error>{{ $message }}</flux:error> @enderror
-                            </flux:field>
-                        </div>
-                        <div class="mb-6">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="isAdmin" class="rounded border-gray-300 text-blue-600">
-                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
-                            </label>
-                        </div>
-                        <div class="flex justify-end gap-3">
-                            <flux:button wire:click="closeAddModal" variant="ghost" type="button">Cancel</flux:button>
-                            <flux:button type="submit" variant="primary">Assign User</flux:button>
-                        </div>
-                    </form>
-                </div>
-            </flux:modal.content>
-    </flux:modal>
+    <!-- Alpine.js Modal -->
+    <div x-data="{ show: @entangle('showAddModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;"
+         @keydown.escape.window="show = false">
+        
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+             @click="show = false"></div>
+        
+        <!-- Modal Content -->
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6"
+                 @click.stop>
+                
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
+                
+                <form wire:submit.prevent="assignUser">
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>User *</flux:label>
+                            <flux:select wire:model="selectedUserId" required>
+                                <option value="">Select a user</option>
+                                @foreach($availableUsers as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
+                                @endforeach
+                            </flux:select>
+                            @error('selectedUserId') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>Role *</flux:label>
+                            <flux:select wire:model="selectedRoleId" required>
+                                <option value="">Select a role</option>
+                                @foreach($activeRoles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            @error('selectedRoleId') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    <div class="mb-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" wire:model="isAdmin" class="rounded border-gray-300 text-blue-600">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
+                        </label>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <flux:button wire:click="closeAddModal" variant="ghost" type="button">Cancel</flux:button>
+                        <flux:button type="submit" variant="primary">Assign User</flux:button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
