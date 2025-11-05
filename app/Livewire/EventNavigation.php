@@ -75,19 +75,22 @@ class EventNavigation extends Component
                         ],
                     ],
                 ],
-                // TODO: Uncomment when routes are implemented
-                // [
-                //     'label' => 'Tags',
-                //     'icon' => 'tag',
-                //     'route' => 'events.tags.index',
-                //     'params' => [$this->eventId],
-                // ],
-                // [
-                //     'label' => 'Audit Log',
-                //     'icon' => 'clipboard-list',
-                //     'route' => 'events.audit-logs.index',
-                //     'params' => [$this->eventId],
-                // ],
+                [
+                    'label' => 'Event Settings',
+                    'icon' => 'cog',
+                    'children' => [
+                        [
+                            'label' => 'Content Categories',
+                            'route' => 'events.content-categories.index',
+                            'params' => [$this->eventId],
+                        ],
+                        [
+                            'label' => 'Tags',
+                            'route' => 'events.tags.index',
+                            'params' => [$this->eventId],
+                        ],
+                    ],
+                ],
             ];
         }
 
