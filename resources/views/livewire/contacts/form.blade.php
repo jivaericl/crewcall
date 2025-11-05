@@ -133,6 +133,54 @@
                             @endforeach
                         </div>
                     </div>
+                    
+                    <!-- Sessions Assignment -->
+                    @if($sessions->count() > 0)
+                    <div class="mb-6">
+                        <flux:label>Assign to Sessions</flux:label>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($sessions as $session)
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        wire:model="selectedSessions"
+                                        value="{{ $session->id }}"
+                                        class="sr-only peer"
+                                    />
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
+                                        peer-checked:bg-blue-100 dark:peer-checked:bg-blue-900 peer-checked:text-blue-700 dark:peer-checked:text-blue-300
+                                        peer-checked:ring-2 peer-checked:ring-blue-500 peer-checked:ring-offset-2">
+                                        {{ $session->name }}
+                                    </span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+                    
+                    <!-- Content Assignment -->
+                    @if($contentFiles->count() > 0)
+                    <div class="mb-6">
+                        <flux:label>Assign Content Files</flux:label>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($contentFiles as $contentFile)
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        wire:model="selectedContentFiles"
+                                        value="{{ $contentFile->id }}"
+                                        class="sr-only peer"
+                                    />
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
+                                        peer-checked:bg-green-100 dark:peer-checked:bg-green-900 peer-checked:text-green-700 dark:peer-checked:text-green-300
+                                        peer-checked:ring-2 peer-checked:ring-green-500 peer-checked:ring-offset-2">
+                                        {{ $contentFile->title }}
+                                    </span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Active Status -->
                     <div class="flex items-center">

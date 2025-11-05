@@ -6,6 +6,8 @@ use App\Models\Contact;
 use App\Models\Event;
 use App\Models\Tag;
 use App\Models\CustomField;
+use App\Models\Session;
+use App\Models\ContentFile;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -34,6 +36,8 @@ class Form extends Component
     public $notes = '';
     public $is_active = true;
     public $selectedTags = [];
+    public $selectedSessions = [];
+    public $selectedContentFiles = [];
 
     // Tag creation
     public $showTagModal = false;
@@ -87,6 +91,8 @@ class Form extends Component
             $this->notes = $this->contact->notes;
             $this->is_active = $this->contact->is_active;
             $this->selectedTags = $this->contact->tags->pluck('id')->toArray();
+            $this->selectedSessions = $this->contact->sessions->pluck('id')->toArray();
+            $this->selectedContentFiles = $this->contact->contentFiles->pluck('id')->toArray();
             
             // Load custom field values
             foreach ($this->contact->customFieldValues as $value) {
@@ -127,6 +133,12 @@ class Form extends Component
 
         // Sync tags
         $this->contact->tags()->sync($this->selectedTags);
+        
+        // Sync sessions
+        $this->contact->sessions()->sync($this->selectedSessions);
+        
+        // Sync content files
+        $this->contact->contentFiles()->sync($this->selectedContentFiles);
         
         // Save custom field values
         $this->contact->syncCustomFields($this->customFields);
@@ -169,6 +181,16 @@ class Form extends Component
     {
         $tags = Tag::where('event_id', $this->eventId)->orderBy('name')->get();
         
+        // Get sessions for this event
+        $sessions = Session::where('event_id', $this->eventId)
+            ->orderBy('start_date')
+            ->get();
+        
+        // Get content files for this event
+        $contentFiles = ContentFile::where('event_id', $this->eventId)
+            ->orderBy('title')
+            ->get();
+        
         // Get custom fields for contacts
         $customFieldsList = CustomField::forEvent($this->eventId)
             ->forModelType('contact')
@@ -177,6 +199,8 @@ class Form extends Component
 
         return view('livewire.contacts.form', [
             'tags' => $tags,
+            'sessions' => $sessions,
+            'contentFiles' => $contentFiles,
             'customFieldsList' => $customFieldsList,
         ]);
     }
