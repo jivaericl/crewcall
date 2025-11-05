@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class CueType extends Model
 {
@@ -24,6 +25,26 @@ class CueType extends Model
         'is_system' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Boot the model and auto-generate slug.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($cueType) {
+            if (empty($cueType->slug)) {
+                $cueType->slug = Str::slug($cueType->name);
+            }
+        });
+
+        static::updating(function ($cueType) {
+            if ($cueType->isDirty('name') && empty($cueType->slug)) {
+                $cueType->slug = Str::slug($cueType->name);
+            }
+        });
+    }
 
     // Relationships
     public function event()
