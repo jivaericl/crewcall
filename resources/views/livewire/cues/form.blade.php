@@ -196,7 +196,7 @@
                                                 <flux:select wire:model="customFields.{{ $field->id }}" id="custom_{{ $field->id }}">
                                                     <option value="">-- Select --</option>
                                                     @if($field->options)
-                                                        @foreach(json_decode($field->options) as $option)
+                                                        @foreach($field->options as $option)
                                                             <option value="{{ $option }}">{{ $option }}</option>
                                                         @endforeach
                                                     @endif
