@@ -16,6 +16,7 @@ class Index extends Component
     public $search = '';
     public $filterType = '';
     public $filterStatus = 'active';
+    public $filterTags = [];
     public $sortField = 'last_name';
     public $sortDirection = 'asc';
 
@@ -73,6 +74,16 @@ class Index extends Component
         
         session()->flash('message', 'Contact status updated.');
     }
+    
+    public function toggleTagFilter($tagId)
+    {
+        if (in_array($tagId, $this->filterTags)) {
+            $this->filterTags = array_diff($this->filterTags, [$tagId]);
+        } else {
+            $this->filterTags[] = $tagId;
+        }
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -99,6 +110,13 @@ class Index extends Component
             $query->where('is_active', true);
         } elseif ($this->filterStatus === 'inactive') {
             $query->where('is_active', false);
+        }
+        
+        // Apply tag filter
+        if (!empty($this->filterTags)) {
+            $query->whereHas('tags', function($q) {
+                $q->whereIn('tags.id', $this->filterTags);
+            });
         }
 
         // Apply sorting
