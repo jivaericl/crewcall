@@ -57,4 +57,12 @@ class Tag extends Model
     {
         return $this->belongsToMany(Speaker::class)->withTimestamps();
     }
+
+    /**
+     * Get the contacts associated with the tag.
+     */
+    public function contacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Contact::class)->withTimestamps();
+    }
 }
