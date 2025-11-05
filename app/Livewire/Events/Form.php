@@ -4,6 +4,7 @@ namespace App\Livewire\Events;
 
 use App\Models\Event;
 use App\Models\Tag;
+use App\Models\CustomField;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -21,6 +22,7 @@ class Form extends Component
     public $newTagColor = '#3b82f6';
     public $showTagModal = false;
     public $duration = '';
+    public $customFields = [];
 
     protected $rules = [
         'name' => 'required|string|max:255|min:3',
@@ -54,6 +56,11 @@ class Form extends Component
             $this->end_date = $event->end_date->format('Y-m-d\TH:i');
             $this->timezone = $event->timezone;
             $this->selectedTags = $event->tags->pluck('id')->toArray();
+            
+            // Load custom field values
+            foreach ($event->customFieldValues as $value) {
+                $this->customFields[$value->custom_field_id] = $value->value;
+            }
             
             $this->calculateDuration();
         }
@@ -176,6 +183,9 @@ class Form extends Component
 
         // Sync tags
         $event->tags()->sync($this->selectedTags);
+        
+        // Sync custom fields
+        $event->syncCustomFields($this->customFields);
 
         session()->flash('message', $message);
         
@@ -186,10 +196,20 @@ class Form extends Component
     {
         $tags = Tag::orderBy('name')->get();
         $timezones = \DateTimeZone::listIdentifiers();
+        
+        // Get custom fields for events
+        $customFieldsList = collect();
+        if ($this->eventId) {
+            $customFieldsList = CustomField::forEvent($this->eventId)
+                ->forModelType('event')
+                ->ordered()
+                ->get();
+        }
 
         return view('livewire.events.form', [
             'tags' => $tags,
             'timezones' => $timezones,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }

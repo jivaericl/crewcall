@@ -124,6 +124,13 @@
                             </div>
                         </div>
 
+                        <!-- Custom Fields -->
+                        @if($eventId && $customFieldsList->count() > 0)
+                            <div class="mb-8">
+                                <x-custom-fields-form :fields="$customFieldsList" wire:model="customFields" />
+                            </div>
+                        @endif
+
                         <!-- Tags Section -->
                         <div class="mb-8">
                             <div class="flex justify-between items-center mb-3">
