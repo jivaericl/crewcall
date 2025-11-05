@@ -47,6 +47,7 @@ Route::middleware([
     // Session routes
     Route::get('/events/{eventId}/sessions', App\Livewire\Sessions\Index::class)->name('events.sessions.index');
     Route::get('/events/{eventId}/sessions/create', App\Livewire\Sessions\Form::class)->name('events.sessions.create');
+    Route::get('/events/{eventId}/sessions/{sessionId}', App\Livewire\Sessions\Show::class)->name('events.sessions.show');
     Route::get('/events/{eventId}/sessions/{sessionId}/edit', App\Livewire\Sessions\Form::class)->name('events.sessions.edit');
 
     // Custom field routes
