@@ -133,9 +133,13 @@ class Index extends Component
     public function render()
     {
         $segments = Segment::where('session_id', $this->sessionId)
-            ->with(['creator', 'cues'])
-            ->orderBy('sort_order')
-            ->orderBy('start_time')
+            ->with(['creator', 'cues' => function($query) {
+                $query->with(['cueType', 'assignedTo'])
+                    ->orderBy('sort_order', 'asc')
+                    ->orderBy('time', 'asc');
+            }])
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('start_time', 'asc')
             ->get();
 
         $availableColumns = UserRunOfShowPreference::availableColumns();
