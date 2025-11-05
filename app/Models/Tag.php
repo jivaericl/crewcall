@@ -12,8 +12,10 @@ class Tag extends Model
     use HasFactory, Auditable;
 
     protected $fillable = [
+        'event_id',
         'name',
         'color',
+        'model_type', // 'event', 'session', 'segment', 'cue'
     ];
 
     /**

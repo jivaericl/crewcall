@@ -18,6 +18,7 @@ class Index extends Component
     public $tagId = null;
     public $name = '';
     public $color = '#3B82F6';
+    public $model_type = 'event'; // Default to event
     public $description = '';
     
     // Modal state
@@ -33,6 +34,7 @@ class Index extends Component
     protected $rules = [
         'name' => 'required|string|max:255',
         'color' => 'required|string|max:7',
+        'model_type' => 'required|in:event,session,segment,cue',
         'description' => 'nullable|string',
     ];
 
@@ -44,8 +46,9 @@ class Index extends Component
 
     public function openCreateModal()
     {
-        $this->reset(['tagId', 'name', 'color', 'description']);
+        $this->reset(['tagId', 'name', 'color', 'model_type', 'description']);
         $this->color = '#3B82F6';
+        $this->model_type = 'event';
         $this->showModal = true;
     }
 
@@ -55,6 +58,7 @@ class Index extends Component
         $this->tagId = $tag->id;
         $this->name = $tag->name;
         $this->color = $tag->color;
+        $this->model_type = $tag->model_type ?? 'event';
         $this->description = $tag->description;
         $this->showModal = true;
     }
@@ -74,6 +78,7 @@ class Index extends Component
             $tag->update([
                 'name' => $this->name,
                 'color' => $this->color,
+                'model_type' => $this->model_type,
                 'description' => $this->description,
                 'updated_by' => auth()->id(),
             ]);
@@ -83,6 +88,7 @@ class Index extends Component
                 'event_id' => $this->eventId,
                 'name' => $this->name,
                 'color' => $this->color,
+                'model_type' => $this->model_type,
                 'description' => $this->description,
                 'created_by' => auth()->id(),
                 'updated_by' => auth()->id(),

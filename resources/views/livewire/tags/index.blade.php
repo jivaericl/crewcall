@@ -120,6 +120,18 @@
                         </div>
 
                         <div>
+                            <flux:label>Model Type *</flux:label>
+                            <flux:select wire:model="model_type" required>
+                                <option value="event">Event</option>
+                                <option value="session">Session</option>
+                                <option value="segment">Segment</option>
+                                <option value="cue">Cue</option>
+                            </flux:select>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tags can only be assigned to the selected model type</p>
+                            @error('model_type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
                             <flux:label>Color *</flux:label>
                             <div class="flex items-center gap-3">
                                 <input type="color" wire:model.live="color" class="h-10 w-20 rounded border-gray-300 dark:border-gray-600" />
