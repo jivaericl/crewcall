@@ -65,11 +65,6 @@
                         <div class="text-center py-12">
                             <p class="text-gray-500 dark:text-gray-400 text-lg mb-4">No users assigned yet.</p>
                             <flux:button wire:click="openAddModal" variant="primary">Assign First User</flux:button>
-                            
-                            <!-- DEBUG -->
-                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 rounded text-xs">
-                                <div><strong>Debug:</strong> showAddModal = {{ $showAddModal ? 'true' : 'false' }}</div>
-                            </div>
                         </div>
                     @endif
                 </div>

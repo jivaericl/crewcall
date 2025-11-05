@@ -12,6 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed roles first (required for user assignments)
+        $this->call([
+            RolesSeeder::class,
+        ]);
+        
+        // Uncomment to seed test users
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
