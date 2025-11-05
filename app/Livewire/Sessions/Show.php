@@ -30,7 +30,7 @@ class Show extends Component
         // Get segments with cues, ordered by sort_order and start_time
         $segmentsQuery = Segment::where('session_id', $this->sessionId)
             ->with(['cues' => function($query) {
-                $query->with(['cueType', 'assignedTo'])
+                $query->with(['cueType', 'operator'])
                     ->orderBy('sort_order', 'asc')
                     ->orderBy('time', 'asc');
                 
