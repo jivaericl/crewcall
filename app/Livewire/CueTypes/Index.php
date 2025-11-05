@@ -56,10 +56,7 @@ class Index extends Component
         $query = CueType::forEvent($this->eventId);
 
         if ($this->search) {
-            $query->where(function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('description', 'like', '%' . $this->search . '%');
-            });
+            $query->where('name', 'like', '%' . $this->search . '%');
         }
 
         $cueTypes = $query->ordered()->paginate(20);
