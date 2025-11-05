@@ -8,6 +8,7 @@ use App\Models\Segment;
 use App\Models\CueType;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\CustomField;
 
 class Form extends Component
 {
@@ -27,6 +28,7 @@ class Form extends Component
     public $operator_id;
     public $priority = 'normal';
     public $selectedTags = [];
+    public $customFields = [];
 
     protected function rules()
     {
@@ -65,6 +67,11 @@ class Form extends Component
             $this->operator_id = $this->cue->operator_id;
             $this->priority = $this->cue->priority;
             $this->selectedTags = $this->cue->tags->pluck('id')->toArray();
+            
+            // Load custom field values
+            foreach ($this->cue->customFields as $field) {
+                $this->customFields[$field->id] = $this->cue->getCustomFieldValue($field->id);
+            }
         }
     }
 
@@ -96,6 +103,11 @@ class Form extends Component
 
         // Sync tags
         $this->cue->tags()->sync($this->selectedTags);
+        
+        // Save custom fields
+        if (!empty($this->customFields)) {
+            $this->cue->syncCustomFields($this->customFields);
+        }
 
         session()->flash('message', $message);
         return redirect()->route('segments.cues.index', $this->segmentId);
@@ -116,11 +128,18 @@ class Form extends Component
 
         // Get all tags
         $allTags = Tag::orderBy('name')->get();
+        
+        // Get custom fields for cues
+        $customFieldsList = CustomField::forEvent($this->segment->session->event_id)
+            ->forModelType('cue')
+            ->ordered()
+            ->get();
 
         return view('livewire.cues.form', [
             'cueTypes' => $cueTypes,
             'operators' => $operators,
             'allTags' => $allTags,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }
