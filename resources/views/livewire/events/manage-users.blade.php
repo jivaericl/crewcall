@@ -65,6 +65,11 @@
                         <div class="text-center py-12">
                             <p class="text-gray-500 dark:text-gray-400 text-lg mb-4">No users assigned yet.</p>
                             <flux:button wire:click="openAddModal" variant="primary">Assign First User</flux:button>
+                            
+                            <!-- DEBUG -->
+                            <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 rounded text-xs">
+                                <div><strong>Debug:</strong> showAddModal = {{ $showAddModal ? 'true' : 'false' }}</div>
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -72,8 +77,8 @@
         </div>
     </div>
 
-    @if($showAddModal)
-        <flux:modal wire:model.live="showAddModal">
+    <!-- Modal (always rendered, controlled by wire:model.live) -->
+    <flux:modal wire:model.live="showAddModal">
             <flux:modal.content>
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
@@ -115,6 +120,5 @@
                     </form>
                 </div>
             </flux:modal.content>
-        </flux:modal>
-    @endif
+    </flux:modal>
 </div>
