@@ -25,7 +25,7 @@
                     <!-- Contact Type -->
                     <div class="mb-6">
                         <flux:label>Contact Type *</flux:label>
-                        <flux:select wire:model="type" required>
+                        <flux:select wire:model="contact_type" required>
                             <option value="client">Client</option>
                             <option value="producer">Producer</option>
                             <option value="vendor">Vendor</option>

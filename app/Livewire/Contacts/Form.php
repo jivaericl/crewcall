@@ -27,7 +27,7 @@ class Form extends Component
     public $phone = '';
     public $company = '';
     public $title = '';
-    public $type = 'client';
+    public $contact_type = 'client';
     public $address = '';
     public $city = '';
     public $state = '';
@@ -82,7 +82,7 @@ class Form extends Component
             $this->phone = $this->contact->phone;
             $this->company = $this->contact->company;
             $this->title = $this->contact->title;
-            $this->type = $this->contact->type;
+            $this->contact_type = $this->contact->contact_type;
             $this->address = $this->contact->address;
             $this->city = $this->contact->city;
             $this->state = $this->contact->state;
@@ -113,7 +113,7 @@ class Form extends Component
             'phone' => $this->phone,
             'company' => $this->company,
             'title' => $this->title,
-            'type' => $this->type,
+            'contact_type' => $this->contact_type,
             'address' => $this->address,
             'city' => $this->city,
             'state' => $this->state,
