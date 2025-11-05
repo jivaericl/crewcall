@@ -77,17 +77,6 @@
                         </div>
 
                         <div>
-                            <flux:label for="status" required>Status</flux:label>
-                            <flux:select wire:model="status" id="status" class="w-full">
-                                <option value="standby">Standby</option>
-                                <option value="go">Go</option>
-                                <option value="complete">Complete</option>
-                                <option value="skip">Skip</option>
-                            </flux:select>
-                            @error('status') <flux:error>{{ $message }}</flux:error> @enderror
-                        </div>
-
-                        <div>
                             <flux:label for="priority" required>Priority</flux:label>
                             <flux:select wire:model="priority" id="priority" class="w-full">
                                 <option value="low">Low</option>
