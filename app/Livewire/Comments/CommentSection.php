@@ -28,7 +28,7 @@ class CommentSection extends Component
     public function updatedNewComment($value)
     {
         // Check for @mention being typed
-        if (preg_match('/@(\w*)$/', $value, $matches)) {
+        if (preg_match('/@([^\s]*)$/', $value, $matches)) {
             $this->searchUsers = $matches[1];
             $this->loadUserSuggestions();
         } else {
@@ -54,10 +54,10 @@ class CommentSection extends Component
         }
     }
 
-    public function selectUser($username)
+    public function selectUser($userId, $userName)
     {
-        // Replace the partial @mention with the full username
-        $this->newComment = preg_replace('/@\w*$/', '@' . $username . ' ', $this->newComment);
+        // Replace the partial @mention with the user tag using ID
+        $this->newComment = preg_replace('/@[^\s]*$/', '@[' . $userName . ':' . $userId . '] ', $this->newComment);
         $this->showUserSuggestions = false;
         $this->searchUsers = '';
     }

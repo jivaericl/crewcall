@@ -76,14 +76,14 @@ class Comment extends Model
     // Helper methods
     public function processMentions()
     {
-        // Extract @mentions from comment text
-        preg_match_all('/@(\w+)/', $this->comment, $matches);
+        // Extract @mentions from comment text in format @[Name:ID]
+        preg_match_all('/@\[([^:]+):(\d+)\]/', $this->comment, $matches);
         
-        if (!empty($matches[1])) {
-            $usernames = array_unique($matches[1]);
+        if (!empty($matches[2])) {
+            $userIds = array_unique($matches[2]);
             
-            foreach ($usernames as $username) {
-                $user = User::where('name', $username)->first();
+            foreach ($userIds as $userId) {
+                $user = User::find($userId);
                 
                 if ($user && $user->id !== $this->user_id) {
                     // Create mention record
@@ -134,5 +134,21 @@ class Comment extends Model
     public function getCommentableTypeNameAttribute()
     {
         return class_basename($this->commentable_type);
+    }
+    
+    public function getFormattedCommentAttribute()
+    {
+        // Replace @[Name:ID] with styled mention spans
+        $formatted = preg_replace_callback(
+            '/@\[([^:]+):(\d+)\]/',
+            function ($matches) {
+                $name = $matches[1];
+                $userId = $matches[2];
+                return '<span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">@' . htmlspecialchars($name) . '</span>';
+            },
+            $this->comment
+        );
+        
+        return $formatted;
     }
 }

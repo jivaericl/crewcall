@@ -26,7 +26,7 @@
                         @foreach ($userSuggestions as $user)
                             <button 
                                 type="button"
-                                wire:click="selectUser('{{ $user->name }}')"
+                                wire:click="selectUser({{ $user->id }}, '{{ addslashes($user->name) }}')"
                                 class="w-full px-4 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-2"
                             >
                                 <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold">
@@ -117,7 +117,7 @@
                     </div>
                 @else
                     <div class="text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
-                        {!! nl2br(e($comment->comment)) !!}
+                        {!! nl2br($comment->formatted_comment) !!}
                     </div>
 
                     <div class="mt-2">
@@ -160,7 +160,7 @@
                                 </div>
 
                                 <div class="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
-                                    {!! nl2br(e($reply->comment)) !!}
+                                    {!! nl2br($reply->formatted_comment) !!}
                                 </div>
                             </div>
                         @endforeach
