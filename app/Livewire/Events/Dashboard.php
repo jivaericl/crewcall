@@ -68,7 +68,30 @@ class Dashboard extends Component
             ->get();
 
         // Get recent activity
-        $recentActivity = AuditLog::where('event_id', $this->eventId)
+        // Since audit_logs doesn't have event_id, we get logs for the event itself and related models
+        $recentActivity = AuditLog::where(function($q) {
+                // Logs for the event itself
+                $q->where('auditable_type', Event::class)
+                  ->where('auditable_id', $this->eventId);
+                
+                // Or logs for sessions in this event
+                $sessionIds = Session::where('event_id', $this->eventId)->pluck('id');
+                if ($sessionIds->isNotEmpty()) {
+                    $q->orWhere(function($sq) use ($sessionIds) {
+                        $sq->where('auditable_type', Session::class)
+                           ->whereIn('auditable_id', $sessionIds);
+                    });
+                }
+                
+                // Or logs for contacts in this event
+                $contactIds = Contact::where('event_id', $this->eventId)->pluck('id');
+                if ($contactIds->isNotEmpty()) {
+                    $q->orWhere(function($cq) use ($contactIds) {
+                        $cq->where('auditable_type', Contact::class)
+                           ->whereIn('auditable_id', $contactIds);
+                    });
+                }
+            })
             ->with(['user', 'auditable'])
             ->latest()
             ->take(15)
