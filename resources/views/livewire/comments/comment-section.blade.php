@@ -22,7 +22,7 @@
 
                 <!-- User Suggestions Dropdown -->
                 @if ($showUserSuggestions && count($userSuggestions) > 0)
-                    <div class="absolute z-10 mt-1 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-xl max-h-48 overflow-y-auto" style="top: 100%;">
                         @foreach ($userSuggestions as $user)
                             <button 
                                 type="button"
@@ -41,6 +41,13 @@
                     </div>
                 @endif
 
+                <!-- Debug: Show when searching -->
+                @if ($showUserSuggestions && count($userSuggestions) === 0)
+                    <div class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+                        No users found matching "{{ $searchUsers }}"
+                    </div>
+                @endif
+                
                 @error('newComment') 
                     <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> 
                 @enderror

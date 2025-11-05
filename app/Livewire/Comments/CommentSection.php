@@ -38,20 +38,19 @@ class CommentSection extends Component
 
     public function loadUserSuggestions()
     {
-        if (strlen($this->searchUsers) >= 1) {
-            // Get users assigned to this event
-            $this->userSuggestions = User::whereHas('events', function($query) {
-                    $query->where('events.id', $this->eventId);
-                })
-                ->where('name', 'like', $this->searchUsers . '%')
-                ->where('id', '!=', auth()->id())
-                ->limit(5)
-                ->get(['id', 'name', 'email']);
-            
-            $this->showUserSuggestions = $this->userSuggestions->isNotEmpty();
-        } else {
-            $this->showUserSuggestions = false;
+        // Get users assigned to this event
+        $query = User::whereHas('assignedEvents', function($q) {
+                $q->where('event_id', $this->eventId);
+            })
+            ->where('id', '!=', auth()->id());
+        
+        // Apply search filter if there's text after @
+        if (strlen($this->searchUsers) > 0) {
+            $query->where('name', 'like', $this->searchUsers . '%');
         }
+        
+        $this->userSuggestions = $query->limit(5)->get(['id', 'name', 'email']);
+        $this->showUserSuggestions = $this->userSuggestions->isNotEmpty();
     }
 
     public function selectUser($userId, $userName)
