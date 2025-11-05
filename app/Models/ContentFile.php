@@ -133,20 +133,25 @@ class ContentFile extends Model
         
         // Copy the file to a new location
         $oldFilePath = $oldVersion->file_path;
-        $newFilePath = str_replace(
-            '/v' . $versionNumber . '/',
-            '/v' . $newVersionNumber . '/',
-            $oldFilePath
-        );
+        
+        // Generate new file path with version suffix
+        $pathInfo = pathinfo($oldFilePath);
+        $newFilePath = $pathInfo['dirname'] . '/' . 
+                      $pathInfo['filename'] . '-v' . $newVersionNumber . 
+                      '.' . $pathInfo['extension'];
         
         // Ensure the directory exists
         $directory = dirname($newFilePath);
-        if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory);
+        if (!Storage::disk('public')->exists($directory)) {
+            Storage::disk('public')->makeDirectory($directory);
         }
         
         // Copy the file
-        Storage::copy($oldFilePath, $newFilePath);
+        if (!Storage::disk('public')->exists($oldFilePath)) {
+            throw new \Exception("Source file not found: {$oldFilePath}");
+        }
+        
+        Storage::disk('public')->copy($oldFilePath, $newFilePath);
         
         // Create new version record
         $newVersion = $this->versions()->create([
