@@ -103,7 +103,7 @@ class Edit extends Component
         $this->content->cues()->sync($this->selectedCues);
         
         // Save custom field values
-        $this->content->saveCustomFields($this->customFields);
+        $this->content->syncCustomFields($this->customFields);
 
         session()->flash('message', 'Content updated successfully.');
         return redirect()->route('events.content.index', $this->eventId);
