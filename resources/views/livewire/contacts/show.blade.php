@@ -14,7 +14,7 @@
                 <flux:button variant="ghost" wire:click="toggleActive">
                     {{ $contact->is_active ? 'Deactivate' : 'Activate' }}
                 </flux:button>
-                <flux:button variant="ghost" wire:click="$redirect('{{ route('events.contacts.edit', [$eventId, $contactId]) }}')">
+                <flux:button variant="ghost" href="{{ route('events.contacts.edit', [$eventId, $contactId]) }}">
                     Edit
                 </flux:button>
                 <flux:button variant="danger" wire:click="delete" wire:confirm="Are you sure you want to delete this contact?">
@@ -118,7 +118,7 @@
                                             {{ $session->start_date->format('M d, Y g:i A') }}
                                         </div>
                                     </div>
-                                    <flux:button size="sm" variant="ghost" wire:click="$redirect('{{ route('events.sessions.edit', [$eventId, $session->id]) }}')">
+                                    <flux:button size="sm" variant="ghost" href="{{ route('events.sessions.edit', [$eventId, $session->id]) }}">
                                         View
                                     </flux:button>
                                 </div>
