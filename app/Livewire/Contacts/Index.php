@@ -114,9 +114,15 @@ class Index extends Component
             'producers' => Contact::where('event_id', $this->eventId)->producers()->count(),
         ];
 
+        // Get tags for filter
+        $tags = \App\Models\Tag::where('event_id', $this->eventId)
+            ->orderBy('name')
+            ->get();
+
         return view('livewire.contacts.index', [
             'contacts' => $contacts,
             'stats' => $stats,
+            'tags' => $tags,
         ]);
     }
 }
