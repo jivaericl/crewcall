@@ -116,6 +116,59 @@ class ContentFile extends Model
         return 'content';
     }
 
+    /**
+     * Restore an old version by creating a new version with the old content.
+     * 
+     * @param int $versionNumber The version number to restore
+     * @param string|null $changeNotes Optional notes about the restoration
+     * @return ContentFileVersion The newly created version
+     */
+    public function restoreVersion($versionNumber, $changeNotes = null)
+    {
+        // Find the version to restore
+        $oldVersion = $this->versions()->where('version_number', $versionNumber)->firstOrFail();
+        
+        // Get the next version number
+        $newVersionNumber = $this->versions()->max('version_number') + 1;
+        
+        // Copy the file to a new location
+        $oldFilePath = $oldVersion->file_path;
+        $newFilePath = str_replace(
+            '/v' . $versionNumber . '/',
+            '/v' . $newVersionNumber . '/',
+            $oldFilePath
+        );
+        
+        // Ensure the directory exists
+        $directory = dirname($newFilePath);
+        if (!Storage::exists($directory)) {
+            Storage::makeDirectory($directory);
+        }
+        
+        // Copy the file
+        Storage::copy($oldFilePath, $newFilePath);
+        
+        // Create new version record
+        $newVersion = $this->versions()->create([
+            'version_number' => $newVersionNumber,
+            'file_path' => $newFilePath,
+            'file_size' => $oldVersion->file_size,
+            'mime_type' => $oldVersion->mime_type,
+            'metadata' => $oldVersion->metadata,
+            'change_notes' => $changeNotes ?? "Restored from version {$versionNumber}",
+            'uploaded_by' => auth()->id(),
+        ]);
+        
+        // Update the content file to use this new version as current
+        $this->update([
+            'current_version' => $newVersionNumber,
+            'current_file_path' => $newFilePath,
+            'current_file_size' => $oldVersion->file_size,
+        ]);
+        
+        return $newVersion;
+    }
+
     // Scopes
     public function scopeActive($query)
     {

@@ -103,6 +103,20 @@ class Edit extends Component
         $this->reset(['newVersionFile', 'changeNotes']);
     }
 
+    public function restoreVersion($versionNumber)
+    {
+        try {
+            $this->content->restoreVersion($versionNumber);
+            
+            session()->flash('message', "Version {$versionNumber} has been restored as the current version.");
+            
+            // Refresh content
+            $this->content = ContentFile::with('versions')->findOrFail($this->contentId);
+        } catch (\Exception $e) {
+            session()->flash('error', 'Version restoration failed: ' . $e->getMessage());
+        }
+    }
+
     public function uploadNewVersion()
     {
         $this->validate([

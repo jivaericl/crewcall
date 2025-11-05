@@ -151,6 +151,53 @@
                         @error('selectedCues') <flux:error>{{ $message }}</flux:error> @enderror
                     </div>
 
+                    <!-- Version History -->
+                    @if($content->versions->count() > 1)
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Version History</h3>
+                            <div class="space-y-3">
+                                @foreach($content->versions as $version)
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg {{ $version->version_number == $content->current_version ? 'ring-2 ring-blue-500' : '' }}">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3">
+                                                <span class="font-semibold text-gray-900 dark:text-gray-100">
+                                                    Version {{ $version->version_number }}
+                                                </span>
+                                                @if($version->version_number == $content->current_version)
+                                                    <span class="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded">
+                                                        Current
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                <p><strong>Size:</strong> {{ $version->formatted_file_size }}</p>
+                                                <p><strong>Uploaded:</strong> {{ $version->created_at->format('M d, Y g:i A') }} by {{ $version->uploader->name ?? 'Unknown' }}</p>
+                                                @if($version->change_notes)
+                                                    <p><strong>Notes:</strong> {{ $version->change_notes }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <a href="{{ $version->download_url }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                                                <flux:button size="sm" variant="ghost">Download</flux:button>
+                                            </a>
+                                            @if($version->version_number != $content->current_version)
+                                                <flux:button 
+                                                    wire:click="restoreVersion({{ $version->version_number }})" 
+                                                    size="sm" 
+                                                    variant="primary"
+                                                    wire:confirm="Are you sure you want to restore version {{ $version->version_number }}? This will create a new version with this content."
+                                                >
+                                                    Restore
+                                                </flux:button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Active Status -->
                     <div>
                         <label class="flex items-center gap-2">
