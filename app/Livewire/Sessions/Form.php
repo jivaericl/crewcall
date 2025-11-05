@@ -70,7 +70,13 @@ class Form extends Component
             
             // Load custom field values
             foreach ($session->customFieldValues as $value) {
-                $this->customFieldValues[$value->custom_field_id] = $value->value;
+                // Cast checkbox values to boolean
+                $field = \App\Models\CustomField::find($value->custom_field_id);
+                if ($field && $field->field_type === 'checkbox') {
+                    $this->customFieldValues[$value->custom_field_id] = (bool) $value->value;
+                } else {
+                    $this->customFieldValues[$value->custom_field_id] = $value->value;
+                }
             }
             
             // Load tags

@@ -66,9 +66,7 @@
                             <div class="flex items-center">
                                 <input 
                                     type="checkbox" 
-                                    wire:model="{{ $fieldName }}"
-                                    value="1"
-                                    @if($currentValue) checked @endif
+                                    wire:model.boolean="{{ $fieldName }}"
                                     class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Yes</span>
