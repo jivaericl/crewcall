@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
 use App\Traits\EventScoped;
+use App\Traits\HasCustomFields;
 
 class Cue extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable;
+    use HasFactory, SoftDeletes, Auditable, Commentable, HasCustomFields;
 
     protected $fillable = [
         'segment_id',

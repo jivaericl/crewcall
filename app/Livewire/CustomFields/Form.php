@@ -12,6 +12,7 @@ class Form extends Component
     public $event;
     public $fieldId;
     public $name = '';
+    public $model_type = 'session';
     public $field_type = 'text';
     public $is_required = false;
     public $options = '';
@@ -19,6 +20,7 @@ class Form extends Component
 
     protected $rules = [
         'name' => 'required|string|max:255',
+        'model_type' => 'required|in:event,session,segment,cue,content,contact,speaker',
         'field_type' => 'required|in:text,number,date,select,checkbox',
         'is_required' => 'boolean',
         'options' => 'nullable|string',
@@ -41,6 +43,7 @@ class Form extends Component
             $field = CustomField::where('event_id', $eventId)->findOrFail($fieldId);
             
             $this->name = $field->name;
+            $this->model_type = $field->model_type ?? 'session';
             $this->field_type = $field->field_type;
             $this->is_required = $field->is_required;
             $this->options = is_array($field->options) ? implode("\n", $field->options) : '';
@@ -76,6 +79,7 @@ class Form extends Component
             $field = CustomField::where('event_id', $this->eventId)->findOrFail($this->fieldId);
             $field->update([
                 'name' => $this->name,
+                'model_type' => $this->model_type,
                 'field_type' => $this->field_type,
                 'is_required' => $this->is_required,
                 'options' => $optionsArray,
@@ -88,6 +92,7 @@ class Form extends Component
             $field = CustomField::create([
                 'event_id' => $this->eventId,
                 'name' => $this->name,
+                'model_type' => $this->model_type,
                 'field_type' => $this->field_type,
                 'is_required' => $this->is_required,
                 'options' => $optionsArray,
@@ -105,9 +110,11 @@ class Form extends Component
     public function render()
     {
         $fieldTypes = CustomField::getFieldTypes();
+        $modelTypes = CustomField::getModelTypes();
 
         return view('livewire.custom-fields.form', [
             'fieldTypes' => $fieldTypes,
+            'modelTypes' => $modelTypes,
         ]);
     }
 }

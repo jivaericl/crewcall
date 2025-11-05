@@ -6,7 +6,7 @@
                     Custom Fields for {{ $event->name }}
                 </h2>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Define custom fields to track additional information for sessions in this event
+                    Define custom fields to track additional information for different models in this event
                 </p>
             </div>
             <div class="flex gap-2">
@@ -34,6 +34,19 @@
                 </div>
             @endif
 
+            <!-- Model Type Filter -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-4">
+                <div class="p-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter by Model Type</label>
+                    <flux:select wire:model.live="filterModelType">
+                        <option value="">All Model Types</option>
+                        @foreach($modelTypes as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </flux:select>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     @if($customFields->count() > 0)
@@ -43,6 +56,9 @@
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Field Name
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                            Model Type
                                         </th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Type
@@ -65,6 +81,11 @@
                                                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                                     {{ $field->name }}
                                                 </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200">
+                                                    {{ ucfirst($field->model_type) }}
+                                                </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 

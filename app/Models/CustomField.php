@@ -11,6 +11,7 @@ class CustomField extends Model
 
     protected $fillable = [
         'event_id',
+        'model_type',
         'name',
         'field_type',
         'options',
@@ -52,6 +53,11 @@ class CustomField extends Model
         return $this->hasMany(SessionCustomFieldValue::class);
     }
 
+    public function values()
+    {
+        return $this->hasMany(CustomFieldValue::class);
+    }
+
     // Scope for ordering
     public function scopeOrdered($query)
     {
@@ -62,5 +68,25 @@ class CustomField extends Model
     public function scopeForEvent($query, $eventId)
     {
         return $query->where('event_id', $eventId);
+    }
+
+    // Scope for filtering by model type
+    public function scopeForModelType($query, $modelType)
+    {
+        return $query->where('model_type', $modelType);
+    }
+
+    // Get available model types
+    public static function getModelTypes()
+    {
+        return [
+            'event' => 'Event',
+            'session' => 'Session',
+            'segment' => 'Segment',
+            'cue' => 'Cue',
+            'content' => 'Content',
+            'contact' => 'Contact',
+            'speaker' => 'Speaker',
+        ];
     }
 }

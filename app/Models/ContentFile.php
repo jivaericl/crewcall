@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
 use App\Traits\EventScoped;
+use App\Traits\HasCustomFields;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 class ContentFile extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped;
+    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped, HasCustomFields;
 
     protected $fillable = [
         'event_id',
@@ -105,6 +106,14 @@ class ContentFile extends Model
     {
         return $this->belongsToMany(Tag::class, 'content_file_tag')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the model type for custom fields.
+     */
+    protected function getCustomFieldModelType()
+    {
+        return 'content';
     }
 
     // Scopes

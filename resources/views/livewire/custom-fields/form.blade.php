@@ -15,6 +15,22 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-8">
                     <form wire:submit.prevent="save">
+                        <!-- Model Type -->
+                        <div class="mb-6">
+                            <flux:field>
+                                <flux:label>Model Type *</flux:label>
+                                <flux:select wire:model.live="model_type" required>
+                                    @foreach($modelTypes as $value => $label)
+                                        <option value="{{ $value }}">{{ $label }}</option>
+                                    @endforeach
+                                </flux:select>
+                                @error('model_type') 
+                                    <flux:error>{{ $message }}</flux:error>
+                                @enderror
+                                <flux:description>Select which model this custom field applies to</flux:description>
+                            </flux:field>
+                        </div>
+
                         <!-- Field Name -->
                         <div class="mb-6">
                             <flux:field>

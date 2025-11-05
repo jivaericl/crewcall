@@ -8,7 +8,7 @@
                     Manage contacts for {{ $event->name }}
                 </p>
             </div>
-            <flux:button wire:click="$redirect('{{ route('events.contacts.create', $eventId) }}')" variant="primary">
+            <flux:button href="{{ route('events.contacts.create', $eventId) }}" variant="primary">
                 <flux:icon.plus class="w-5 h-5" />
                 Add Contact
             </flux:button>
@@ -180,10 +180,10 @@
                                 <!-- Actions -->
                                 <flux:cell align="end">
                                     <div class="flex items-center gap-2">
-                                        <flux:button size="sm" variant="ghost" wire:click="$redirect('{{ route('events.contacts.show', [$eventId, $contact->id]) }}')">
+                                        <flux:button size="sm" variant="ghost" href="{{ route('events.contacts.show', [$eventId, $contact->id]) }}">
                                             View
                                         </flux:button>
-                                        <flux:button size="sm" variant="ghost" wire:click="$redirect('{{ route('events.contacts.edit', [$eventId, $contact->id]) }}')">
+                                        <flux:button size="sm" variant="ghost" href="{{ route('events.contacts.edit', [$eventId, $contact->id]) }}">
                                             Edit
                                         </flux:button>
                                     </div>
@@ -206,7 +206,7 @@
                     <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No contacts</h3>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new contact.</p>
                     <div class="mt-6">
-                        <flux:button wire:click="$redirect('{{ route('events.contacts.create', $eventId) }}')" variant="primary">
+                        <flux:button href="{{ route('events.contacts.create', $eventId) }}" variant="primary">
                             <flux:icon.plus class="w-5 h-5" />
                             Add Contact
                         </flux:button>

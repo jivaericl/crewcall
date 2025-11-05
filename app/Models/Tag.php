@@ -25,4 +25,36 @@ class Tag extends Model
     {
         return $this->belongsToMany(Event::class)->withTimestamps();
     }
+
+    /**
+     * Get the sessions associated with the tag.
+     */
+    public function sessions(): BelongsToMany
+    {
+        return $this->belongsToMany(Session::class)->withTimestamps();
+    }
+
+    /**
+     * Get the segments associated with the tag.
+     */
+    public function segments(): BelongsToMany
+    {
+        return $this->belongsToMany(Segment::class)->withTimestamps();
+    }
+
+    /**
+     * Get the cues associated with the tag.
+     */
+    public function cues(): BelongsToMany
+    {
+        return $this->belongsToMany(Cue::class)->withTimestamps();
+    }
+
+    /**
+     * Get the speakers associated with the tag.
+     */
+    public function speakers(): BelongsToMany
+    {
+        return $this->belongsToMany(Speaker::class)->withTimestamps();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
 use App\Traits\EventScoped;
+use App\Traits\HasCustomFields;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped;
+    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped, HasCustomFields;
 
     protected $fillable = [
         'event_id',
@@ -63,6 +64,22 @@ class Contact extends Model
     public function updater(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * Get the tags associated with the contact.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    /**
+     * Get the sessions associated with the contact.
+     */
+    public function sessions()
+    {
+        return $this->belongsToMany(Session::class, 'contact_session')->withTimestamps();
     }
 
     /**

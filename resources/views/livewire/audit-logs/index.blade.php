@@ -160,10 +160,16 @@
     </div>
 
     <!-- Details Modal -->
-    @if($showDetailsModal && $selectedLog)
-        <flux:modal wire:model.live="showDetailsModal">
-            <flux:modal.content>
-                <div class="p-6">
+    <div x-data="{ show: @entangle('showDetailsModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
+            
+            @if($selectedLog)
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                         Audit Log Details
                     </h3>
@@ -269,12 +275,12 @@
                     </div>
 
                     <div class="flex justify-end mt-6">
-                        <flux:button wire:click="closeDetails" variant="ghost">
+                        <button wire:click="closeDetails" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
                             Close
-                        </flux:button>
+                        </button>
                     </div>
                 </div>
-            </flux:modal.content>
-        </flux:modal>
-    @endif
+            @endif
+        </div>
+    </div>
 </div>

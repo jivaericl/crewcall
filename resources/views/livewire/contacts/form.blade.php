@@ -157,9 +157,15 @@
     </div>
 
     <!-- Tag Creation Modal -->
-    @if($showTagModal)
-        <flux:modal wire:model.live="showTagModal">
-            <flux:modal.content>
+    <div x-data="{ show: @entangle('showTagModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
+            
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Create New Tag</h3>
                 
                 <div class="space-y-4">
@@ -175,14 +181,14 @@
                 </div>
 
                 <div class="mt-6 flex justify-end gap-3">
-                    <flux:button type="button" variant="ghost" wire:click="closeTagModal">
+                    <button type="button" wire:click="closeTagModal" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
                         Cancel
-                    </flux:button>
-                    <flux:button type="button" variant="primary" wire:click="createTag">
+                    </button>
+                    <button type="button" wire:click="createTag" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
                         Create Tag
-                    </flux:button>
+                    </button>
                 </div>
-            </flux:modal.content>
-        </flux:modal>
-    @endif
+            </div>
+        </div>
+    </div>
 </div>

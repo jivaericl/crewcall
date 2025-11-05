@@ -10,6 +10,7 @@ class Index extends Component
 {
     public $eventId;
     public $event;
+    public $filterModelType = '';
     public $showDeleteModal = false;
     public $fieldToDelete = null;
 
@@ -48,12 +49,17 @@ class Index extends Component
 
     public function render()
     {
-        $customFields = CustomField::forEvent($this->eventId)
-            ->ordered()
-            ->get();
+        $query = CustomField::forEvent($this->eventId);
+        
+        if ($this->filterModelType) {
+            $query->forModelType($this->filterModelType);
+        }
+        
+        $customFields = $query->ordered()->get();
 
         return view('livewire.custom-fields.index', [
             'customFields' => $customFields,
+            'modelTypes' => CustomField::getModelTypes(),
         ]);
     }
 }
