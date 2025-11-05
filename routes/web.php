@@ -66,6 +66,11 @@ Route::middleware([
 
     // Content management routes
     Route::get('/events/{eventId}/content', App\Livewire\Content\Index::class)->name('events.content.index');
+    
+    // Content categories routes
+    Route::get('/events/{eventId}/content-categories', App\Livewire\ContentCategories\Index::class)->name('events.content-categories.index');
+    Route::get('/events/{eventId}/content-categories/create', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.create');
+    Route::get('/events/{eventId}/content-categories/{categoryId}/edit', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.edit');
 
     // Speaker routes
     Route::get('/events/{eventId}/speakers', App\Livewire\Speakers\Index::class)->name('events.speakers.index');
