@@ -5,6 +5,7 @@ namespace App\Livewire\Contacts;
 use App\Models\Contact;
 use App\Models\Event;
 use App\Models\Tag;
+use App\Models\CustomField;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -38,6 +39,9 @@ class Form extends Component
     public $showTagModal = false;
     public $newTagName = '';
     public $newTagColor = '#3B82F6';
+    
+    // Custom fields
+    public $customFields = [];
 
     protected function rules()
     {
@@ -83,6 +87,11 @@ class Form extends Component
             $this->notes = $this->contact->notes;
             $this->is_active = $this->contact->is_active;
             $this->selectedTags = $this->contact->tags->pluck('id')->toArray();
+            
+            // Load custom field values
+            foreach ($this->contact->customFieldValues as $value) {
+                $this->customFields[$value->custom_field_id] = $value->value;
+            }
         }
     }
 
@@ -118,6 +127,9 @@ class Form extends Component
 
         // Sync tags
         $this->contact->tags()->sync($this->selectedTags);
+        
+        // Save custom field values
+        $this->contact->syncCustomFields($this->customFields);
 
         session()->flash('message', $message);
         return redirect()->route('events.contacts.show', [$this->eventId, $this->contact->id]);
@@ -156,9 +168,16 @@ class Form extends Component
     public function render()
     {
         $tags = Tag::where('event_id', $this->eventId)->orderBy('name')->get();
+        
+        // Get custom fields for contacts
+        $customFieldsList = CustomField::forEvent($this->eventId)
+            ->forModelType('contact')
+            ->ordered()
+            ->get();
 
         return view('livewire.contacts.form', [
             'tags' => $tags,
+            'customFieldsList' => $customFieldsList,
         ]);
     }
 }

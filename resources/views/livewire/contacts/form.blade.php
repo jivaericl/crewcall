@@ -135,12 +135,82 @@
                     </div>
 
                     <!-- Active Status -->
-                    <div class="mb-6">
-                        <label class="flex items-center">
+                    <div class="flex items-center">
+                        <label class="flex items-center cursor-pointer">
                             <input type="checkbox" wire:model="is_active" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Active</span>
                         </label>
                     </div>
+                    
+                    <!-- Custom Fields -->
+                    @if($customFieldsList->count() > 0)
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Custom Fields</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach($customFieldsList as $field)
+                                <div class="{{ $field->field_type === 'textarea' ? 'md:col-span-2' : '' }}">
+                                    <flux:field>
+                                        <flux:label for="custom_{{ $field->id }}">
+                                            {{ $field->name }}
+                                            @if($field->is_required) <span class="text-red-500">*</span> @endif
+                                        </flux:label>
+                                        
+                                        @if($field->field_type === 'text')
+                                            <flux:input 
+                                                wire:model="customFields.{{ $field->id }}" 
+                                                id="custom_{{ $field->id }}"
+                                                type="text"
+                                            />
+                                        @elseif($field->field_type === 'number')
+                                            <flux:input 
+                                                wire:model="customFields.{{ $field->id }}" 
+                                                id="custom_{{ $field->id }}"
+                                                type="number"
+                                                step="any"
+                                            />
+                                        @elseif($field->field_type === 'date')
+                                            <flux:input 
+                                                wire:model="customFields.{{ $field->id }}" 
+                                                id="custom_{{ $field->id }}"
+                                                type="date"
+                                            />
+                                        @elseif($field->field_type === 'textarea')
+                                            <flux:textarea 
+                                                wire:model="customFields.{{ $field->id }}" 
+                                                id="custom_{{ $field->id }}"
+                                                rows="3"
+                                            />
+                                        @elseif($field->field_type === 'select')
+                                            <flux:select wire:model="customFields.{{ $field->id }}" id="custom_{{ $field->id }}">
+                                                <option value="">-- Select --</option>
+                                                @if($field->options)
+                                                    @foreach($field->options as $option)
+                                                        <option value="{{ $option }}">{{ $option }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </flux:select>
+                                        @elseif($field->field_type === 'checkbox')
+                                            <div class="flex items-center">
+                                                <input 
+                                                    type="checkbox" 
+                                                    wire:model="customFields.{{ $field->id }}"
+                                                    id="custom_{{ $field->id }}"
+                                                    value="1"
+                                                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                                >
+                                            </div>
+                                        @endif
+                                        
+                                        @error('customFields.' . $field->id) 
+                                            <flux:error>{{ $message }}</flux:error>
+                                        @enderror
+                                    </flux:field>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Actions -->
                     <div class="flex justify-end gap-3">
