@@ -153,8 +153,8 @@
                                                                 @if($cue->time)
                                                                     <span>Time: {{ $cue->time }}</span>
                                                                 @endif
-                                                                @if($cue->assignedTo)
-                                                                    <span>Assigned: {{ $cue->assignedTo->name }}</span>
+                                                                @if($cue->operator)
+                                                                    <span>Assigned: {{ $cue->operator->name }}</span>
                                                                 @endif
                                                             </div>
                                                             
