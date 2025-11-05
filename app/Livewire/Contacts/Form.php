@@ -56,7 +56,7 @@ class Form extends Component
             'phone' => 'nullable|string|max:50',
             'company' => 'nullable|string|max:255',
             'title' => 'nullable|string|max:255',
-            'type' => 'required|in:client,producer,vendor,staff,other',
+            'contact_type' => 'required|in:client,producer,vendor,staff,other',
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
