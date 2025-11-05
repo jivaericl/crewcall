@@ -35,13 +35,13 @@
                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Type</dt>
                             <dd class="mt-1">
                                 <span class="px-2 py-1 text-xs font-medium rounded-full
-                                    {{ $contact->type === 'client' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : '' }}
-                                    {{ $contact->type === 'producer' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' : '' }}
-                                    {{ $contact->type === 'vendor' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : '' }}
-                                    {{ $contact->type === 'staff' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : '' }}
-                                    {{ $contact->type === 'other' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' : '' }}
+                                    {{ $contact->contact_type === 'client' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : '' }}
+                                    {{ $contact->contact_type === 'producer' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' : '' }}
+                                    {{ $contact->contact_type === 'vendor' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : '' }}
+                                    {{ $contact->contact_type === 'staff' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' : '' }}
+                                    {{ $contact->contact_type === 'other' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' : '' }}
                                 ">
-                                    {{ ucfirst($contact->type) }}
+                                    {{ ucfirst($contact->contact_type) }}
                                 </span>
                             </dd>
                         </div>
