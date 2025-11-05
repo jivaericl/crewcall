@@ -28,6 +28,13 @@
                     <div>showUserSuggestions: {{ $showUserSuggestions ? 'true' : 'false' }}</div>
                     <div>userSuggestions count: {{ count($userSuggestions) }}</div>
                     <div>eventId: {{ $eventId }}</div>
+                    <div>Current user: {{ auth()->user()->name }} (ID: {{ auth()->id() }})</div>
+                    @if(count($userSuggestions) > 0)
+                        <div class="mt-2"><strong>Found users:</strong></div>
+                        @foreach($userSuggestions as $u)
+                            <div>- {{ $u->name }} ({{ $u->email }})</div>
+                        @endforeach
+                    @endif
                 </div>
                 
                 <!-- User Suggestions Dropdown -->
