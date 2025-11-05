@@ -174,7 +174,7 @@
                                     <span class="px-3 py-1 rounded-full text-sm font-medium transition-all bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
                                         peer-checked:bg-green-100 dark:peer-checked:bg-green-900 peer-checked:text-green-700 dark:peer-checked:text-green-300
                                         peer-checked:ring-2 peer-checked:ring-green-500 peer-checked:ring-offset-2">
-                                        {{ $contentFile->title }}
+                                        {{ $contentFile->name }}
                                     </span>
                                 </label>
                             @endforeach

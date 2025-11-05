@@ -188,7 +188,7 @@ class Form extends Component
         
         // Get content files for this event
         $contentFiles = ContentFile::where('event_id', $this->eventId)
-            ->orderBy('title')
+            ->orderBy('name')
             ->get();
         
         // Get custom fields for contacts
