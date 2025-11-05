@@ -66,6 +66,7 @@ Route::middleware([
 
     // Content management routes
     Route::get('/events/{eventId}/content', App\Livewire\Content\Index::class)->name('events.content.index');
+    Route::get('/events/{eventId}/content/{contentId}/edit', App\Livewire\Content\Edit::class)->name('events.content.edit');
     
     // Content categories routes
     Route::get('/events/{eventId}/content-categories', App\Livewire\ContentCategories\Index::class)->name('events.content-categories.index');
