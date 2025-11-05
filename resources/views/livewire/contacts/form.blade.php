@@ -214,9 +214,11 @@
 
                     <!-- Actions -->
                     <div class="flex justify-end gap-3">
-                        <flux:button type="button" variant="ghost" wire:click="$redirect('{{ route('events.contacts.index', $eventId) }}')">
-                            Cancel
-                        </flux:button>
+                        <a href="{{ route('events.contacts.index', $eventId) }}">
+                            <flux:button type="button" variant="ghost">
+                                Cancel
+                            </flux:button>
+                        </a>
                         <flux:button type="submit" variant="primary">
                             {{ $contactId ? 'Update Contact' : 'Create Contact' }}
                         </flux:button>
