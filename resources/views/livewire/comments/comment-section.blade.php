@@ -20,6 +20,16 @@
                     rows="3"
                 />
 
+                <!-- DEBUG INFO -->
+                <div class="mt-2 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-300 dark:border-yellow-700 rounded text-xs">
+                    <div><strong>Debug Info:</strong></div>
+                    <div>newComment: "{{ $newComment }}"</div>
+                    <div>searchUsers: "{{ $searchUsers }}"</div>
+                    <div>showUserSuggestions: {{ $showUserSuggestions ? 'true' : 'false' }}</div>
+                    <div>userSuggestions count: {{ count($userSuggestions) }}</div>
+                    <div>eventId: {{ $eventId }}</div>
+                </div>
+                
                 <!-- User Suggestions Dropdown -->
                 @if ($showUserSuggestions && count($userSuggestions) > 0)
                     <div class="absolute z-50 mt-2 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-xl max-h-48 overflow-y-auto" style="top: 100%;">
