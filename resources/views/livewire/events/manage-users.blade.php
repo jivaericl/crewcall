@@ -4,13 +4,15 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Manage Event Users') }}: {{ $event->name }}
             </h2>
-            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700" onclick="alert('TOP BUTTON CLICKED!'); console.log('Top button onclick fired');">
-                Assign User
-            </button>
         </div>
     </x-slot>
 
     <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4">
+            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                Assign User
+            </button>
+        </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session()->has('message'))
                 <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded">
