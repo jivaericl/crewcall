@@ -98,7 +98,7 @@
                     <div>isAdmin: {{ $isAdmin ? 'true' : 'false' }}</div>
                 </div>
                 
-                <form wire:submit="assignUser">
+                <div>
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>User *</flux:label>
@@ -131,9 +131,9 @@
                     </div>
                     <div class="flex justify-end gap-3">
                         <flux:button wire:click="closeAddModal" variant="ghost" type="button">Cancel</flux:button>
-                        <flux:button type="submit" variant="primary">Assign User</flux:button>
+                        <flux:button wire:click="assignUser" variant="primary" type="button">Assign User</flux:button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
