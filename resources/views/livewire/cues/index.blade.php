@@ -96,19 +96,19 @@
                                             @endif">
                                             <!-- GO Button -->
                                             <td class="px-3 py-4 text-center">
-                                                @if($cue->status !== 'complete')
-                                                    <button 
-                                                        wire:click="activateCue({{ $cue->id }})" 
-                                                        class="px-3 py-1 text-xs font-bold rounded
-                                                            @if($cue->status === 'go') 
-                                                                bg-green-600 text-white
-                                                            @else 
-                                                                bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
-                                                            @endif"
-                                                        type="button">
-                                                        GO
-                                                    </button>
-                                                @endif
+                                                <button 
+                                                    wire:click="activateCue({{ $cue->id }})" 
+                                                    class="px-3 py-1 text-xs font-bold rounded
+                                                        @if($cue->status === 'go') 
+                                                            bg-green-600 text-white
+                                                        @elseif($cue->status === 'complete')
+                                                            bg-gray-500 dark:bg-gray-600 text-white hover:bg-gray-600 dark:hover:bg-gray-500
+                                                        @else 
+                                                            bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
+                                                        @endif"
+                                                    type="button">
+                                                    GO
+                                                </button>
                                             </td>
                                             <td class="px-6 py-4 align-top text-sm text-gray-900 dark:text-gray-100">
                                                 <div>{{ $cue->time ? $cue->time->format('g:i A') : '-' }}</div>

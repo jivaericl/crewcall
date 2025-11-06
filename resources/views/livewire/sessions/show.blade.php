@@ -146,19 +146,19 @@
                                                     @endif">
                                                     <!-- GO Button -->
                                                     <td class="px-3 py-3 text-center align-top">
-                                                        @if($cue->status !== 'complete')
-                                                            <button 
-                                                                wire:click="activateCue({{ $cue->id }})" 
-                                                                class="px-3 py-1 text-xs font-bold rounded
-                                                                    @if($cue->status === 'go') 
-                                                                        bg-green-600 text-white
-                                                                    @else 
-                                                                        bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
-                                                                    @endif"
-                                                                type="button">
-                                                                GO
-                                                            </button>
-                                                        @endif
+                                                        <button 
+                                                            wire:click="activateCue({{ $cue->id }})" 
+                                                            class="px-3 py-1 text-xs font-bold rounded
+                                                                @if($cue->status === 'go') 
+                                                                    bg-green-600 text-white
+                                                                @elseif($cue->status === 'complete')
+                                                                    bg-gray-500 dark:bg-gray-600 text-white hover:bg-gray-600 dark:hover:bg-gray-500
+                                                                @else 
+                                                                    bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
+                                                                @endif"
+                                                            type="button">
+                                                            GO
+                                                        </button>
                                                     </td>
                                                     
                                                     <!-- Time & Code -->
