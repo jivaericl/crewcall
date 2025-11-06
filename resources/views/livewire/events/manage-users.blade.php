@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Manage Event Users') }}: {{ $event->name }}
             </h2>
-            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700" onclick="alert('TOP BUTTON CLICKED!'); console.log('Top button onclick fired');">
                 Assign User
             </button>
         </div>
