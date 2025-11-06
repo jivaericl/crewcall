@@ -70,7 +70,7 @@
                         <!-- Comment Preview -->
                         <div class="bg-zinc-50 dark:bg-zinc-900 rounded p-3 mb-3">
                             <p class="text-sm text-zinc-700 dark:text-zinc-300 line-clamp-3">
-                                {{ $mention->comment->comment }}
+                                {!! nl2br($mention->comment->formatted_comment) !!}
                             </p>
                         </div>
 
