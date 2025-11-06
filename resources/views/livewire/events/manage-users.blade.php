@@ -95,13 +95,6 @@
                 
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
                 
-                <!-- DEBUG -->
-                <div class="mb-4 p-2 bg-yellow-100 dark:bg-yellow-900 text-xs rounded">
-                    <div>selectedUserId: {{ $selectedUserId ?? 'null' }}</div>
-                    <div>selectedRoleId: {{ $selectedRoleId ?? 'null' }}</div>
-                    <div>isAdmin: {{ $isAdmin ? 'true' : 'false' }}</div>
-                </div>
-                
                 <div>
                     <div class="mb-4">
                         <flux:field>
@@ -137,7 +130,7 @@
                         <button wire:click="closeAddModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
                             Cancel
                         </button>
-                        <button wire:click="assignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700" onclick="console.log('Button clicked!'); alert('Button clicked - check console');">
+                        <button wire:click="assignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
                             Assign User
                         </button>
                     </div>
