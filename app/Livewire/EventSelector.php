@@ -17,9 +17,16 @@ class EventSelector extends Component
         $this->selectedEventId = session('selected_event_id');
         
         if (!$this->selectedEventId) {
-            $firstEvent = Event::whereHas('assignedUsers', function ($query) {
-                $query->where('user_id', auth()->id());
-            })->orWhere('created_by', auth()->id())->first();
+            if (auth()->user()->isSuperAdmin()) {
+                $firstEvent = Event::first();
+            } else {
+                $firstEvent = Event::where(function ($query) {
+                    $query->whereHas('assignedUsers', function ($q) {
+                        $q->where('user_id', auth()->id());
+                    })
+                    ->orWhere('created_by', auth()->id());
+                })->first();
+            }
             
             if ($firstEvent) {
                 $this->selectedEventId = $firstEvent->id;
@@ -48,13 +55,19 @@ class EventSelector extends Component
 
     public function render()
     {
-        // Get events user has access to
-        $this->events = Event::whereHas('assignedUsers', function ($query) {
-            $query->where('user_id', auth()->id());
-        })
-        ->orWhere('created_by', auth()->id())
-        ->orderBy('start_date', 'desc')
-        ->get();
+        // Get events user has access to (super admins see all)
+        if (auth()->user()->isSuperAdmin()) {
+            $this->events = Event::orderBy('start_date', 'desc')->get();
+        } else {
+            $this->events = Event::where(function ($query) {
+                $query->whereHas('assignedUsers', function ($q) {
+                    $q->where('user_id', auth()->id());
+                })
+                ->orWhere('created_by', auth()->id());
+            })
+            ->orderBy('start_date', 'desc')
+            ->get();
+        }
 
         $selectedEvent = null;
         if ($this->selectedEventId) {

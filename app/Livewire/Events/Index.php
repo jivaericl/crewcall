@@ -106,6 +106,16 @@ class Index extends Component
     public function render()
     {
         $query = Event::with(['tags', 'creator', 'updater']);
+        
+        // Filter by user access (super admins see all, others see only assigned events)
+        if (!auth()->user()->isSuperAdmin()) {
+            $query->where(function ($q) {
+                $q->whereHas('assignedUsers', function ($query) {
+                    $query->where('user_id', auth()->id());
+                })
+                ->orWhere('created_by', auth()->id());
+            });
+        }
 
         // Search filter
         if ($this->search) {
