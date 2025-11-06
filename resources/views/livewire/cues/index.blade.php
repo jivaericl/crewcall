@@ -78,10 +78,10 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
+                                        <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider" style="width: 80px;"></th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Time</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cue</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Priority</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Operator</th>
                                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
@@ -89,17 +89,35 @@
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                     @foreach($cues as $cue)
-                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                                {{ $cue->time ? $cue->time->format('g:i A') : '-' }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $cue->name }}</div>
-                                                @if($cue->code)
-                                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                                        {{ $cue->code }}
-                                                    </span>
+                                        <tr class="
+                                            @if($cue->status === 'go') bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30
+                                            @elseif($cue->status === 'complete') bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600
+                                            @else hover:bg-gray-50 dark:hover:bg-gray-700
+                                            @endif">
+                                            <!-- GO Button -->
+                                            <td class="px-3 py-4 text-center">
+                                                @if($cue->status !== 'complete')
+                                                    <button 
+                                                        wire:click="activateCue({{ $cue->id }})" 
+                                                        class="px-3 py-1 text-xs font-bold rounded
+                                                            @if($cue->status === 'go') 
+                                                                bg-green-600 text-white
+                                                            @else 
+                                                                bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
+                                                            @endif"
+                                                        type="button">
+                                                        GO
+                                                    </button>
                                                 @endif
+                                            </td>
+                                            <td class="px-6 py-4 align-top text-sm text-gray-900 dark:text-gray-100">
+                                                <div>{{ $cue->time ? $cue->time->format('g:i A') : '-' }}</div>
+                                                @if($cue->code)
+                                                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $cue->code }}</div>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 align-top">
+                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $cue->name }}</div>
                                                 @if($cue->filename)
                                                     <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                                         📁 {{ $cue->filename }}
@@ -115,20 +133,12 @@
                                                     </div>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-6 py-4 align-top whitespace-nowrap">
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: {{ $cue->cueType->color }}20; color: {{ $cue->cueType->color }}">
                                                     {{ $cue->cueType->name }}
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <flux:select wire:change="updateStatus({{ $cue->id }}, $event.target.value)" class="text-sm">
-                                                    <option value="standby" {{ $cue->status === 'standby' ? 'selected' : '' }}>Standby</option>
-                                                    <option value="go" {{ $cue->status === 'go' ? 'selected' : '' }}>Go</option>
-                                                    <option value="complete" {{ $cue->status === 'complete' ? 'selected' : '' }}>Complete</option>
-                                                    <option value="skip" {{ $cue->status === 'skip' ? 'selected' : '' }}>Skip</option>
-                                                </flux:select>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-6 py-4 align-top whitespace-nowrap">
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                                                     @if($cue->priority === 'critical') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
                                                     @elseif($cue->priority === 'high') bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200
@@ -138,10 +148,10 @@
                                                     {{ ucfirst($cue->priority) }}
                                                 </span>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                            <td class="px-6 py-4 align-top whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                                 {{ $cue->operator?->name ?: '-' }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <td class="px-6 py-4 align-top whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-1">
                                                     <flux:button href="{{ route('segments.cues.edit', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" title="Edit">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
