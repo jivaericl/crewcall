@@ -18,6 +18,8 @@ class Comment extends Model
         'comment',
         'parent_id',
     ];
+    
+    protected $appends = ['formatted_comment'];
 
     protected static function booted()
     {
