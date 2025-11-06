@@ -47,7 +47,15 @@ class ManageUsers extends Component
         }])->findOrFail($eventId);
 
         // Check if user has permission to manage users
-        if (!auth()->user()->isSuperAdmin() && !$this->event->isAdmin(auth()->user())) {
+        $user = auth()->user();
+        $hasAdminRole = $this->event->assignedUsers()
+            ->where('user_id', $user->id)
+            ->whereHas('eventRoles', function($q) {
+                $q->where('name', 'Admin');
+            })
+            ->exists();
+            
+        if (!$user->isSuperAdmin() && !$this->event->isAdmin($user) && !$hasAdminRole) {
             abort(403, 'You do not have permission to manage users for this event.');
         }
     }

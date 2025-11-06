@@ -143,7 +143,6 @@
             </div>
         </div>
     </div>
-</div>
 
     <!-- Create New User Modal -->
     <div x-data="{ show: @entangle('showCreateModal') }" 
