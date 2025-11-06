@@ -48,11 +48,13 @@ class ManageUsers extends Component
 
         // Check if user has permission to manage users
         $user = auth()->user();
-        $hasAdminRole = $this->event->assignedUsers()
-            ->where('user_id', $user->id)
-            ->whereHas('eventRoles', function($q) {
-                $q->where('name', 'Admin');
-            })
+        
+        // Check if user has Admin role for this event
+        $hasAdminRole = DB::table('event_user')
+            ->join('roles', 'event_user.role_id', '=', 'roles.id')
+            ->where('event_user.event_id', $this->eventId)
+            ->where('event_user.user_id', $user->id)
+            ->where('roles.name', 'Admin')
             ->exists();
             
         if (!$user->isSuperAdmin() && !$this->event->isAdmin($user) && !$hasAdminRole) {
