@@ -91,11 +91,18 @@
                 
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
                 
-                <form wire:submit.prevent="assignUser">
+                <!-- DEBUG -->
+                <div class="mb-4 p-2 bg-yellow-100 dark:bg-yellow-900 text-xs rounded">
+                    <div>selectedUserId: {{ $selectedUserId ?? 'null' }}</div>
+                    <div>selectedRoleId: {{ $selectedRoleId ?? 'null' }}</div>
+                    <div>isAdmin: {{ $isAdmin ? 'true' : 'false' }}</div>
+                </div>
+                
+                <form wire:submit="assignUser">
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>User *</flux:label>
-                            <flux:select wire:model="selectedUserId" required>
+                            <flux:select wire:model.live="selectedUserId" required>
                                 <option value="">Select a user</option>
                                 @foreach($availableUsers as $user)
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
@@ -107,7 +114,7 @@
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>Role *</flux:label>
-                            <flux:select wire:model="selectedRoleId" required>
+                            <flux:select wire:model.live="selectedRoleId" required>
                                 <option value="">Select a role</option>
                                 @foreach($activeRoles as $role)
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -118,7 +125,7 @@
                     </div>
                     <div class="mb-6">
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" wire:model="isAdmin" class="rounded border-gray-300 text-blue-600">
+                            <input type="checkbox" wire:model.live="isAdmin" class="rounded border-gray-300 text-blue-600">
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
                         </label>
                     </div>
