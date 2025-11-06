@@ -16,11 +16,27 @@ class ManageUsers extends Component
     public $selectedRoleId;
     public $isAdmin = false;
     public $showAddModal = false;
+    public $showCreateModal = false;
+    
+    // New user creation fields
+    public $newUserName;
+    public $newUserEmail;
+    public $newUserPassword;
+    public $newUserRole;
+    public $newUserIsAdmin = false;
 
     protected $rules = [
         'selectedUserId' => 'required|exists:users,id',
         'selectedRoleId' => 'required|exists:roles,id',
         'isAdmin' => 'boolean',
+    ];
+    
+    protected $createRules = [
+        'newUserName' => 'required|string|max:255',
+        'newUserEmail' => 'required|email|unique:users,email',
+        'newUserPassword' => 'required|string|min:8',
+        'newUserRole' => 'required|exists:roles,id',
+        'newUserIsAdmin' => 'boolean',
     ];
 
     public function mount($eventId)
@@ -104,6 +120,46 @@ class ManageUsers extends Component
             ]);
 
         session()->flash('message', 'Admin status updated.');
+        $this->mount($this->eventId); // Refresh data
+    }
+    
+    public function openCreateModal()
+    {
+        $this->showCreateModal = true;
+        $this->reset(['newUserName', 'newUserEmail', 'newUserPassword', 'newUserRole', 'newUserIsAdmin']);
+    }
+    
+    public function closeCreateModal()
+    {
+        $this->showCreateModal = false;
+        $this->reset(['newUserName', 'newUserEmail', 'newUserPassword', 'newUserRole', 'newUserIsAdmin']);
+    }
+    
+    public function createAndAssignUser()
+    {
+        $this->validate($this->createRules);
+        
+        // Create the new user
+        $user = User::create([
+            'name' => $this->newUserName,
+            'email' => $this->newUserEmail,
+            'password' => bcrypt($this->newUserPassword),
+        ]);
+        
+        // Assign to event
+        DB::table('event_user')->insert([
+            'event_id' => $this->eventId,
+            'user_id' => $user->id,
+            'role_id' => $this->newUserRole,
+            'is_admin' => $this->newUserIsAdmin,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        $role = Role::find($this->newUserRole);
+        session()->flash('message', "{$user->name} has been created and assigned as {$role->name}.");
+        
+        $this->closeCreateModal();
         $this->mount($this->eventId); // Refresh data
     }
 

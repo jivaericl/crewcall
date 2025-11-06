@@ -9,9 +9,14 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4">
-            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                Assign User
-            </button>
+            <div class="flex items-center gap-3">
+                <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    Assign Existing User
+                </button>
+                <button wire:click="openCreateModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
+                    + Add New User
+                </button>
+            </div>
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session()->has('message'))
@@ -132,6 +137,84 @@
                         </button>
                         <button wire:click="assignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
                             Assign User
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Create New User Modal -->
+    <div x-data="{ show: @entangle('showCreateModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;"
+         @keydown.escape.window="show = false">
+        
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+             @click="show = false"></div>
+        
+        <!-- Modal Content -->
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6"
+                 @click.stop>
+                
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Add New User & Assign to Event</h3>
+                
+                <div>
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>Full Name *</flux:label>
+                            <flux:input wire:model.live="newUserName" placeholder="John Doe" required />
+                            @error('newUserName') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>Email *</flux:label>
+                            <flux:input wire:model.live="newUserEmail" type="email" placeholder="john@example.com" required />
+                            @error('newUserEmail') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>Password *</flux:label>
+                            <flux:input wire:model.live="newUserPassword" type="password" placeholder="Minimum 8 characters" required />
+                            @error('newUserPassword') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <flux:field>
+                            <flux:label>Role *</flux:label>
+                            <flux:select wire:model.live="newUserRole" required>
+                                <option value="">Select a role</option>
+                                @foreach($activeRoles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </flux:select>
+                            @error('newUserRole') <flux:error>{{ $message }}</flux:error> @enderror
+                        </flux:field>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" wire:model.live="newUserIsAdmin" class="rounded border-gray-300 text-blue-600">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex justify-end gap-3">
+                        <button wire:click="closeCreateModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
+                            Cancel
+                        </button>
+                        <button wire:click="createAndAssignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
+                            Create & Assign User
                         </button>
                     </div>
                 </div>
