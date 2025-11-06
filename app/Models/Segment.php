@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
-use App\Traits\EventScoped;
 use App\Traits\HasCustomFields;
 
 class Segment extends Model
 {
-    use HasFactory, SoftDeletes, Auditable, Commentable, EventScoped, HasCustomFields;
+    use HasFactory, SoftDeletes, Auditable, Commentable, HasCustomFields;
 
     protected $fillable = [
         'session_id',

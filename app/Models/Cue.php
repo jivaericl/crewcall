@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Auditable;
 use App\Traits\Commentable;
-use App\Traits\EventScoped;
 use App\Traits\HasCustomFields;
 
 class Cue extends Model
