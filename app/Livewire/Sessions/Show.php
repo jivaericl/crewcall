@@ -4,6 +4,7 @@ namespace App\Livewire\Sessions;
 
 use App\Models\Session;
 use App\Models\Segment;
+use App\Models\Cue;
 use App\Models\CueType;
 use Livewire\Component;
 
@@ -68,5 +69,29 @@ class Show extends Component
             'segments' => $segments,
             'cueTypes' => $cueTypes,
         ]);
+    }
+    
+    public function activateCue($cueId)
+    {
+        // Find the cue being activated
+        $cue = Cue::findOrFail($cueId);
+        
+        // If this cue is already GO, do nothing
+        if ($cue->status === 'go') {
+            return;
+        }
+        
+        // Find any cue that is currently GO in this session and mark it as complete
+        Cue::whereHas('segment', function($query) {
+                $query->where('session_id', $this->sessionId);
+            })
+            ->where('status', 'go')
+            ->update(['status' => 'complete']);
+        
+        // Set this cue to GO
+        $cue->status = 'go';
+        $cue->save();
+        
+        session()->flash('message', 'Cue activated.');
     }
 }

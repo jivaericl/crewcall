@@ -3,7 +3,7 @@
     <div class="mb-6">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $session->name }}</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Run of Show: {{ $session->name }}</h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     {{ $session->start_date ? $session->start_date->format('F j, Y g:i A') : 'No date set' }}
                     @if($session->end_date)
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- Segments and Cues Hierarchical View -->
+            <!-- Run of Show Table -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     @if($segments->isEmpty())
@@ -95,86 +95,124 @@
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new segment.</p>
                         </div>
                     @else
-                        <div class="space-y-6">
-                            @foreach($segments as $segment)
-                                <!-- Segment Card -->
-                                <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                                    <!-- Segment Header -->
-                                    <div class="bg-gray-50 dark:bg-gray-900 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex-1">
-                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                    {{ $segment->name }}
-                                                </h3>
-                                                <div class="mt-1 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider" style="width: 80px;"></th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Time</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Item</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Operator</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach($segments as $segment)
+                                        <!-- Segment Header Row -->
+                                        <tr class="bg-blue-50 dark:bg-blue-900/20">
+                                            <td class="px-3 py-3" colspan="6">
+                                                <div class="flex items-center gap-3">
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-600 text-white">
+                                                        SEGMENT
+                                                    </span>
+                                                    <span class="text-sm font-bold text-gray-900 dark:text-white">
+                                                        {{ $segment->name }}
+                                                    </span>
                                                     @if($segment->start_time)
-                                                        <span>Start: {{ $segment->start_time }}</span>
+                                                        <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                            Start: {{ $segment->start_time }}
+                                                        </span>
                                                     @endif
                                                     @if($segment->duration)
-                                                        <span>Duration: {{ $segment->duration }} min</span>
+                                                        <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                            Duration: {{ $segment->duration }} min
+                                                        </span>
                                                     @endif
-                                                    <span>{{ $segment->cues->count() }} cue(s)</span>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        @if($segment->description)
-                                            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ $segment->description }}</p>
-                                        @endif
-                                    </div>
+                                                @if($segment->description)
+                                                    <p class="mt-1 ml-20 text-xs text-gray-600 dark:text-gray-400">{{ $segment->description }}</p>
+                                                @endif
+                                            </td>
+                                        </tr>
 
-                                    <!-- Cues List -->
-                                    @if($segment->cues->isNotEmpty())
-                                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                                        <!-- Cues for this Segment -->
+                                        @if($segment->cues->isNotEmpty())
                                             @foreach($segment->cues as $cue)
-                                                <div class="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-900">
-                                                    <div class="flex items-start justify-between">
-                                                        <div class="flex-1">
-                                                            <div class="flex items-center gap-3">
-                                                                <!-- Cue Type Badge -->
-                                                                @if($cue->cueType)
-                                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
-                                                                          style="background-color: {{ $cue->cueType->color }}20; color: {{ $cue->cueType->color }};">
-                                                                        {{ $cue->cueType->name }}
-                                                                    </span>
-                                                                @endif
-                                                                
-                                                                <h4 class="text-sm font-medium text-gray-900 dark:text-white">
-                                                                    {{ $cue->name }}
-                                                                </h4>
+                                                <tr class="
+                                                    @if($cue->status === 'go') bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30
+                                                    @elseif($cue->status === 'complete') bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600
+                                                    @else hover:bg-gray-50 dark:hover:bg-gray-700
+                                                    @endif">
+                                                    <!-- GO Button -->
+                                                    <td class="px-3 py-3 text-center align-top">
+                                                        @if($cue->status !== 'complete')
+                                                            <button 
+                                                                wire:click="activateCue({{ $cue->id }})" 
+                                                                class="px-3 py-1 text-xs font-bold rounded
+                                                                    @if($cue->status === 'go') 
+                                                                        bg-green-600 text-white
+                                                                    @else 
+                                                                        bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
+                                                                    @endif"
+                                                                type="button">
+                                                                GO
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                    
+                                                    <!-- Time & Code -->
+                                                    <td class="px-6 py-3 align-top text-sm text-gray-900 dark:text-gray-100">
+                                                        <div>{{ $cue->time ? $cue->time->format('g:i A') : '-' }}</div>
+                                                        @if($cue->code)
+                                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $cue->code }}</div>
+                                                        @endif
+                                                    </td>
+                                                    
+                                                    <!-- Cue Name -->
+                                                    <td class="px-6 py-3 align-top">
+                                                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $cue->name }}</div>
+                                                        @if($cue->description)
+                                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $cue->description }}</div>
+                                                        @endif
+                                                        @if($cue->filename)
+                                                            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                                📁 {{ $cue->filename }}
                                                             </div>
-                                                            
-                                                            @if($cue->description)
-                                                                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                                    {{ $cue->description }}
-                                                                </p>
-                                                            @endif
-                                                            
-                                                            <div class="mt-2 flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                                                                @if($cue->time)
-                                                                    <span>Time: {{ $cue->time }}</span>
-                                                                @endif
-                                                                @if($cue->operator)
-                                                                    <span>Assigned: {{ $cue->operator->name }}</span>
-                                                                @endif
-                                                            </div>
-                                                            
-                                                            @if($cue->notes)
-                                                                <div class="mt-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">
-                                                                    <strong>Notes:</strong> {{ $cue->notes }}
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                        @endif
+                                                    </td>
+                                                    
+                                                    <!-- Type -->
+                                                    <td class="px-6 py-3 align-top whitespace-nowrap">
+                                                        @if($cue->cueType)
+                                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" 
+                                                                  style="background-color: {{ $cue->cueType->color }}20; color: {{ $cue->cueType->color }};">
+                                                                {{ $cue->cueType->name }}
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    
+                                                    <!-- Operator -->
+                                                    <td class="px-6 py-3 align-top whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                                                        {{ $cue->operator?->name ?: '-' }}
+                                                    </td>
+                                                    
+                                                    <!-- Notes -->
+                                                    <td class="px-6 py-3 align-top text-xs text-gray-500 dark:text-gray-400">
+                                                        {{ $cue->notes }}
+                                                    </td>
+                                                </tr>
                                             @endforeach
-                                        </div>
-                                    @else
-                                        <div class="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                                            No cues in this segment
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                                                    No cues in this segment
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     @endif
                 </div>
