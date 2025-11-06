@@ -130,8 +130,12 @@
                         </label>
                     </div>
                     <div class="flex justify-end gap-3">
-                        <flux:button wire:click="closeAddModal" variant="ghost" type="button">Cancel</flux:button>
-                        <flux:button wire:click="assignUser" variant="primary" type="button">Assign User</flux:button>
+                        <button wire:click="closeAddModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
+                            Cancel
+                        </button>
+                        <button wire:click="assignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700" onclick="console.log('Button clicked!'); alert('Button clicked - check console');">
+                            Assign User
+                        </button>
                     </div>
                 </div>
             </div>
