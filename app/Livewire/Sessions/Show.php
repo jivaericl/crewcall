@@ -17,6 +17,10 @@ class Show extends Component
     // Filters
     public $filterCueType = '';
     public $search = '';
+    
+    // Reset confirmation
+    public $showResetModal = false;
+    public $resetConfirmation = '';
 
     public function mount($eventId, $sessionId)
     {
@@ -93,5 +97,35 @@ class Show extends Component
         $cue->save();
         
         session()->flash('message', 'Cue activated.');
+    }
+    
+    public function openResetModal()
+    {
+        $this->showResetModal = true;
+        $this->resetConfirmation = '';
+    }
+    
+    public function closeResetModal()
+    {
+        $this->showResetModal = false;
+        $this->resetConfirmation = '';
+    }
+    
+    public function resetAllCues()
+    {
+        // Validate confirmation
+        if ($this->resetConfirmation !== 'RESET') {
+            session()->flash('error', 'You must type RESET to confirm.');
+            return;
+        }
+        
+        // Reset all cues in this session to standby
+        Cue::whereHas('segment', function($query) {
+                $query->where('session_id', $this->sessionId);
+            })
+            ->update(['status' => 'standby']);
+        
+        $this->closeResetModal();
+        session()->flash('message', 'All cues have been reset to standby.');
     }
 }

@@ -12,6 +12,12 @@
                 </p>
             </div>
             <div class="flex gap-2">
+                <button 
+                    wire:click="openResetModal" 
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
+                    type="button">
+                    Reset All Cues
+                </button>
                 <flux:button href="{{ route('events.sessions.edit', [$eventId, $sessionId]) }}" variant="ghost">
                     Edit Session
                 </flux:button>
@@ -215,6 +221,60 @@
                             </table>
                         </div>
                     @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Confirmation Modal -->
+    <div x-data="{ show: @entangle('showResetModal') }" 
+         x-show="show" 
+         x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto" 
+         style="display: none;">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+             @click="show = false"></div>
+        
+        <!-- Modal -->
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
+                 @click.stop>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Reset All Cues
+                </h3>
+                
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    This action will set all cues in this session back to the default state. 
+                    To confirm, type <strong>RESET</strong> in the box below.
+                </p>
+                
+                @if(session('error'))
+                    <div class="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded text-sm">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                
+                <input 
+                    type="text" 
+                    wire:model="resetConfirmation" 
+                    placeholder="Type RESET to confirm"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-4"
+                />
+                
+                <div class="flex gap-2 justify-end">
+                    <button 
+                        wire:click="closeResetModal" 
+                        class="px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-md text-sm font-medium"
+                        type="button">
+                        Cancel
+                    </button>
+                    <button 
+                        wire:click="resetAllCues" 
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium"
+                        type="button">
+                        Reset All Cues
+                    </button>
                 </div>
             </div>
         </div>

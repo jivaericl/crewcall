@@ -18,6 +18,10 @@ class Index extends Component
     public $priorityFilter = '';
     public $cueTypeFilter = '';
     public $deleteId;
+    
+    // Reset confirmation
+    public $showResetModal = false;
+    public $resetConfirmation = '';
 
     protected $queryString = ['search', 'statusFilter', 'priorityFilter', 'cueTypeFilter'];
 
@@ -105,6 +109,34 @@ class Index extends Component
         $cue->save();
         
         session()->flash('message', 'Cue status updated.');
+    }
+    
+    public function openResetModal()
+    {
+        $this->showResetModal = true;
+        $this->resetConfirmation = '';
+    }
+    
+    public function closeResetModal()
+    {
+        $this->showResetModal = false;
+        $this->resetConfirmation = '';
+    }
+    
+    public function resetAllCues()
+    {
+        // Validate confirmation
+        if ($this->resetConfirmation !== 'RESET') {
+            session()->flash('error', 'You must type RESET to confirm.');
+            return;
+        }
+        
+        // Reset all cues in this segment to standby
+        Cue::where('segment_id', $this->segmentId)
+            ->update(['status' => 'standby']);
+        
+        $this->closeResetModal();
+        session()->flash('message', 'All cues have been reset to standby.');
     }
 
     public function render()
