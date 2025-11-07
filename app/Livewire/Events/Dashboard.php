@@ -17,7 +17,7 @@ class Dashboard extends Component
     public function mount($eventId)
     {
         $this->eventId = $eventId;
-        $this->event = Event::with(['assignedUsers.user', 'creator'])->findOrFail($eventId);
+        $this->event = Event::with(['assignedUsers', 'creator'])->findOrFail($eventId);
     }
 
     public function render()
@@ -48,7 +48,7 @@ class Dashboard extends Component
 
         // Get team members
         $teamMembers = $this->event->assignedUsers()
-            ->with(['user', 'role'])
+            ->with('role')
             ->get();
 
         // Get key contacts
