@@ -31,6 +31,7 @@ class Edit extends Component
     public $is_active = true;
 
     // Relationships
+    public $selectedTags = [];
     public $selectedSpeakers = [];
     public $selectedSegments = [];
     public $selectedCues = [];
@@ -51,6 +52,8 @@ class Edit extends Component
             'category_id' => 'nullable|exists:content_categories,id',
             'file_type' => 'required|in:audio,video,presentation,document,image,other',
             'is_active' => 'boolean',
+            'selectedTags' => 'nullable|array',
+            'selectedTags.*' => 'exists:tags,id',
             'selectedSpeakers' => 'nullable|array',
             'selectedSpeakers.*' => 'exists:speakers,id',
             'selectedSegments' => 'nullable|array',
@@ -65,7 +68,7 @@ class Edit extends Component
         $this->eventId = $eventId;
         $this->event = Event::findOrFail($eventId);
         $this->contentId = $contentId;
-        $this->content = ContentFile::with(['speakers', 'segments', 'cues'])->findOrFail($contentId);
+        $this->content = ContentFile::with(['tags', 'speakers', 'segments', 'cues'])->findOrFail($contentId);
 
         // Load existing data
         $this->name = $this->content->name;
@@ -75,6 +78,7 @@ class Edit extends Component
         $this->is_active = $this->content->is_active;
 
         // Load relationships
+        $this->selectedTags = $this->content->tags->pluck('id')->toArray();
         $this->selectedSpeakers = $this->content->speakers->pluck('id')->toArray();
         $this->selectedSegments = $this->content->segments->pluck('id')->toArray();
         $this->selectedCues = $this->content->cues->pluck('id')->toArray();
@@ -98,6 +102,7 @@ class Edit extends Component
         ]);
 
         // Sync relationships
+        $this->content->tags()->sync($this->selectedTags);
         $this->content->speakers()->sync($this->selectedSpeakers);
         $this->content->segments()->sync($this->selectedSegments);
         $this->content->cues()->sync($this->selectedCues);
@@ -176,6 +181,10 @@ class Edit extends Component
             ->ordered()
             ->get();
 
+        $allTags = \App\Models\Tag::where('event_id', $this->eventId)
+            ->orderBy('name')
+            ->get();
+
         $allSpeakers = Speaker::where('event_id', $this->eventId)
             ->where('is_active', true)
             ->orderBy('first_name')
@@ -202,6 +211,7 @@ class Edit extends Component
 
         return view('livewire.content.edit', [
             'categories' => $categories,
+            'allTags' => $allTags,
             'allSpeakers' => $allSpeakers,
             'allSegments' => $allSegments,
             'allCues' => $allCues,

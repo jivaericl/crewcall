@@ -88,6 +88,29 @@
                         </div>
                     </div>
 
+                    <!-- Tags -->
+                    <div>
+                        <flux:label>Tags</flux:label>
+                        <div class="mt-2 space-y-2 max-h-48 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded p-3">
+                            @forelse($allTags as $tag)
+                                <label class="flex items-center gap-2">
+                                    <input 
+                                        type="checkbox" 
+                                        wire:model.blur="selectedTags" 
+                                        value="{{ $tag->id }}"
+                                        class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
+                                    />
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}">
+                                        {{ $tag->name }}
+                                    </span>
+                                </label>
+                            @empty
+                                <p class="text-sm text-gray-500 dark:text-gray-400">No tags available</p>
+                            @endforelse
+                        </div>
+                        @error('selectedTags') <flux:error>{{ $message }}</flux:error> @enderror
+                    </div>
+
                     <!-- Speakers -->
                     <div>
                         <flux:label>Associated Speakers</flux:label>
