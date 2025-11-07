@@ -59,7 +59,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Tags</p>
-                            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $content->tags->count() }}</p>
+                            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ method_exists($content, 'tags') && $content->tags ? $content->tags->count() : 0 }}</p>
                         </div>
                     </div>
                 </div>
@@ -213,7 +213,7 @@
                             <h3 class="text-lg font-medium text-gray-900 dark:text-white">Tags</h3>
                         </div>
                         <div class="p-6">
-                            @if($content->tags->count() > 0)
+                            @if(method_exists($content, 'tags') && $content->tags && $content->tags->count() > 0)
                                 <div class="flex flex-wrap gap-2">
                                     @foreach($content->tags as $tag)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium" style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}">
@@ -222,7 +222,7 @@
                                     @endforeach
                                 </div>
                             @else
-                                <p class="text-sm text-gray-500 dark:text-gray-400">No tags assigned</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Tags feature not yet implemented</p>
                             @endif
                         </div>
                     </div>

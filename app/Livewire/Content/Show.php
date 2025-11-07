@@ -23,7 +23,6 @@ class Show extends Component
             'category',
             'creator',
             'updater',
-            'tags',
             'speakers',
             'segments.session',
             'cues.segment.session',
