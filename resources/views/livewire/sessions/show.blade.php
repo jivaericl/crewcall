@@ -14,7 +14,7 @@
             <div class="flex gap-2">
                 <button 
                     wire:click="openResetModal" 
-                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
+                    class="px-4 py-2 bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white text-sm font-medium rounded-md"
                     type="button">
                     Reset All Cues
                 </button>
@@ -271,7 +271,7 @@
                     </button>
                     <button 
                         wire:click="resetAllCues" 
-                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium"
+                        class="px-4 py-2 bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white rounded-md text-sm font-medium"
                         type="button">
                         Reset All Cues
                     </button>

@@ -40,7 +40,7 @@
             <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 border {{ $mention->is_read ? 'border-zinc-200 dark:border-zinc-700' : 'border-blue-500 dark:border-blue-400' }}">
                 <div class="flex items-start gap-4">
                     <!-- User Avatar -->
-                    <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white font-semibold flex-shrink-0">
                         {{ strtoupper(substr($mention->comment->user->name, 0, 1)) }}
                     </div>
 

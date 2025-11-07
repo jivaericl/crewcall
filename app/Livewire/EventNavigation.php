@@ -55,6 +55,19 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Audit Logs',
+                    'icon' => 'clipboard-list',
+                    'route' => 'audit-logs.index',
+                    'params' => [],
+                ],
+                [
+                    'label' => 'Activity',
+                    'icon' => 'bell',
+                    'route' => 'activity-feed.index',
+                    'params' => [],
+                    'badge' => \App\Models\CommentMention::forUser(auth()->id())->unread()->count(),
+                ],
+                [
                     'label' => 'People',
                     'icon' => 'users',
                     'children' => [

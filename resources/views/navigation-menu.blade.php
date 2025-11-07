@@ -15,26 +15,12 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.*')">
-                        {{ __('Events') }}
-                    </x-nav-link>
                     
                     <!-- Event Selector -->
                     <div class="flex items-center">
                         @livewire('event-selector')
                     </div>
-                    <x-nav-link href="{{ route('audit-logs.index') }}" :active="request()->routeIs('audit-logs.*')">
-                        {{ __('Audit Logs') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('activity-feed.index') }}" :active="request()->routeIs('activity-feed.*')" class="relative">
-                        {{ __('Activity') }}
-                        @php
-                            $unreadCount = \App\Models\CommentMention::forUser(auth()->id())->unread()->count();
-                        @endphp
-                        @if($unreadCount > 0)
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ $unreadCount }}</span>
-                        @endif
-                    </x-nav-link>
+                    
                     @if(auth()->user()->isSuperAdmin())
                         <x-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.*')">
                             {{ __('Roles') }}
@@ -44,33 +30,6 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Dark Mode Toggle -->
-                <div x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || false }" 
-                     x-init="$watch('darkMode', val => { 
-                         localStorage.setItem('darkMode', val); 
-                         if (val) { 
-                             document.documentElement.classList.add('dark'); 
-                         } else { 
-                             document.documentElement.classList.remove('dark'); 
-                         } 
-                     }); 
-                     if (darkMode) { 
-                         document.documentElement.classList.add('dark'); 
-                     }"
-                     class="me-3">
-                    <button @click="darkMode = !darkMode" 
-                            class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                            title="Toggle dark mode">
-                        <!-- Sun Icon (shown in dark mode) -->
-                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                        <!-- Moon Icon (shown in light mode) -->
-                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
-                </div>
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ms-3 relative">
@@ -159,6 +118,33 @@
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
                             @endif
+
+                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
+
+                            <!-- Dark Mode Toggle -->
+                            <div x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' || false }" 
+                                 x-init="$watch('darkMode', val => { 
+                                     localStorage.setItem('darkMode', val); 
+                                     if (val) { 
+                                         document.documentElement.classList.add('dark'); 
+                                     } else { 
+                                         document.documentElement.classList.remove('dark'); 
+                                     } 
+                                 }); 
+                                 if (darkMode) { 
+                                     document.documentElement.classList.add('dark'); 
+                                 }">
+                                <button @click="darkMode = !darkMode" 
+                                        class="flex w-full items-center px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out">
+                                    <svg x-show="!darkMode" class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                                    </svg>
+                                    <svg x-show="darkMode" class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                    <span x-text="darkMode ? 'Light Mode' : 'Dark Mode'"></span>
+                                </button>
+                            </div>
 
                             <div class="border-t border-gray-200 dark:border-gray-600"></div>
 

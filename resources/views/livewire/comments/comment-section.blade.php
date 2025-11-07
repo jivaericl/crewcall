@@ -29,7 +29,7 @@
                                 wire:click="selectUser({{ $user->id }}, '{{ addslashes($user->name) }}')"
                                 class="w-full px-4 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-2"
                             >
-                                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold">
+                                <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                                 <div>
@@ -67,7 +67,7 @@
                 <!-- Comment Header -->
                 <div class="flex items-start justify-between mb-2">
                     <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                        <div class="w-10 h-10 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white font-semibold">
                             {{ strtoupper(substr($comment->user->name, 0, 1)) }}
                         </div>
                         <div>
@@ -138,7 +138,7 @@
                             <div class="bg-white dark:bg-zinc-800 rounded-lg p-3">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-semibold">
+                                        <div class="w-8 h-8 rounded-full bg-green-500 dark:bg-green-600 flex items-center justify-center text-white text-sm font-semibold">
                                             {{ strtoupper(substr($reply->user->name, 0, 1)) }}
                                         </div>
                                         <div>
