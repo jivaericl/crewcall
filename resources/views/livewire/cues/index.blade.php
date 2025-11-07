@@ -78,7 +78,6 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
-                                        <th class="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider" style="width: 80px;"></th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Time</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cue</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
@@ -89,27 +88,7 @@
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                     @foreach($cues as $cue)
-                                        <tr class="
-                                            @if($cue->status === 'go') bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30
-                                            @elseif($cue->status === 'complete') bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600
-                                            @else hover:bg-gray-50 dark:hover:bg-gray-700
-                                            @endif">
-                                            <!-- GO Button -->
-                                            <td class="px-3 py-4 text-center">
-                                                <button 
-                                                    wire:click="activateCue({{ $cue->id }})" 
-                                                    class="px-3 py-1 text-xs font-bold rounded
-                                                        @if($cue->status === 'go') 
-                                                            bg-green-600 text-white
-                                                        @elseif($cue->status === 'complete')
-                                                            bg-gray-500 dark:bg-gray-600 text-white hover:bg-gray-600 dark:hover:bg-gray-500
-                                                        @else 
-                                                            bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500
-                                                        @endif"
-                                                    type="button">
-                                                    GO
-                                                </button>
-                                            </td>
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             <td class="px-6 py-4 align-top text-sm text-gray-900 dark:text-gray-100">
                                                 <div>{{ $cue->time ? $cue->time->format('g:i A') : '-' }}</div>
                                                 @if($cue->code)
