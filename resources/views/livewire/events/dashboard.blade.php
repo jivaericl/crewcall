@@ -149,12 +149,12 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
                                         <div class="h-10 w-10 rounded-full bg-gray-500 flex items-center justify-center text-white font-medium">
-                                            {{ substr($member->user->name ?? 'U', 0, 1) }}
+                                            {{ substr($member->name ?? 'U', 0, 1) }}
                                         </div>
                                     </div>
                                     <div class="ml-3 flex-1">
                                         <p class="text-sm font-medium text-gray-900 dark:text-white">
-                                            {{ $member->user->name ?? 'Unknown' }}
+                                            {{ $member->name ?? 'Unknown' }}
                                         </p>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">
                                             {{ $member->role->name ?? 'Team Member' }}

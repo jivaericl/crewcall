@@ -46,10 +46,17 @@ class Dashboard extends Component
             ->take(5)
             ->get();
 
-        // Get team members
-        $teamMembers = $this->event->assignedUsers()
-            ->with('role')
-            ->get();
+        // Get team members (assignedUsers returns User objects with pivot data)
+        $teamMembers = $this->event->assignedUsers;
+        
+        // Load the roles for each team member through their pivot role_id
+        $roleIds = $teamMembers->pluck('pivot.role_id')->unique()->filter();
+        $roles = \App\Models\Role::whereIn('id', $roleIds)->get()->keyBy('id');
+        
+        // Attach role objects to each team member for easy access in view
+        foreach ($teamMembers as $member) {
+            $member->role = $roles->get($member->pivot->role_id);
+        }
 
         // Get key contacts
         $keyContacts = Contact::where('event_id', $this->eventId)
