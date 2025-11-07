@@ -5,3 +5,19 @@
 [x-cloak] {
     display: none;
 }
+
+/* Dark mode fixes for Flux UI buttons */
+@layer components {
+    .dark flux-button[variant="primary"],
+    .dark flux-button:not([variant]) {
+        @apply bg-blue-600 hover:bg-blue-700 text-white;
+    }
+    
+    .dark flux-button[variant="ghost"] {
+        @apply text-gray-300 hover:bg-gray-700;
+    }
+    
+    .dark flux-button[variant="danger"] {
+        @apply bg-red-600 hover:bg-red-700 text-white;
+    }
+}
