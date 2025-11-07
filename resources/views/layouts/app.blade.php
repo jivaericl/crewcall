@@ -16,6 +16,14 @@
 
         <!-- Styles -->
         @livewireStyles
+        
+        <!-- Dark Mode Initialization (prevents flash) -->
+        <script>
+            // Apply dark mode immediately before page renders
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark');
+            }
+        </script>
     </head>
     <body class="font-sans antialiased">
         <x-banner />
