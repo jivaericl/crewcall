@@ -116,6 +116,34 @@
                     @endif
                 </div>
 
+                <!-- Custom Fields -->
+                @if($contact->custom_fields && count($contact->custom_fields) > 0)
+                    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Custom Fields</h3>
+                        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($contact->custom_fields as $fieldId => $value)
+                                @php
+                                    $customField = \App\Models\CustomField::find($fieldId);
+                                @endphp
+                                @if($customField && $value)
+                                    <div class="{{ $customField->field_type === 'textarea' ? 'md:col-span-2' : '' }}">
+                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $customField->name }}</dt>
+                                        <dd class="mt-1 text-sm text-gray-900 dark:text-white {{ $customField->field_type === 'textarea' ? 'whitespace-pre-wrap' : '' }}">
+                                            @if($customField->field_type === 'checkbox')
+                                                {{ $value ? 'Yes' : 'No' }}
+                                            @elseif($customField->field_type === 'date')
+                                                {{ \Carbon\Carbon::parse($value)->format('M d, Y') }}
+                                            @else
+                                                {{ $value }}
+                                            @endif
+                                        </dd>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </dl>
+                    </div>
+                @endif
+
                 <!-- Sessions -->
                 @if($contact->sessions->count() > 0)
                     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
