@@ -6,6 +6,7 @@ use App\Models\Session;
 use App\Models\Segment;
 use App\Models\Cue;
 use App\Models\CueType;
+use App\Models\AuditLog;
 use Livewire\Component;
 
 class Show extends Component
@@ -13,6 +14,7 @@ class Show extends Component
     public $eventId;
     public $sessionId;
     public $session;
+    public $auditLogs;
     
     // Filters
     public $filterCueType = '';
@@ -21,13 +23,23 @@ class Show extends Component
     // Reset confirmation
     public $showResetModal = false;
     public $resetConfirmation = '';
+    
+    // Comments
+    public $newComment = '';
 
     public function mount($eventId, $sessionId)
     {
         $this->eventId = $eventId;
         $this->sessionId = $sessionId;
-        $this->session = Session::with(['event', 'client', 'producer'])
+        $this->session = Session::with(['event', 'client', 'producer', 'creator', 'updater', 'tags', 'comments.user'])
             ->findOrFail($sessionId);
+        
+        // Get audit logs for this session
+        $this->auditLogs = AuditLog::where('auditable_type', Session::class)
+            ->where('auditable_id', $sessionId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function render()
@@ -127,5 +139,24 @@ class Show extends Component
         
         $this->closeResetModal();
         session()->flash('message', 'All cues have been reset to standby.');
+    }
+    
+    public function postComment()
+    {
+        $this->validate([
+            'newComment' => 'required|string|max:1000',
+        ]);
+
+        $this->session->comments()->create([
+            'user_id' => auth()->id(),
+            'comment' => $this->newComment,
+        ]);
+
+        $this->newComment = '';
+        
+        // Reload comments
+        $this->session->load('comments.user');
+        
+        session()->flash('message', 'Comment posted successfully.');
     }
 }
