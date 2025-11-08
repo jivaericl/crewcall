@@ -159,8 +159,42 @@
                     <!-- Comments -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Comments</h3>
+                        
+                        <!-- Success Message -->
+                        @if (session()->has('message'))
+                            <div class="mb-4 p-3 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 rounded">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+
+                        <!-- Comment Form -->
+                        <form wire:submit.prevent="postComment" class="mb-6">
+                            <div>
+                                <label for="newComment" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add a comment</label>
+                                <textarea 
+                                    wire:model="newComment" 
+                                    id="newComment" 
+                                    rows="3" 
+                                    class="w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    placeholder="Write your comment here..."
+                                ></textarea>
+                                @error('newComment') 
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mt-3 flex justify-end">
+                                <button 
+                                    type="submit" 
+                                    class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                                >
+                                    Post Comment
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Existing Comments -->
                         @if($cue->comments->count() > 0)
-                            <div class="space-y-4">
+                            <div class="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
                                 @foreach($cue->comments as $comment)
                                     <div class="border-l-4 border-gray-300 dark:border-gray-600 pl-4 py-2">
                                         <div class="flex items-start space-x-3">
@@ -181,7 +215,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">No comments yet</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm border-t border-gray-200 dark:border-gray-700 pt-4">No comments yet. Be the first to comment!</p>
                         @endif
                     </div>
                 </div>

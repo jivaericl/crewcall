@@ -14,6 +14,7 @@ class Show extends Component
     public $cue;
     public $segment;
     public $auditLogs;
+    public $newComment = '';
 
     public function mount($segmentId, $cueId)
     {
@@ -39,6 +40,25 @@ class Show extends Component
             ->with('user')
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    public function postComment()
+    {
+        $this->validate([
+            'newComment' => 'required|string|max:1000',
+        ]);
+
+        $this->cue->comments()->create([
+            'user_id' => auth()->id(),
+            'comment' => $this->newComment,
+        ]);
+
+        $this->newComment = '';
+        
+        // Reload comments
+        $this->cue->load('comments.user');
+        
+        session()->flash('message', 'Comment posted successfully.');
     }
 
     public function render()
