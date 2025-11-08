@@ -135,6 +135,56 @@
                 </div>
             </flux:card>
 
+            <!-- History (Collapsible) -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg" x-data="{ open: false }">
+                <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">History</h3>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div x-show="open" x-collapse class="border-t border-gray-200 dark:border-gray-700">
+                    <div class="p-6">
+                        @if($auditLogs->count() > 0)
+                            <div class="space-y-4">
+                                @foreach($auditLogs as $log)
+                                    <div class="border-l-4 border-blue-500 dark:border-blue-400 pl-4 py-2">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                    {{ ucfirst($log->action) }}
+                                                </p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                    by {{ $log->user->name }} • {{ $log->created_at->diffForHumans() }}
+                                                </p>
+                                                @if($log->changes && count($log->changes) > 0)
+                                                    <div class="mt-2 space-y-1">
+                                                        @foreach($log->changes as $field => $change)
+                                                            <p class="text-xs text-gray-600 dark:text-gray-300">
+                                                                <span class="font-medium">{{ ucfirst(str_replace('_', ' ', $field)) }}:</span>
+                                                                @if(isset($change['old']) && isset($change['new']))
+                                                                    <span class="text-red-600 dark:text-red-400">{{ $change['old'] ?: '(empty)' }}</span>
+                                                                    →
+                                                                    <span class="text-green-600 dark:text-green-400">{{ $change['new'] ?: '(empty)' }}</span>
+                                                                @else
+                                                                    {{ json_encode($change) }}
+                                                                @endif
+                                                            </p>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">No history available</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
             <flux:card>
                 <flux:heading size="lg" class="mb-4">Comments</flux:heading>
                 
