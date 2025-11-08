@@ -58,6 +58,7 @@ Route::middleware([
     // Segment routes
     Route::get('/sessions/{sessionId}/segments', App\Livewire\Segments\Index::class)->name('sessions.segments.index');
     Route::get('/sessions/{sessionId}/segments/create', App\Livewire\Segments\Form::class)->name('sessions.segments.create');
+    Route::get('/sessions/{sessionId}/segments/{segmentId}', App\Livewire\Segments\Show::class)->name('sessions.segments.show');
     Route::get('/sessions/{sessionId}/segments/{segmentId}/edit', App\Livewire\Segments\Form::class)->name('sessions.segments.edit');
 
     // Cue routes
