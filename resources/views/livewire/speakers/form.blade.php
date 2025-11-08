@@ -14,19 +14,20 @@
                     <flux:input wire:model.blur="title" label="Title" placeholder="CEO" />
                     
                     <div>
-                        <flux:label>Company</flux:label>
-                        <input 
-                            type="text" 
-                            wire:model.blur="company" 
-                            list="companies-list"
-                            placeholder="Acme Corp"
-                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800"
-                        />
-                        <datalist id="companies-list">
-                            @foreach($companies as $comp)
-                                <option value="{{ $comp }}">
-                            @endforeach
-                        </datalist>
+                        <flux:field>
+                            <flux:label>Company</flux:label>
+                            <flux:input 
+                                type="text"
+                                wire:model.blur="company" 
+                                list="companies-list"
+                                placeholder="Acme Corp"
+                            />
+                            <datalist id="companies-list">
+                                @foreach($companies as $comp)
+                                    <option value="{{ $comp }}">
+                                @endforeach
+                            </datalist>
+                        </flux:field>
                     </div>
                     
                     <flux:input wire:model.blur="email" label="Email" type="email" placeholder="john@acme.com" />
@@ -41,20 +42,21 @@
                     <flux:textarea wire:model="notes" label="Internal Notes" rows="4" placeholder="Internal notes about this speaker..." />
                     
                     <div>
-                        <flux:label>Contact Person</flux:label>
-                        <input 
-                            type="text" 
-                            wire:model.blur="contact_person" 
-                            list="contact-persons-list"
-                            placeholder="Jane Smith"
-                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800"
-                        />
-                        <datalist id="contact-persons-list">
-                            @foreach($contactPersons as $person)
-                                <option value="{{ $person }}">
-                            @endforeach
-                        </datalist>
-                        <flux:description>Start typing to see suggestions from event contacts</flux:description>
+                        <flux:field>
+                            <flux:label>Contact Person</flux:label>
+                            <flux:input 
+                                type="text"
+                                wire:model.blur="contact_person" 
+                                list="contact-persons-list"
+                                placeholder="Jane Smith"
+                            />
+                            <datalist id="contact-persons-list">
+                                @foreach($contactPersons as $person)
+                                    <option value="{{ $person }}">
+                                @endforeach
+                            </datalist>
+                            <flux:description>Start typing to see suggestions from event contacts</flux:description>
+                        </flux:field>
                     </div>
                 </div>
             </flux:card>
