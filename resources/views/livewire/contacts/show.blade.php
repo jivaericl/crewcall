@@ -83,6 +83,17 @@
                             </div>
                         @endif
 
+                        @if($contact->mobile)
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Mobile</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dark:text-white">
+                                    <a href="tel:{{ $contact->mobile }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                                        {{ $contact->mobile }}
+                                    </a>
+                                </dd>
+                            </div>
+                        @endif
+
                         @if($contact->address || $contact->city || $contact->state || $contact->zip || $contact->country)
                             <div class="md:col-span-2">
                                 <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Address</dt>
@@ -118,9 +129,9 @@
                                             {{ $session->start_date->format('M d, Y g:i A') }}
                                         </div>
                                     </div>
-                                    <flux:button size="sm" variant="ghost" href="{{ route('events.sessions.edit', [$eventId, $session->id]) }}">
+                                    <a href="{{ route('events.sessions.show', [$eventId, $session->id]) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
                                         View
-                                    </flux:button>
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
@@ -138,6 +149,9 @@
                                         <div class="font-medium text-gray-900 dark:text-white">{{ $file->name }}</div>
                                         <div class="text-sm text-gray-500 dark:text-gray-400">{{ $file->category->name ?? 'Uncategorized' }}</div>
                                     </div>
+                                    <a href="{{ route('events.content.show', [$eventId, $file->id]) }}" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                                        View
+                                    </a>
                                 </div>
                             @endforeach
                         </div>

@@ -20,8 +20,14 @@ class Show extends Component
         $this->eventId = $eventId;
         $this->contactId = $contactId;
         $this->event = Event::findOrFail($eventId);
-        $this->contact = Contact::with(['tags', 'sessions', 'contentFiles', 'comments.user', 'creator', 'updater'])
-            ->findOrFail($contactId);
+        $this->contact = Contact::with([
+            'tags',
+            'sessions.event',
+            'contentFiles.category',
+            'comments.user',
+            'creator',
+            'updater'
+        ])->findOrFail($contactId);
         
         // Get audit logs for this contact
         $this->auditLogs = AuditLog::where('auditable_type', Contact::class)
