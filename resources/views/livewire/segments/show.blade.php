@@ -22,40 +22,52 @@
                     <!-- Segment Information -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Segment Information</h3>
-                        <dl class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Name</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->name }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Segment Name</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->name }}</p>
                             </div>
+
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Code</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->code ?: '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Segment Code</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->code ?? 'N/A' }}</p>
                             </div>
+
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Start Time</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->start_time ? $segment->start_time->format('g:i A') : '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Start Time</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->start_time ? $segment->start_time->format('g:i A') : 'N/A' }}</p>
                             </div>
+
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">End Time</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->end_time ? $segment->end_time->format('g:i A') : '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">End Time</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->end_time ? $segment->end_time->format('g:i A') : 'N/A' }}</p>
                             </div>
+
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Duration</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->duration ?: '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Duration</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->duration ?? 'N/A' }}</p>
                             </div>
+
+                            @if($segment->producer)
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Producer</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->producer?->name ?: '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Producer</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->producer->name }}</p>
                             </div>
+                            @endif
+
+                            @if($segment->client)
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Client</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->client?->name ?: '-' }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->client->name }}</p>
                             </div>
+                            @endif
+
                             <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Sort Order</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $segment->sort_order }}</dd>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sort Order</label>
+                                <p class="text-gray-900 dark:text-gray-100">{{ $segment->sort_order }}</p>
                             </div>
-                        </dl>
+                        </div>
                     </div>
 
                     <!-- Custom Fields -->
