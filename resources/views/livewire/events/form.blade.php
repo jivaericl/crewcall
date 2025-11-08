@@ -211,55 +211,81 @@
     </div>
 
     <!-- Create Tag Modal -->
-    @if($showTagModal)
-        <flux:modal wire:model.live="showTagModal">
-            <flux:modal.content>
-                <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Create New Tag</h3>
-                    <form wire:submit.prevent="createTag">
-                        <div class="mb-4">
-                            <flux:field>
-                                <flux:label>Tag Name *</flux:label>
-                                <flux:input 
-                                    wire:model="newTagName" 
-                                    type="text" 
-                                    placeholder="e.g., Conference, Workshop, Meeting"
-                                    required
-                                />
-                                @error('newTagName') 
-                                    <flux:error>{{ $message }}</flux:error>
-                                @enderror
-                            </flux:field>
-                        </div>
-                        <div class="mb-6">
-                            <flux:field>
-                                <flux:label>Tag Color *</flux:label>
-                                <div class="flex items-center gap-3">
-                                    <input 
-                                        type="color" 
-                                        wire:model="newTagColor"
-                                        class="h-10 w-20 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
-                                    >
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ $newTagColor }}</span>
-                                </div>
-                                @error('newTagColor') 
-                                    <flux:error>{{ $message }}</flux:error>
-                                @enderror
-                            </flux:field>
-                        </div>
-                        <div class="flex justify-end gap-3">
-                            <flux:button wire:click="closeTagModal" variant="ghost" type="button">
-                                Cancel
-                            </flux:button>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:bg-blue-700 dark:focus:bg-blue-700 active:bg-blue-900 dark:active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                Create Tag
-                            </button>
-                        </div>
-                    </form>
+<!-- Create Tag Modal -->
+<div x-data="{ show: @entangle('showTagModal') }" 
+     x-show="show" 
+     x-cloak
+     class="fixed inset-0 z-50 overflow-y-auto" 
+     style="display: none;"
+>
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div x-show="show" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 transition-opacity bg-gray-500 dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75" 
+             @click="$wire.closeTagModal()"
+        ></div>
+
+        <!-- Modal panel -->
+        <div x-show="show" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
+        >
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Create New Tag</h3>
+            <form wire:submit.prevent="createTag">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tag Name *</label>
+                    <input 
+                        wire:model="newTagName" 
+                        type="text" 
+                        placeholder="e.g., Conference, Workshop, Meeting"
+                        required
+                        class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    @error('newTagName') 
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
                 </div>
-            </flux:modal.content>
-        </flux:modal>
-    @endif
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tag Color *</label>
+                    <div class="flex items-center gap-3">
+                        <input 
+                            type="color" 
+                            wire:model="newTagColor"
+                            class="h-10 w-20 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+                        >
+                        <span class="text-sm text-gray-600 dark:text-gray-400">{{ $newTagColor }}</span>
+                    </div>
+                    @error('newTagColor') 
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button 
+                        type="button"
+                        wire:click="closeTagModal"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:bg-blue-700 dark:focus:bg-blue-700 active:bg-blue-900 dark:active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                        Create Tag
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <!-- Comment Section -->
     @if($eventId)
