@@ -43,6 +43,12 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Event Info',
+                    'icon' => 'information-circle',
+                    'route' => 'events.show',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'Sessions',
                     'icon' => 'calendar',
                     'route' => 'events.sessions.index',
