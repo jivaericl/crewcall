@@ -4,6 +4,7 @@ namespace App\Livewire\Speakers;
 
 use App\Models\Speaker;
 use App\Models\Event;
+use App\Models\AuditLog;
 use Livewire\Component;
 
 class Show extends Component
@@ -12,6 +13,7 @@ class Show extends Component
     public $speakerId;
     public $event;
     public $speaker;
+    public $auditLogs;
 
     public function mount($eventId, $speakerId)
     {
@@ -27,6 +29,13 @@ class Show extends Component
             'updater',
             'comments.user'
         ])->findOrFail($speakerId);
+        
+        // Get audit logs for this speaker
+        $this->auditLogs = AuditLog::where('auditable_type', Speaker::class)
+            ->where('auditable_id', $speakerId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function render()
