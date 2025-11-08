@@ -50,18 +50,14 @@
             <!-- Statistics -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Statistics</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                         <p class="text-sm font-medium text-blue-600 dark:text-blue-400">Sessions</p>
                         <p class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ $event->sessions->count() }}</p>
                     </div>
                     <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                        <p class="text-sm font-medium text-green-600 dark:text-green-400">Speakers</p>
-                        <p class="text-2xl font-bold text-green-900 dark:text-green-100">{{ $event->speakers->count() }}</p>
-                    </div>
-                    <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
-                        <p class="text-sm font-medium text-purple-600 dark:text-purple-400">Contacts</p>
-                        <p class="text-2xl font-bold text-purple-900 dark:text-purple-100">{{ $event->contacts->count() }}</p>
+                        <p class="text-sm font-medium text-green-600 dark:text-green-400">Tags</p>
+                        <p class="text-2xl font-bold text-green-900 dark:text-green-100">{{ $event->tags->count() }}</p>
                     </div>
                 </div>
             </div>

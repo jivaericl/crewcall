@@ -18,7 +18,7 @@ class Show extends Component
     public function mount($eventId)
     {
         $this->eventId = $eventId;
-        $this->event = Event::with(['creator', 'updater', 'tags', 'comments.user', 'sessions', 'speakers', 'contacts'])
+        $this->event = Event::with(['creator', 'updater', 'tags', 'comments.user', 'sessions'])
             ->findOrFail($eventId);
         
         // Get audit logs for this event
