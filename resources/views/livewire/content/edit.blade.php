@@ -31,9 +31,9 @@
                             <p><strong>Uploaded:</strong> {{ $content->created_at->format('M d, Y g:i A') }}</p>
                         </div>
                         <div class="mt-3">
-                            <flux:button wire:click="openVersionModal" variant="primary" size="sm">
+                            <button wire:click="openVersionModal" type="button" class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:bg-blue-700 dark:focus:bg-blue-700 active:bg-blue-900 dark:active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                 Upload New Version
-                            </flux:button>
+                            </button>
                         </div>
                     </div>
 
@@ -274,14 +274,14 @@
                                                 <flux:button size="sm" variant="ghost">Download</flux:button>
                                             </a>
                                             @if($version->version_number != $content->current_version)
-                                                <flux:button 
+                                                <button 
                                                     wire:click="restoreVersion({{ $version->version_number }})" 
-                                                    size="sm" 
-                                                    variant="primary"
+                                                    type="button"
                                                     wire:confirm="Are you sure you want to restore version {{ $version->version_number }}? This will create a new version with this content."
+                                                    class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:bg-blue-700 dark:focus:bg-blue-700 active:bg-blue-900 dark:active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
                                                 >
                                                     Restore
-                                                </flux:button>
+                                                </button>
                                             @endif
                                         </div>
                                     </div>
@@ -310,9 +310,9 @@
                         >
                             Cancel
                         </flux:button>
-                        <flux:button type="submit" variant="primary">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:bg-blue-700 dark:focus:bg-blue-700 active:bg-blue-900 dark:active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                             Update Content
-                        </flux:button>
+                        </button>
                     </div>
                 </form>
             </div>
