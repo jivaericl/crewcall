@@ -4,6 +4,7 @@ namespace App\Livewire\Contacts;
 
 use App\Models\Contact;
 use App\Models\Event;
+use App\Models\AuditLog;
 use Livewire\Component;
 
 class Show extends Component
@@ -12,14 +13,22 @@ class Show extends Component
     public $contactId;
     public $contact;
     public $event;
+    public $auditLogs;
 
     public function mount($eventId, $contactId)
     {
         $this->eventId = $eventId;
         $this->contactId = $contactId;
         $this->event = Event::findOrFail($eventId);
-        $this->contact = Contact::with(['tags', 'sessions', 'contentFiles', 'comments.user'])
+        $this->contact = Contact::with(['tags', 'sessions', 'contentFiles', 'comments.user', 'creator', 'updater'])
             ->findOrFail($contactId);
+        
+        // Get audit logs for this contact
+        $this->auditLogs = AuditLog::where('auditable_type', Contact::class)
+            ->where('auditable_id', $contactId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function delete()
