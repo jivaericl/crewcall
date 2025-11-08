@@ -63,6 +63,7 @@ Route::middleware([
     // Cue routes
     Route::get('/segments/{segmentId}/cues', App\Livewire\Cues\Index::class)->name('segments.cues.index');
     Route::get('/segments/{segmentId}/cues/create', App\Livewire\Cues\Form::class)->name('segments.cues.create');
+    Route::get('/segments/{segmentId}/cues/{cueId}', App\Livewire\Cues\Show::class)->name('segments.cues.show');
     Route::get('/segments/{segmentId}/cues/{cueId}/edit', App\Livewire\Cues\Form::class)->name('segments.cues.edit');
 
     // Content management routes
