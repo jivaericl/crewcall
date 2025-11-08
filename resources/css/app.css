@@ -8,16 +8,37 @@
 
 /* Dark mode fixes for Flux UI buttons */
 @layer components {
+    /* Primary buttons */
     .dark flux-button[variant="primary"],
     .dark flux-button:not([variant]) {
         @apply bg-blue-600 hover:bg-blue-700 text-white;
     }
     
+    /* Also target the actual button element inside flux-button */
+    .dark flux-button[variant="primary"] button,
+    .dark flux-button[variant="primary"] a,
+    .dark flux-button:not([variant]) button,
+    .dark flux-button:not([variant]) a {
+        @apply bg-blue-600 hover:bg-blue-700 text-white !important;
+    }
+    
+    /* Ghost buttons */
     .dark flux-button[variant="ghost"] {
         @apply text-gray-300 hover:bg-gray-700;
     }
     
+    .dark flux-button[variant="ghost"] button,
+    .dark flux-button[variant="ghost"] a {
+        @apply text-gray-300 hover:bg-gray-700 !important;
+    }
+    
+    /* Danger buttons */
     .dark flux-button[variant="danger"] {
         @apply bg-red-600 hover:bg-red-700 text-white;
+    }
+    
+    .dark flux-button[variant="danger"] button,
+    .dark flux-button[variant="danger"] a {
+        @apply bg-red-600 hover:bg-red-700 text-white !important;
     }
 }
