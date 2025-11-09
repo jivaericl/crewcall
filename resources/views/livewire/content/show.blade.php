@@ -142,12 +142,36 @@
                                 </div>
                             @endif
 
-                            <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                <flux:button href="{{ $content->download_url }}" target="_blank" variant="primary">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                    </svg>
-                                    Download File
+                            @if($content->file_type === 'rich_text' && $content->content)
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content</dt>
+                                    <dd class="text-sm text-gray-900 dark:text-gray-100 prose dark:prose-invert max-w-none">
+                                        {!! $content->content !!}
+                                    </dd>
+                                </div>
+                            @endif
+
+                            @if($content->file_type === 'url' && $content->content)
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">URL</dt>
+                                    <dd class="text-sm">
+                                        <a href="{{ $content->content }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2">
+                                            {{ $content->content }}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                            </svg>
+                                        </a>
+                                    </dd>
+                                </div>
+                            @endif
+
+                            @if($content->file_type !== 'rich_text' && $content->file_type !== 'url')
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <flux:button href="{{ $content->download_url }}" target="_blank" variant="primary">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                        </svg>
+                                        Download File
                                 </flux:button>
                             </div>
                         </div>

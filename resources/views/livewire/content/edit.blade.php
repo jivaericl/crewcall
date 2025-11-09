@@ -76,17 +76,50 @@
 
                         <div>
                             <flux:label for="file_type" required>File Type</flux:label>
-                            <flux:select wire:model.blur="file_type" id="file_type" class="w-full">
+                            <flux:select wire:model.live="file_type" id="file_type" class="w-full">
                                 <option value="audio">Audio</option>
                                 <option value="video">Video</option>
                                 <option value="presentation">Presentation</option>
                                 <option value="document">Document</option>
                                 <option value="image">Image</option>
+                                <option value="rich_text">Rich Text</option>
+                                <option value="url">URL</option>
                                 <option value="other">Other</option>
                             </flux:select>
                             @error('file_type') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
                     </div>
+
+                    <!-- Rich Text Content -->
+                    @if($file_type === 'rich_text')
+                        <div>
+                            <flux:label for="content_text" required>Rich Text Content</flux:label>
+                            <div wire:ignore>
+                                <textarea 
+                                    id="content_text"
+                                    wire:model="content_text"
+                                    rows="10"
+                                    class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                ></textarea>
+                            </div>
+                            @error('content_text') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    @endif
+
+                    <!-- URL Content -->
+                    @if($file_type === 'url')
+                        <div>
+                            <flux:label for="content_text" required>URL</flux:label>
+                            <flux:input 
+                                wire:model.blur="content_text" 
+                                id="content_text" 
+                                type="url"
+                                placeholder="https://example.com"
+                                class="w-full"
+                            />
+                            @error('content_text') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    @endif
 
                     <!-- Tags -->
                     <div>
@@ -372,3 +405,55 @@
                 </div>
         </div>
     </div>
+
+@push('scripts')
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        let quill = null;
+        
+        function initQuill() {
+            const editor = document.getElementById('content_text');
+            if (editor && !quill) {
+                quill = new Quill(editor, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            ['link'],
+                            ['clean']
+                        ]
+                    }
+                });
+                
+                // Set initial content
+                const content = @this.content_text || '';
+                quill.root.innerHTML = content;
+                
+                // Update Livewire property on text change
+                quill.on('text-change', function() {
+                    @this.set('content_text', quill.root.innerHTML);
+                });
+            }
+        }
+        
+        // Initialize on page load if rich_text is selected
+        if (@this.file_type === 'rich_text') {
+            setTimeout(initQuill, 100);
+        }
+        
+        // Re-initialize when file_type changes
+        Livewire.on('file-type-changed', () => {
+            if (@this.file_type === 'rich_text') {
+                quill = null;
+                setTimeout(initQuill, 100);
+            }
+        });
+    });
+</script>
+@endpush

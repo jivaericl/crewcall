@@ -22,6 +22,7 @@ class ContentFile extends Model
         'name',
         'slug',
         'description',
+        'content',
         'file_type',
         'mime_type',
         'current_file_path',
@@ -209,6 +210,8 @@ class ContentFile extends Model
             'presentation' => '📊',
             'document' => '📄',
             'image' => '🖼️',
+            'rich_text' => '📝',
+            'url' => '🔗',
             default => '📁',
         };
     }

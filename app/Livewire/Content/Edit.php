@@ -26,6 +26,7 @@ class Edit extends Component
     // Basic fields
     public $name;
     public $description;
+    public $content_text;
     public $category_id;
     public $file_type;
     public $is_active = true;
@@ -50,7 +51,8 @@ class Edit extends Component
             'name' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
             'category_id' => 'nullable|exists:content_categories,id',
-            'file_type' => 'required|in:audio,video,presentation,document,image,other',
+            'file_type' => 'required|in:audio,video,presentation,document,image,rich_text,url,other',
+            'content_text' => 'required_if:file_type,rich_text,url|nullable|string',
             'is_active' => 'boolean',
             'selectedTags' => 'nullable|array',
             'selectedTags.*' => 'exists:tags,id',
@@ -73,6 +75,7 @@ class Edit extends Component
         // Load existing data
         $this->name = $this->content->name;
         $this->description = $this->content->description;
+        $this->content_text = $this->content->content;
         $this->category_id = $this->content->category_id;
         $this->file_type = $this->content->file_type;
         $this->is_active = $this->content->is_active;
@@ -96,6 +99,7 @@ class Edit extends Component
         $this->content->update([
             'name' => $this->name,
             'description' => $this->description,
+            'content' => $this->content_text,
             'category_id' => $this->category_id,
             'file_type' => $this->file_type,
             'is_active' => $this->is_active,
