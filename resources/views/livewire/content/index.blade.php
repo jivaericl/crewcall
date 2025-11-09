@@ -402,9 +402,8 @@
             </div>
         @endif
     @endif
-</div>
 
-<!-- Quill.js for Rich Text Editor -->
+    <!-- Quill.js for Rich Text Editor -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <style>
