@@ -266,15 +266,11 @@
 
                         <!-- Rich Text Editor - Only for rich_text type -->
                         @if($uploadType === 'rich_text')
-                            <div>
-                                <flux:label for="uploadContent" required>Content (HTML)</flux:label>
+                            <div x-data="quillEditor()" x-init="init()">
+                                <flux:label required>Content (HTML)</flux:label>
                                 <div wire:ignore>
-                                    <textarea 
-                                        id="uploadContent"
-                                        wire:model="uploadContent"
-                                        rows="10"
-                                        class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                    ></textarea>
+                                    <div id="quill-editor" style="height: 300px; background: white;"></div>
+                                    <input type="hidden" wire:model="uploadContent" x-ref="hiddenInput">
                                 </div>
                                 @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
                             </div>
@@ -412,57 +408,38 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('quill-init', () => {
-            initQuillEditor();
-        });
-    });
+    function quillEditor() {
+        return {
+            quill: null,
+            init() {
+                this.$nextTick(() => {
+                    const editor = document.getElementById('quill-editor');
+                    if (editor && !this.quill) {
+                        this.quill = new Quill(editor, {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: [
+                                    [{ 'header': [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    ['blockquote', 'code-block'],
+                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    ['link'],
+                                    ['clean']
+                                ]
+                            },
+                            placeholder: 'Enter your content here...'
+                        });
 
-    let quillEditor = null;
-
-    function initQuillEditor() {
-        // Clean up existing editor
-        if (quillEditor) {
-            quillEditor = null;
+                        // Update Livewire on text change
+                        this.quill.on('text-change', () => {
+                            const html = this.quill.root.innerHTML;
+                            @this.set('uploadContent', html);
+                        });
+                    }
+                });
+            }
         }
-
-        // Wait for DOM to be ready
-        setTimeout(() => {
-            const container = document.getElementById('uploadContent');
-            if (container && !container.classList.contains('ql-container')) {
-                quillEditor = new Quill(container, {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            ['blockquote', 'code-block'],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            [{ 'color': [] }, { 'background': [] }],
-                            ['link'],
-                            ['clean']
-                        ]
-                    },
-                    placeholder: 'Enter your content here...'
-                });
-
-                // Update Livewire property on text change
-                quillEditor.on('text-change', function() {
-                    const html = quillEditor.root.innerHTML;
-                    @this.set('uploadContent', html);
-                });
-            }
-        }, 100);
     }
-
-    // Initialize when uploadType changes to rich_text
-    document.addEventListener('livewire:initialized', () => {
-        Livewire.hook('morph.updated', ({ el, component }) => {
-            const uploadType = component.get('uploadType');
-            if (uploadType === 'rich_text') {
-                initQuillEditor();
-            }
-        });
-    });
 </script>
 @endpush
