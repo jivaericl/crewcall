@@ -268,8 +268,8 @@
                         @if($uploadType === 'rich_text')
                             <div>
                                 <flux:label required>Content (HTML)</flux:label>
-                                <div wire:ignore class="bg-white rounded-md border border-gray-300 dark:border-gray-600">
-                                    <div id="quill-editor-container"></div>
+                                <div wire:ignore class="bg-white rounded-md border border-gray-300 dark:border-gray-600" style="min-height: 350px;">
+                                    <div id="quill-editor-container" style="min-height: 350px;"></div>
                                 </div>
                                 <input type="hidden" wire:model="uploadContent" id="quill-hidden-input">
                                 @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror

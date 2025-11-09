@@ -172,6 +172,7 @@ class Index extends Component
                     default => 'text/plain',
                 };
                 $contentData['current_file_size'] = strlen($this->uploadContent);
+                $contentData['current_file_path'] = null; // No file path for content types
                 $contentData['current_version'] = 1;
                 
                 // Create content file record
