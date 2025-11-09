@@ -434,17 +434,13 @@
 </style>
 <script>
     let quillInstance = null;
-    let quillInitialized = false;
 
     function initializeQuill() {
         const container = document.getElementById('quill-editor-container');
         
-        // Check if container exists and hasn't been initialized yet
-        if (container && !quillInitialized) {
-            console.log('Initializing Quill editor...');
-            
-            // Check if Quill has already been initialized on this container
-            if (!container.classList.contains('ql-container')) {
+        // Only initialize if container exists and Quill hasn't been initialized on it
+        if (container && !container.classList.contains('ql-container')) {
+            try {
                 quillInstance = new Quill('#quill-editor-container', {
                     theme: 'snow',
                     modules: {
@@ -461,35 +457,48 @@
                     placeholder: 'Enter your content here...'
                 });
 
-                quillInitialized = true;
-                console.log('Quill editor initialized successfully');
-
                 // Update hidden input on text change
                 quillInstance.on('text-change', function() {
                     const html = quillInstance.root.innerHTML;
                     const hiddenInput = document.getElementById('quill-hidden-input');
                     if (hiddenInput) {
                         hiddenInput.value = html;
-                        hiddenInput.dispatchEvent(new Event('input'));
+                        // Trigger Livewire update
+                        const event = new Event('input', { bubbles: true });
+                        hiddenInput.dispatchEvent(event);
                     }
                 });
+            } catch (error) {
+                console.error('Error initializing Quill:', error);
             }
-        } else if (!container) {
-            // Reset flag if container doesn't exist
-            quillInitialized = false;
         }
     }
 
-    // Initialize when Livewire updates the DOM
-    document.addEventListener('livewire:initialized', () => {
-        Livewire.hook('morph.updated', () => {
-            setTimeout(initializeQuill, 300);
-        });
+    // Watch for the container to appear in the DOM
+    const observer = new MutationObserver(function(mutations) {
+        const container = document.getElementById('quill-editor-container');
+        if (container && !container.classList.contains('ql-container')) {
+            initializeQuill();
+        }
     });
 
-    // Also try on page load
-    window.addEventListener('load', function() {
-        setTimeout(initializeQuill, 300);
-    });
+    // Start observing when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+            // Try immediate initialization
+            setTimeout(initializeQuill, 100);
+        });
+    } else {
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        // Try immediate initialization
+        setTimeout(initializeQuill, 100);
+    }
 </script>
 @endpush
