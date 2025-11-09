@@ -211,6 +211,7 @@ class ContentFile extends Model
             'document' => '📄',
             'image' => '🖼️',
             'rich_text' => '📝',
+            'plain_text' => '📄',
             'url' => '🔗',
             default => '📁',
         };

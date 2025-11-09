@@ -29,6 +29,7 @@ class Index extends Component
     public $uploadFile;
     public $uploadName;
     public $uploadDescription;
+    public $uploadContent;
     public $uploadCategory;
     public $uploadType;
     public $uploadSpeakers = [];
@@ -61,87 +62,121 @@ class Index extends Component
     public function openUploadModal()
     {
         $this->showUploadModal = true;
-        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
+        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadContent', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
     }
 
     public function closeUploadModal()
     {
         $this->showUploadModal = false;
-        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
+        $this->reset(['uploadFile', 'uploadName', 'uploadDescription', 'uploadContent', 'uploadCategory', 'uploadType', 'uploadSpeakers', 'uploadSegments', 'uploadCues']);
     }
 
     public function uploadFileSubmit()
     {
-        $this->validate([
-            'uploadFile' => 'required|file|max:512000', // 500MB max
+        // Determine if this is a file upload or content type
+        $isFileType = in_array($this->uploadType, ['audio', 'video', 'presentation', 'document', 'image', 'other']);
+        $isContentType = in_array($this->uploadType, ['url', 'rich_text', 'plain_text']);
+        
+        $rules = [
             'uploadName' => 'required|string|min:3|max:255',
             'uploadDescription' => 'nullable|string',
             'uploadCategory' => 'nullable|exists:content_categories,id',
-            'uploadType' => 'required|in:audio,video,presentation,document,image,other',
-        ]);
+            'uploadType' => 'required|in:audio,video,presentation,document,image,rich_text,plain_text,url,other',
+        ];
+        
+        if ($isFileType) {
+            $rules['uploadFile'] = 'required|file|max:512000'; // 500MB max
+        }
+        
+        if ($isContentType) {
+            $rules['uploadContent'] = 'required|string';
+        }
+        
+        $this->validate($rules);
 
         try {
-            $file = $this->uploadFile;
-            $originalName = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $mimeType = $file->getMimeType();
-            $fileSize = $file->getSize();
-
-            // Generate unique filename
-            $filename = Str::slug($this->uploadName) . '-' . time() . '.' . $extension;
-            $path = $file->storeAs('content/' . $this->eventId, $filename, 'public');
-
-            // Auto-categorize headshots
             $categoryId = $this->uploadCategory;
-            if (empty($categoryId) && $this->uploadType === 'image' && 
-                (stripos($this->uploadName, 'headshot') !== false || 
-                 stripos($originalName, 'headshot') !== false)) {
-                // Find or create Headshots category
-                $headshotCategory = ContentCategory::firstOrCreate(
-                    [
-                        'event_id' => $this->eventId,
-                        'name' => 'Headshots',
-                    ],
-                    [
-                        'description' => 'Speaker and staff headshots',
-                        'color' => '#8B5CF6', // Purple
-                        'is_active' => true,
-                    ]
-                );
-                $categoryId = $headshotCategory->id;
-            }
-
-            // Create content file record
-            $contentFile = ContentFile::create([
+            $contentData = [
                 'event_id' => $this->eventId,
                 'category_id' => $categoryId,
                 'name' => $this->uploadName,
                 'description' => $this->uploadDescription,
                 'file_type' => $this->uploadType,
-                'mime_type' => $mimeType,
-                'current_file_path' => $path,
-                'current_file_size' => $fileSize,
-                'current_version' => 1,
-                'metadata' => [
-                    'original_name' => $originalName,
-                    'extension' => $extension,
-                ],
-            ]);
+            ];
+            
+            if ($isFileType) {
+                // Handle file upload
+                $file = $this->uploadFile;
+                $originalName = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $mimeType = $file->getMimeType();
+                $fileSize = $file->getSize();
 
-            // Create initial version record
-            \App\Models\ContentFileVersion::create([
-                'content_file_id' => $contentFile->id,
-                'version_number' => 1,
-                'file_path' => $path,
-                'file_size' => $fileSize,
-                'mime_type' => $mimeType,
-                'metadata' => [
+                // Generate unique filename
+                $filename = Str::slug($this->uploadName) . '-' . time() . '.' . $extension;
+                $path = $file->storeAs('content/' . $this->eventId, $filename, 'public');
+
+                // Auto-categorize headshots
+                if (empty($categoryId) && $this->uploadType === 'image' && 
+                    (stripos($this->uploadName, 'headshot') !== false || 
+                     stripos($originalName, 'headshot') !== false)) {
+                    // Find or create Headshots category
+                    $headshotCategory = ContentCategory::firstOrCreate(
+                        [
+                            'event_id' => $this->eventId,
+                            'name' => 'Headshots',
+                        ],
+                        [
+                            'description' => 'Speaker and staff headshots',
+                            'color' => '#8B5CF6', // Purple
+                            'is_active' => true,
+                        ]
+                    );
+                    $categoryId = $headshotCategory->id;
+                    $contentData['category_id'] = $categoryId;
+                }
+
+                $contentData['mime_type'] = $mimeType;
+                $contentData['current_file_path'] = $path;
+                $contentData['current_file_size'] = $fileSize;
+                $contentData['current_version'] = 1;
+                $contentData['metadata'] = [
                     'original_name' => $originalName,
                     'extension' => $extension,
-                ],
-                'change_notes' => 'Initial upload',
-                'uploaded_by' => auth()->id(),
-            ]);
+                ];
+                
+                // Create content file record
+                $contentFile = ContentFile::create($contentData);
+
+                // Create initial version record
+                \App\Models\ContentFileVersion::create([
+                    'content_file_id' => $contentFile->id,
+                    'version_number' => 1,
+                    'file_path' => $path,
+                    'file_size' => $fileSize,
+                    'mime_type' => $mimeType,
+                    'metadata' => [
+                        'original_name' => $originalName,
+                        'extension' => $extension,
+                    ],
+                    'change_notes' => 'Initial upload',
+                    'uploaded_by' => auth()->id(),
+                ]);
+            } else {
+                // Handle content types (URL, rich_text, plain_text)
+                $contentData['content'] = $this->uploadContent;
+                $contentData['mime_type'] = match($this->uploadType) {
+                    'url' => 'text/uri-list',
+                    'rich_text' => 'text/html',
+                    'plain_text' => 'text/plain',
+                    default => 'text/plain',
+                };
+                $contentData['current_file_size'] = strlen($this->uploadContent);
+                $contentData['current_version'] = 1;
+                
+                // Create content file record
+                $contentFile = ContentFile::create($contentData);
+            }
             
             // Sync relationships
             if (!empty($this->uploadSpeakers)) {
@@ -154,7 +189,8 @@ class Index extends Component
                 $contentFile->cues()->sync($this->uploadCues);
             }
 
-            session()->flash('message', 'File uploaded successfully.');
+            $message = $isFileType ? 'File uploaded successfully.' : 'Content added successfully.';
+            session()->flash('message', $message);
             $this->closeUploadModal();
         } catch (\Exception $e) {
             session()->flash('error', 'Upload failed: ' . $e->getMessage());

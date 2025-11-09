@@ -82,7 +82,8 @@
                                 <option value="presentation">Presentation</option>
                                 <option value="document">Document</option>
                                 <option value="image">Image</option>
-                                <option value="rich_text">Rich Text</option>
+                                <option value="rich_text">Rich Text (HTML)</option>
+                                <option value="plain_text">Plain Text</option>
                                 <option value="url">URL</option>
                                 <option value="other">Other</option>
                             </flux:select>
@@ -102,6 +103,20 @@
                                     class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
                                 ></textarea>
                             </div>
+                            @error('content_text') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+                    @endif
+
+                    <!-- Plain Text Content -->
+                    @if($file_type === 'plain_text')
+                        <div>
+                            <flux:label for="content_text" required>Content</flux:label>
+                            <flux:textarea 
+                                wire:model.blur="content_text" 
+                                id="content_text" 
+                                rows="10"
+                                class="w-full"
+                            />
                             @error('content_text') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
                     @endif

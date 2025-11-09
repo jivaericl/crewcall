@@ -144,9 +144,18 @@
 
                             @if($content->file_type === 'rich_text' && $content->content)
                                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content</dt>
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content (HTML)</dt>
                                     <dd class="text-sm text-gray-900 dark:text-gray-100 prose dark:prose-invert max-w-none">
                                         {!! $content->content !!}
+                                    </dd>
+                                </div>
+                            @endif
+
+                            @if($content->file_type === 'plain_text' && $content->content)
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Content</dt>
+                                    <dd class="text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
+                                        {{ $content->content }}
                                     </dd>
                                 </div>
                             @endif
@@ -165,7 +174,7 @@
                                 </div>
                             @endif
 
-                            @if($content->file_type !== 'rich_text' && $content->file_type !== 'url')
+                            @if(!in_array($content->file_type, ['rich_text', 'plain_text', 'url']))
                                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                                     <flux:button href="{{ $content->download_url }}" target="_blank" variant="primary">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

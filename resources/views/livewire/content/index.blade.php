@@ -203,49 +203,122 @@
             
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                    Upload New File
+                    Add Content
                 </h3>
                 
                 <form wire:submit.prevent="uploadFileSubmit" class="space-y-4">
+                    <!-- Content Type - First Question -->
                     <div>
-                        <flux:label for="uploadFile" required>Select File</flux:label>
-                        <input 
-                            wire:model="uploadFile" 
-                            type="file" 
-                            id="uploadFile"
-                            class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-blue-50 file:text-blue-700
-                                hover:file:bg-blue-100"
-                        />
-                        @error('uploadFile') <flux:error>{{ $message }}</flux:error> @enderror
+                        <flux:label for="uploadType" required>Content Type</flux:label>
+                        <flux:select wire:model.live="uploadType" id="uploadType" class="w-full">
+                            <option value="">Select content type</option>
+                            <optgroup label="Files">
+                                <option value="audio">Audio File</option>
+                                <option value="video">Video File</option>
+                                <option value="presentation">Presentation File</option>
+                                <option value="document">Document File</option>
+                                <option value="image">Image File</option>
+                                <option value="other">Other File</option>
+                            </optgroup>
+                            <optgroup label="Text & Links">
+                                <option value="url">URL/Link</option>
+                                <option value="rich_text">Rich Text (HTML)</option>
+                                <option value="plain_text">Plain Text</option>
+                            </optgroup>
+                        </flux:select>
+                        @error('uploadType') <flux:error>{{ $message }}</flux:error> @enderror
                     </div>
 
-                    <div>
-                        <flux:label for="uploadName" required>File Name</flux:label>
-                        <flux:input 
-                            wire:model.blur="uploadName" 
-                            id="uploadName" 
-                            type="text" 
-                            class="w-full"
-                        />
-                        @error('uploadName') <flux:error>{{ $message }}</flux:error> @enderror
-                    </div>
+                    @if($uploadType)
+                        <!-- File Upload - Only for file types -->
+                        @if(in_array($uploadType, ['audio', 'video', 'presentation', 'document', 'image', 'other']))
+                            <div>
+                                <flux:label for="uploadFile" required>Select File</flux:label>
+                                <input 
+                                    wire:model="uploadFile" 
+                                    type="file" 
+                                    id="uploadFile"
+                                    class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:rounded file:border-0
+                                        file:text-sm file:font-semibold
+                                        file:bg-blue-50 file:text-blue-700
+                                        hover:file:bg-blue-100"
+                                />
+                                @error('uploadFile') <flux:error>{{ $message }}</flux:error> @enderror
+                            </div>
+                        @endif
 
-                    <div>
-                        <flux:label for="uploadDescription">Description</flux:label>
-                        <flux:textarea 
-                            wire:model.blur="uploadDescription" 
-                            id="uploadDescription" 
-                            rows="3"
-                            class="w-full"
-                        />
-                        @error('uploadDescription') <flux:error>{{ $message }}</flux:error> @enderror
-                    </div>
+                        <!-- URL Input - Only for URL type -->
+                        @if($uploadType === 'url')
+                            <div>
+                                <flux:label for="uploadContent" required>URL/Link</flux:label>
+                                <flux:input 
+                                    wire:model.blur="uploadContent" 
+                                    id="uploadContent" 
+                                    type="url"
+                                    placeholder="https://example.com"
+                                    class="w-full"
+                                />
+                                @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
+                            </div>
+                        @endif
 
-                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Rich Text Editor - Only for rich_text type -->
+                        @if($uploadType === 'rich_text')
+                            <div>
+                                <flux:label for="uploadContent" required>Content (HTML)</flux:label>
+                                <div wire:ignore>
+                                    <textarea 
+                                        id="uploadContent"
+                                        wire:model="uploadContent"
+                                        rows="10"
+                                        class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    ></textarea>
+                                </div>
+                                @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
+                            </div>
+                        @endif
+
+                        <!-- Plain Text - Only for plain_text type -->
+                        @if($uploadType === 'plain_text')
+                            <div>
+                                <flux:label for="uploadContent" required>Content</flux:label>
+                                <flux:textarea 
+                                    wire:model.blur="uploadContent" 
+                                    id="uploadContent" 
+                                    rows="10"
+                                    class="w-full"
+                                />
+                                @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
+                            </div>
+                        @endif
+
+                        <!-- Name -->
+                        <div>
+                            <flux:label for="uploadName" required>Name</flux:label>
+                            <flux:input 
+                                wire:model.blur="uploadName" 
+                                id="uploadName" 
+                                type="text" 
+                                class="w-full"
+                            />
+                            @error('uploadName') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <flux:label for="uploadDescription">Description</flux:label>
+                            <flux:textarea 
+                                wire:model.blur="uploadDescription" 
+                                id="uploadDescription" 
+                                rows="3"
+                                class="w-full"
+                            />
+                            @error('uploadDescription') <flux:error>{{ $message }}</flux:error> @enderror
+                        </div>
+
+                        <!-- Category -->
                         <div>
                             <flux:label for="uploadCategory">Category</flux:label>
                             <flux:select wire:model.blur="uploadCategory" id="uploadCategory" class="w-full">
@@ -256,31 +329,17 @@
                             </flux:select>
                             @error('uploadCategory') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
-
-                        <div>
-                            <flux:label for="uploadType" required>File Type</flux:label>
-                            <flux:select wire:model.blur="uploadType" id="uploadType" class="w-full">
-                                <option value="">Select type</option>
-                                <option value="audio">Audio</option>
-                                <option value="video">Video</option>
-                                <option value="presentation">Presentation</option>
-                                <option value="document">Document</option>
-                                <option value="image">Image</option>
-                                <option value="rich_text">Rich Text</option>
-                                <option value="url">URL</option>
-                                <option value="other">Other</option>
-                            </flux:select>
-                            @error('uploadType') <flux:error>{{ $message }}</flux:error> @enderror
-                        </div>
-                    </div>
+                    @endif
 
                     <div class="flex justify-end gap-3 mt-6">
                         <button type="button" wire:click="closeUploadModal" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
                             Cancel
                         </button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                            Upload File
-                        </button>
+                        @if($uploadType)
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                {{ in_array($uploadType, ['audio', 'video', 'presentation', 'document', 'image', 'other']) ? 'Upload File' : 'Add Content' }}
+                            </button>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -348,3 +407,50 @@
         @endif
     @endif
 </div>
+
+@push('scripts')
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        let quill = null;
+        
+        function initQuill() {
+            const editor = document.getElementById('uploadContent');
+            if (editor && @this.uploadType === 'rich_text' && !quill) {
+                quill = new Quill(editor, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            ['link'],
+                            ['clean']
+                        ]
+                    }
+                });
+                
+                // Set initial content
+                const content = @this.uploadContent || '';
+                quill.root.innerHTML = content;
+                
+                // Update Livewire property on text change
+                quill.on('text-change', function() {
+                    @this.set('uploadContent', quill.root.innerHTML);
+                });
+            }
+        }
+        
+        // Watch for uploadType changes
+        Livewire.hook('morph.updated', () => {
+            if (@this.uploadType === 'rich_text') {
+                quill = null;
+                setTimeout(initQuill, 100);
+            }
+        });
+    });
+</script>
+@endpush
