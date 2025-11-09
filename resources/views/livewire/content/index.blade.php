@@ -412,13 +412,25 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    document.addEventListener('livewire:initialized', () => {
-        let quill = null;
-        
-        function initQuill() {
-            const editor = document.getElementById('uploadContent');
-            if (editor && @this.uploadType === 'rich_text' && !quill) {
-                quill = new Quill(editor, {
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('quill-init', () => {
+            initQuillEditor();
+        });
+    });
+
+    let quillEditor = null;
+
+    function initQuillEditor() {
+        // Clean up existing editor
+        if (quillEditor) {
+            quillEditor = null;
+        }
+
+        // Wait for DOM to be ready
+        setTimeout(() => {
+            const container = document.getElementById('uploadContent');
+            if (container && !container.classList.contains('ql-container')) {
+                quillEditor = new Quill(container, {
                     theme: 'snow',
                     modules: {
                         toolbar: [
@@ -430,25 +442,25 @@
                             ['link'],
                             ['clean']
                         ]
-                    }
+                    },
+                    placeholder: 'Enter your content here...'
                 });
-                
-                // Set initial content
-                const content = @this.uploadContent || '';
-                quill.root.innerHTML = content;
-                
+
                 // Update Livewire property on text change
-                quill.on('text-change', function() {
-                    @this.set('uploadContent', quill.root.innerHTML);
+                quillEditor.on('text-change', function() {
+                    const html = quillEditor.root.innerHTML;
+                    @this.set('uploadContent', html);
                 });
             }
-        }
-        
-        // Watch for uploadType changes
-        Livewire.hook('morph.updated', () => {
-            if (@this.uploadType === 'rich_text') {
-                quill = null;
-                setTimeout(initQuill, 100);
+        }, 100);
+    }
+
+    // Initialize when uploadType changes to rich_text
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.hook('morph.updated', ({ el, component }) => {
+            const uploadType = component.get('uploadType');
+            if (uploadType === 'rich_text') {
+                initQuillEditor();
             }
         });
     });
