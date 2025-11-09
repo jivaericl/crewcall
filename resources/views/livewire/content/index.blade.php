@@ -404,7 +404,7 @@
     @endif
 </div>
 
-@push('scripts')
+<!-- Quill.js for Rich Text Editor -->
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <style>
@@ -505,4 +505,3 @@
         setInterval(tryInitQuill, 100);
     })();
 </script>
-@endpush
