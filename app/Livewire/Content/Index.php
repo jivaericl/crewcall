@@ -193,6 +193,13 @@ class Index extends Component
             session()->flash('message', $message);
             $this->closeUploadModal();
         } catch (\Exception $e) {
+            \Log::error('Content upload failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'uploadType' => $this->uploadType,
+                'isFileType' => $isFileType ?? null,
+                'isContentType' => $isContentType ?? null,
+            ]);
             session()->flash('error', 'Upload failed: ' . $e->getMessage());
         }
     }

@@ -266,12 +266,12 @@
 
                         <!-- Rich Text Editor - Only for rich_text type -->
                         @if($uploadType === 'rich_text')
-                            <div x-data="quillEditor()" x-init="init()">
+                            <div>
                                 <flux:label required>Content (HTML)</flux:label>
-                                <div wire:ignore class="bg-white dark:bg-white rounded-md border border-gray-300 dark:border-gray-600">
-                                    <div id="quill-editor" style="min-height: 300px;"></div>
-                                    <input type="hidden" wire:model="uploadContent" x-ref="hiddenInput">
+                                <div wire:ignore class="bg-white rounded-md border border-gray-300 dark:border-gray-600">
+                                    <div id="quill-editor-container"></div>
                                 </div>
+                                <input type="hidden" wire:model="uploadContent" id="quill-hidden-input">
                                 @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
                             </div>
                         @endif
@@ -408,60 +408,79 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <style>
-    .ql-toolbar {
+    #quill-editor-container .ql-toolbar {
         background: #f3f4f6;
         border-top-left-radius: 0.375rem;
         border-top-right-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+        border-bottom: none;
     }
-    .ql-container {
+    #quill-editor-container .ql-container {
         background: white;
         border-bottom-left-radius: 0.375rem;
         border-bottom-right-radius: 0.375rem;
         font-size: 14px;
+        border: 1px solid #d1d5db;
     }
-    .ql-editor {
+    #quill-editor-container .ql-editor {
         min-height: 250px;
         max-height: 500px;
         overflow-y: auto;
     }
-    .ql-editor.ql-blank::before {
+    #quill-editor-container .ql-editor.ql-blank::before {
         color: #9ca3af;
         font-style: normal;
     }
 </style>
 <script>
-    function quillEditor() {
-        return {
-            quill: null,
-            init() {
-                this.$nextTick(() => {
-                    const editor = document.getElementById('quill-editor');
-                    if (editor && !this.quill) {
-                        this.quill = new Quill(editor, {
-                            theme: 'snow',
-                            modules: {
-                                toolbar: [
-                                    [{ 'header': [1, 2, 3, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    ['blockquote', 'code-block'],
-                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                    [{ 'color': [] }, { 'background': [] }],
-                                    ['link'],
-                                    ['clean']
-                                ]
-                            },
-                            placeholder: 'Enter your content here...'
-                        });
+    let quillInstance = null;
 
-                        // Update Livewire on text change
-                        this.quill.on('text-change', () => {
-                            const html = this.quill.root.innerHTML;
-                            @this.set('uploadContent', html);
-                        });
-                    }
-                });
-            }
+    function initializeQuill() {
+        // Destroy existing instance
+        if (quillInstance) {
+            quillInstance = null;
+        }
+
+        const container = document.getElementById('quill-editor-container');
+        if (container && container.innerHTML === '') {
+            quillInstance = new Quill('#quill-editor-container', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['link'],
+                        ['clean']
+                    ]
+                },
+                placeholder: 'Enter your content here...'
+            });
+
+            // Update hidden input on text change
+            quillInstance.on('text-change', function() {
+                const html = quillInstance.root.innerHTML;
+                const hiddenInput = document.getElementById('quill-hidden-input');
+                if (hiddenInput) {
+                    hiddenInput.value = html;
+                    hiddenInput.dispatchEvent(new Event('input'));
+                }
+            });
         }
     }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initializeQuill, 500);
+    });
+
+    // Re-initialize when Livewire updates the DOM
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.hook('morph.updated', () => {
+            setTimeout(initializeQuill, 500);
+        });
+    });
 </script>
 @endpush
