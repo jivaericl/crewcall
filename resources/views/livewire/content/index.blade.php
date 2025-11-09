@@ -504,4 +504,5 @@
         // Start checking immediately and repeatedly
         setInterval(tryInitQuill, 100);
     })();
-</script>
+    </script>
+</div>
