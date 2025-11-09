@@ -433,14 +433,42 @@
     }
 </style>
 <script>
-    let quillInstance = null;
+    (function() {
+        let quillInstance = null;
+        let checkCount = 0;
+        const maxChecks = 50; // Check for 5 seconds (50 * 100ms)
 
-    function initializeQuill() {
-        const container = document.getElementById('quill-editor-container');
-        
-        // Only initialize if container exists and Quill hasn't been initialized on it
-        if (container && !container.classList.contains('ql-container')) {
+        function tryInitQuill() {
+            // Check if Quill library is loaded
+            if (typeof Quill === 'undefined') {
+                console.log('Quill library not loaded yet...');
+                if (checkCount < maxChecks) {
+                    checkCount++;
+                    setTimeout(tryInitQuill, 100);
+                }
+                return;
+            }
+
+            const container = document.getElementById('quill-editor-container');
+            
+            // Check if container exists
+            if (!container) {
+                if (checkCount < maxChecks) {
+                    checkCount++;
+                    setTimeout(tryInitQuill, 100);
+                }
+                return;
+            }
+
+            // Check if already initialized
+            if (container.classList.contains('ql-container')) {
+                console.log('Quill already initialized');
+                return;
+            }
+
+            // Initialize Quill
             try {
+                console.log('Initializing Quill editor...');
                 quillInstance = new Quill('#quill-editor-container', {
                     theme: 'snow',
                     modules: {
@@ -457,48 +485,24 @@
                     placeholder: 'Enter your content here...'
                 });
 
+                console.log('Quill editor initialized successfully!');
+
                 // Update hidden input on text change
                 quillInstance.on('text-change', function() {
                     const html = quillInstance.root.innerHTML;
                     const hiddenInput = document.getElementById('quill-hidden-input');
                     if (hiddenInput) {
                         hiddenInput.value = html;
-                        // Trigger Livewire update
-                        const event = new Event('input', { bubbles: true });
-                        hiddenInput.dispatchEvent(event);
+                        hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
                     }
                 });
             } catch (error) {
                 console.error('Error initializing Quill:', error);
             }
         }
-    }
 
-    // Watch for the container to appear in the DOM
-    const observer = new MutationObserver(function(mutations) {
-        const container = document.getElementById('quill-editor-container');
-        if (container && !container.classList.contains('ql-container')) {
-            initializeQuill();
-        }
-    });
-
-    // Start observing when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-            // Try immediate initialization
-            setTimeout(initializeQuill, 100);
-        });
-    } else {
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        // Try immediate initialization
-        setTimeout(initializeQuill, 100);
-    }
+        // Start checking immediately and repeatedly
+        setInterval(tryInitQuill, 100);
+    })();
 </script>
 @endpush
