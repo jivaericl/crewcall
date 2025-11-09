@@ -268,8 +268,8 @@
                         @if($uploadType === 'rich_text')
                             <div x-data="quillEditor()" x-init="init()">
                                 <flux:label required>Content (HTML)</flux:label>
-                                <div wire:ignore>
-                                    <div id="quill-editor" style="height: 300px; background: white;"></div>
+                                <div wire:ignore class="bg-white dark:bg-white rounded-md border border-gray-300 dark:border-gray-600">
+                                    <div id="quill-editor" style="min-height: 300px;"></div>
                                     <input type="hidden" wire:model="uploadContent" x-ref="hiddenInput">
                                 </div>
                                 @error('uploadContent') <flux:error>{{ $message }}</flux:error> @enderror
@@ -407,6 +407,28 @@
 @push('scripts')
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<style>
+    .ql-toolbar {
+        background: #f3f4f6;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+    }
+    .ql-container {
+        background: white;
+        border-bottom-left-radius: 0.375rem;
+        border-bottom-right-radius: 0.375rem;
+        font-size: 14px;
+    }
+    .ql-editor {
+        min-height: 250px;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    .ql-editor.ql-blank::before {
+        color: #9ca3af;
+        font-style: normal;
+    }
+</style>
 <script>
     function quillEditor() {
         return {
