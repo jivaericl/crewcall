@@ -434,53 +434,62 @@
 </style>
 <script>
     let quillInstance = null;
+    let quillInitialized = false;
 
     function initializeQuill() {
-        // Destroy existing instance
-        if (quillInstance) {
-            quillInstance = null;
-        }
-
         const container = document.getElementById('quill-editor-container');
-        if (container && container.innerHTML === '') {
-            quillInstance = new Quill('#quill-editor-container', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        ['blockquote', 'code-block'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                        [{ 'color': [] }, { 'background': [] }],
-                        ['link'],
-                        ['clean']
-                    ]
-                },
-                placeholder: 'Enter your content here...'
-            });
+        
+        // Check if container exists and hasn't been initialized yet
+        if (container && !quillInitialized) {
+            console.log('Initializing Quill editor...');
+            
+            // Check if Quill has already been initialized on this container
+            if (!container.classList.contains('ql-container')) {
+                quillInstance = new Quill('#quill-editor-container', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            ['blockquote', 'code-block'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            ['link'],
+                            ['clean']
+                        ]
+                    },
+                    placeholder: 'Enter your content here...'
+                });
 
-            // Update hidden input on text change
-            quillInstance.on('text-change', function() {
-                const html = quillInstance.root.innerHTML;
-                const hiddenInput = document.getElementById('quill-hidden-input');
-                if (hiddenInput) {
-                    hiddenInput.value = html;
-                    hiddenInput.dispatchEvent(new Event('input'));
-                }
-            });
+                quillInitialized = true;
+                console.log('Quill editor initialized successfully');
+
+                // Update hidden input on text change
+                quillInstance.on('text-change', function() {
+                    const html = quillInstance.root.innerHTML;
+                    const hiddenInput = document.getElementById('quill-hidden-input');
+                    if (hiddenInput) {
+                        hiddenInput.value = html;
+                        hiddenInput.dispatchEvent(new Event('input'));
+                    }
+                });
+            }
+        } else if (!container) {
+            // Reset flag if container doesn't exist
+            quillInitialized = false;
         }
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(initializeQuill, 500);
-    });
-
-    // Re-initialize when Livewire updates the DOM
+    // Initialize when Livewire updates the DOM
     document.addEventListener('livewire:initialized', () => {
         Livewire.hook('morph.updated', () => {
-            setTimeout(initializeQuill, 500);
+            setTimeout(initializeQuill, 300);
         });
+    });
+
+    // Also try on page load
+    window.addEventListener('load', function() {
+        setTimeout(initializeQuill, 300);
     });
 </script>
 @endpush
