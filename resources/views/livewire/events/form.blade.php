@@ -1,17 +1,16 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ $eventId ? __('Edit Event') : __('Create New Event') }}
-            </h2>
+    <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $eventId ? __('Edit Event') : __('Create New Event') }}</h2>
+            </div>
             <flux:button href="{{ route('events.index') }}" variant="ghost">
                 Back to Events
             </flux:button>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+        <div>
             @if (session()->has('tag-message'))
                 <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded">
                     {{ session('tag-message') }}
@@ -311,4 +310,6 @@
             @this.call('setTimezone', timezone);
         });
     </script>
+        </div>
+    </div>
 </div>

@@ -1,19 +1,14 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Cues - {{ $segment->name }}
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {{ $segment->session->name }} | {{ $segment->session->event->name }}
-                </p>
-            </div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Cues - {{ $segment->name }}</h2>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {{ $segment->session->name }} | {{ $segment->session->event->name }}
+            </p>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div>
             @if (session()->has('message'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
                     {{ session('message') }}
@@ -273,6 +268,7 @@
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
