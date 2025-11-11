@@ -1,5 +1,5 @@
 <div>
-    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
         <!-- Header -->
         <div class="mb-6 flex justify-between items-center">
             <div>
@@ -352,7 +352,7 @@
                 <div class="flex items-center justify-center min-h-screen px-4">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" wire:click="closeVersions"></div>
                     
-                    <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full p-6">
+                    <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-7xl w-full p-6">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                 Version History - {{ $viewingFile->name }}

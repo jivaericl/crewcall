@@ -1,6 +1,6 @@
 <div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-    <flux:header container class="mb-6">
+    <flux:header class="mb-6">
         <flux:heading size="xl">{{ $speaker->name }}</flux:heading>
         
         <flux:button href="{{ route('events.speakers.edit', ['eventId' => $eventId, 'speakerId' => $speakerId]) }}" icon="pencil">

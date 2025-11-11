@@ -1,13 +1,14 @@
-<div class="py-12">
-    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+<div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {{ $contactId ? 'Edit Contact' : 'Create Contact' }}
+            </h2>
+        </div>
+
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
             <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                    {{ $contactId ? 'Edit Contact' : 'Create Contact' }}
-                </h2>
-
-                <form wire:submit="save">
-                    <!-- Name Fields -->
+                <form wire:submit="save">                   <!-- Name Fields -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <flux:label>First Name *</flux:label>
@@ -310,5 +311,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
