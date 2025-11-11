@@ -44,7 +44,7 @@ class EventNavigation extends Component
                 ],
                 [
                     'label' => 'Event Info',
-                    'icon' => 'information-circle',
+                    'icon' => 'info-circle',
                     'route' => 'events.show',
                     'params' => [$this->eventId],
                 ],
@@ -55,14 +55,8 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
-                    'label' => 'Content',
-                    'icon' => 'folder',
-                    'route' => 'events.content.index',
-                    'params' => [$this->eventId],
-                ],
-                [
                     'label' => 'Segments',
-                    'icon' => 'view-grid',
+                    'icon' => 'collection',
                     'route' => 'events.all-segments',
                     'params' => [$this->eventId],
                 ],
@@ -73,17 +67,10 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
-                    'label' => 'Audit Logs',
-                    'icon' => 'clipboard-list',
-                    'route' => 'audit-logs.index',
-                    'params' => [],
-                ],
-                [
-                    'label' => 'Activity',
-                    'icon' => 'bell',
-                    'route' => 'activity-feed.index',
-                    'params' => [],
-                    'badge' => \App\Models\CommentMention::forUser(auth()->id())->unread()->count(),
+                    'label' => 'Content',
+                    'icon' => 'folder',
+                    'route' => 'events.content.index',
+                    'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'People',
@@ -108,7 +95,7 @@ class EventNavigation extends Component
                 ],
                 [
                     'label' => 'Event Settings',
-                    'icon' => 'cog',
+                    'icon' => 'adjustments',
                     'children' => [
                         [
                             'label' => 'Content Categories',
@@ -129,6 +116,23 @@ class EventNavigation extends Component
                             'label' => 'Cue Types',
                             'route' => 'events.cue-types.index',
                             'params' => [$this->eventId],
+                        ],
+                    ],
+                ],
+                [
+                    'label' => 'Activity',
+                    'icon' => 'lightning-bolt',
+                    'children' => [
+                        [
+                            'label' => 'Conversations',
+                            'route' => 'activity-feed.index',
+                            'params' => [],
+                            'badge' => \App\Models\CommentMention::forUser(auth()->id())->unread()->count(),
+                        ],
+                        [
+                            'label' => 'Audit Logs',
+                            'route' => 'audit-logs.index',
+                            'params' => [],
                         ],
                     ],
                 ],
