@@ -155,10 +155,9 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Details Modal -->
-    <div x-data="{ show: @entangle('showDetailsModal') }" 
+        <!-- Details Modal -->
+        <div x-data="{ show: @entangle('showDetailsModal') }" 
          x-show="show" 
          x-cloak
          class="fixed inset-0 z-50 overflow-y-auto" 
@@ -281,3 +280,4 @@
             @endif
         </div>
     </div>
+</div>

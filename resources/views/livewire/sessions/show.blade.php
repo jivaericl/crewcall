@@ -380,8 +380,8 @@
             </div>
         </div>
     
-    <!-- Reset Confirmation Modal -->
-    <div x-data="{ show: @entangle('showResetModal') }" 
+        <!-- Reset Confirmation Modal -->
+        <div x-data="{ show: @entangle('showResetModal') }" 
          x-show="show" 
          x-cloak
          class="fixed inset-0 z-50 overflow-y-auto" 
@@ -431,5 +431,6 @@
                     </button>
                 </div>
             </div>
+        </div>
     </div>
 </div>

@@ -63,7 +63,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <div class="font-semibold">{{ $speaker->name }}</div>
+                            <div class="font-semibold text-gray-900 dark:text-white">{{ $speaker->name }}</div>
                             @if(!$speaker->is_active)
                                 <flux:badge color="gray" size="sm">Inactive</flux:badge>
                             @endif
@@ -71,8 +71,8 @@
                                 <flux:badge color="blue" size="sm">Has Account</flux:badge>
                             @endif
                         </td>
-                        <td class="px-6 py-4">{{ $speaker->full_title }}</td>
-                        <td class="px-6 py-4">{{ $speaker->email }}</td>
+                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $speaker->full_title }}</td>
+                        <td class="px-6 py-4 text-gray-900 dark:text-white">{{ $speaker->email }}</td>
                         <td class="px-6 py-4">
                             <flux:badge color="purple">{{ $speaker->sessions->count() }}</flux:badge>
                         </td>
