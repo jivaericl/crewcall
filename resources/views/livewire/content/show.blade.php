@@ -13,9 +13,12 @@
                 <flux:button href="{{ route('events.content.index', $eventId) }}" variant="ghost">
                     ← Back to Content
                 </flux:button>
-                <flux:button href="{{ route('events.content.edit', ['eventId' => $eventId, 'contentId' => $contentId]) }}" variant="primary">
+                <a
+                    href="{{ route('events.content.edit', ['eventId' => $eventId, 'contentId' => $contentId]) }}"
+                    class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                >
                     Edit
-                </flux:button>
+                </a>
             </div>
         </div>
     </x-slot>
@@ -176,12 +179,17 @@
 
                             @if(!in_array($content->file_type, ['rich_text', 'plain_text', 'url']))
                                 <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                    <flux:button href="{{ $content->download_url }}" target="_blank" variant="primary">
+                                    <a
+                                        href="{{ $content->download_url }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                                    >
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                         </svg>
                                         Download File
-                                    </flux:button>
+                                    </a>
                                 </div>
                             @endif
                         </div>
