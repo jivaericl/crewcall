@@ -43,7 +43,7 @@ class Form extends Component
     public $showTagModal = false;
     public $newTagName = '';
     public $newTagColor = '#3B82F6';
-    
+
     // Custom fields
     public $customFields = [];
 
@@ -65,6 +65,9 @@ class Form extends Component
             'notes' => 'nullable|string',
             'is_active' => 'boolean',
             'selectedTags' => 'array',
+            'selectedSessions' => 'array',
+            'selectedContentFiles' => 'array',
+            'customFields.*' => 'nullable',
         ];
     }
 
@@ -93,7 +96,7 @@ class Form extends Component
             $this->selectedTags = $this->contact->tags->pluck('id')->toArray();
             $this->selectedSessions = $this->contact->sessions->pluck('id')->toArray();
             $this->selectedContentFiles = $this->contact->contentFiles->pluck('id')->toArray();
-            
+
             // Load custom field values
             foreach ($this->contact->customFieldValues as $value) {
                 $this->customFields[$value->custom_field_id] = $value->value;
@@ -105,46 +108,66 @@ class Form extends Component
     {
         $this->validate();
 
-        $data = [
-            'event_id' => $this->eventId,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'company' => $this->company,
-            'title' => $this->title,
-            'contact_type' => $this->contact_type,
-            'address' => $this->address,
-            'city' => $this->city,
-            'state' => $this->state,
-            'zip' => $this->zip,
-            'country' => $this->country,
-            'notes' => $this->notes,
-            'is_active' => $this->is_active,
-        ];
+        try {
+            $data = [
+                'event_id' => $this->eventId,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'company' => $this->company,
+                'title' => $this->title,
+                'contact_type' => $this->contact_type,
+                'address' => $this->address,
+                'city' => $this->city,
+                'state' => $this->state,
+                'zip' => $this->zip,
+                'country' => $this->country,
+                'notes' => $this->notes,
+                'is_active' => $this->is_active,
+            ];
 
-        if ($this->contactId) {
-            $this->contact->update($data);
-            $message = 'Contact updated successfully.';
-        } else {
-            $this->contact = Contact::create($data);
-            $message = 'Contact created successfully.';
+            // Use database transaction to ensure all operations succeed or fail together
+            \DB::beginTransaction();
+
+            if ($this->contactId) {
+                $this->contact->update($data);
+                $message = 'Contact updated successfully.';
+            } else {
+                $this->contact = Contact::create($data);
+                $message = 'Contact created successfully.';
+            }
+
+            // Sync tags
+            $this->contact->tags()->sync($this->selectedTags);
+
+            // Sync sessions
+            $this->contact->sessions()->sync($this->selectedSessions);
+
+            // Sync content files
+            $this->contact->contentFiles()->sync($this->selectedContentFiles);
+
+            // Save custom field values
+            $this->contact->syncCustomFields($this->customFields);
+
+            \DB::commit();
+
+            session()->flash('message', $message);
+            return redirect()->route('events.contacts.show', [$this->eventId, $this->contact->id]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+
+            // Log the error
+            \Log::error('Error saving contact: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'event_id' => $this->eventId,
+                'contact_id' => $this->contactId,
+                'exception' => $e,
+            ]);
+
+            session()->flash('error', 'An error occurred while saving the contact. Please try again or contact support.');
+            return null;
         }
-
-        // Sync tags
-        $this->contact->tags()->sync($this->selectedTags);
-        
-        // Sync sessions
-        $this->contact->sessions()->sync($this->selectedSessions);
-        
-        // Sync content files
-        $this->contact->contentFiles()->sync($this->selectedContentFiles);
-        
-        // Save custom field values
-        $this->contact->syncCustomFields($this->customFields);
-
-        session()->flash('message', $message);
-        return redirect()->route('events.contacts.show', [$this->eventId, $this->contact->id]);
     }
 
     public function openTagModal()
@@ -158,7 +181,7 @@ class Form extends Component
         $this->newTagName = '';
         $this->newTagColor = '#3B82F6';
     }
-    
+
     public function createTag()
     {
         $this->validate([
@@ -166,31 +189,43 @@ class Form extends Component
             'newTagColor' => 'required|string|max:7',
         ]);
 
-        $tag = Tag::create([
-            'event_id' => $this->eventId,
-            'name' => $this->newTagName,
-            'color' => $this->newTagColor,
-        ]);
+        try {
+            $tag = Tag::create([
+                'event_id' => $this->eventId,
+                'name' => $this->newTagName,
+                'color' => $this->newTagColor,
+            ]);
 
-        $this->selectedTags[] = $tag->id;
-        $this->closeTagModal();
-        session()->flash('message', 'Tag created successfully.');
+            $this->selectedTags[] = $tag->id;
+            $this->closeTagModal();
+            session()->flash('message', 'Tag created successfully.');
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Error creating tag: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'event_id' => $this->eventId,
+                'tag_name' => $this->newTagName,
+                'exception' => $e,
+            ]);
+
+            session()->flash('error', 'An error occurred while creating the tag. Please try again.');
+        }
     }
 
     public function render()
     {
         $tags = Tag::where('event_id', $this->eventId)->orderBy('name')->get();
-        
+
         // Get sessions for this event
         $sessions = Session::where('event_id', $this->eventId)
             ->orderBy('start_date')
             ->get();
-        
+
         // Get content files for this event
         $contentFiles = ContentFile::where('event_id', $this->eventId)
             ->orderBy('name')
             ->get();
-        
+
         // Get custom fields for contacts
         $customFieldsList = CustomField::forEvent($this->eventId)
             ->forModelType('contact')
