@@ -56,7 +56,7 @@ class Index extends Component
     public function deleteContact($contactId)
     {
         $contact = Contact::findOrFail($contactId);
-        
+
         // Check permission
         if (!auth()->user()->isSuperAdmin() && !$this->event->isAdmin(auth()->user())) {
             session()->flash('error', 'You do not have permission to delete contacts.');
@@ -71,10 +71,10 @@ class Index extends Component
     {
         $contact = Contact::findOrFail($contactId);
         $contact->update(['is_active' => !$contact->is_active]);
-        
+
         session()->flash('message', 'Contact status updated.');
     }
-    
+
     public function toggleTagFilter($tagId)
     {
         if (in_array($tagId, $this->filterTags)) {
@@ -87,7 +87,8 @@ class Index extends Component
 
     public function render()
     {
-        $query = Contact::where('event_id', $this->eventId);
+        $query = Contact::where('event_id', $this->eventId)
+            ->with(['tags', 'sessions']); // Eager load relationships to avoid N+1 queries
 
         // Apply search
         if ($this->search) {
@@ -104,14 +105,14 @@ class Index extends Component
         if ($this->filterType) {
             $query->where('contact_type', $this->filterType);
         }
-        
+
         // Apply status filter
         if ($this->filterStatus === 'active') {
             $query->where('is_active', true);
         } elseif ($this->filterStatus === 'inactive') {
             $query->where('is_active', false);
         }
-        
+
         // Apply tag filter
         if (!empty($this->filterTags)) {
             $query->whereHas('tags', function($q) {
@@ -124,18 +125,27 @@ class Index extends Component
 
         $contacts = $query->paginate(20);
 
-        // Get counts for stats
+        // Get counts for stats using a more efficient query with conditional aggregates
+        $statsQuery = Contact::where('event_id', $this->eventId)
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active')
+            ->selectRaw('SUM(CASE WHEN contact_type = "client" THEN 1 ELSE 0 END) as clients')
+            ->selectRaw('SUM(CASE WHEN contact_type = "producer" THEN 1 ELSE 0 END) as producers')
+            ->first();
+
         $stats = [
-            'total' => Contact::where('event_id', $this->eventId)->count(),
-            'active' => Contact::where('event_id', $this->eventId)->active()->count(),
-            'clients' => Contact::where('event_id', $this->eventId)->clients()->count(),
-            'producers' => Contact::where('event_id', $this->eventId)->producers()->count(),
+            'total' => $statsQuery->total,
+            'active' => $statsQuery->active,
+            'clients' => $statsQuery->clients,
+            'producers' => $statsQuery->producers,
         ];
 
-        // Get tags for filter
-        $tags = \App\Models\Tag::where('event_id', $this->eventId)
-            ->orderBy('name')
-            ->get();
+        // Get tags for filter with caching for better performance
+        $tags = cache()->remember('event_'.$this->eventId.'_tags', now()->addMinutes(30), function () {
+            return \App\Models\Tag::where('event_id', $this->eventId)
+                ->orderBy('name')
+                ->get();
+        });
 
         return view('livewire.contacts.index', [
             'contacts' => $contacts,
