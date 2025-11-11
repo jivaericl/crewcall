@@ -67,8 +67,8 @@
                                 </td>
 
                                 <!-- Actions -->
-                                <flux:cell align="end">
-                                    <div class="flex items-center gap-2">
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
                                         <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $tag->id }})">
                                             Edit
                                         </flux:button>
