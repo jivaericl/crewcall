@@ -32,7 +32,7 @@
                             <option value="staff">Staff</option>
                             <option value="other">Other</option>
                         </flux:select>
-                        @error('type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('contact_type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Company & Title -->
@@ -133,7 +133,7 @@
                             @endforeach
                         </div>
                     </div>
-                    
+
                     <!-- Sessions Assignment -->
                     @if($sessions->count() > 0)
                     <div class="mb-6">
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                     <!-- Content Assignment -->
                     @if($contentFiles->count() > 0)
                     <div class="mb-6">
@@ -189,12 +189,12 @@
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Active</span>
                         </label>
                     </div>
-                    
+
                     <!-- Custom Fields -->
                     @if($customFieldsList->count() > 0)
                     <div class="col-span-2">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Custom Fields</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach($customFieldsList as $field)
                                 <div class="{{ $field->field_type === 'textarea' ? 'md:col-span-2' : '' }}">
@@ -203,29 +203,29 @@
                                             {{ $field->name }}
                                             @if($field->is_required) <span class="text-red-500">*</span> @endif
                                         </flux:label>
-                                        
+
                                         @if($field->field_type === 'text')
-                                            <flux:input 
-                                                wire:model="customFields.{{ $field->id }}" 
+                                            <flux:input
+                                                wire:model="customFields.{{ $field->id }}"
                                                 id="custom_{{ $field->id }}"
                                                 type="text"
                                             />
                                         @elseif($field->field_type === 'number')
-                                            <flux:input 
-                                                wire:model="customFields.{{ $field->id }}" 
+                                            <flux:input
+                                                wire:model="customFields.{{ $field->id }}"
                                                 id="custom_{{ $field->id }}"
                                                 type="number"
                                                 step="any"
                                             />
                                         @elseif($field->field_type === 'date')
-                                            <flux:input 
-                                                wire:model="customFields.{{ $field->id }}" 
+                                            <flux:input
+                                                wire:model="customFields.{{ $field->id }}"
                                                 id="custom_{{ $field->id }}"
                                                 type="date"
                                             />
                                         @elseif($field->field_type === 'textarea')
-                                            <flux:textarea 
-                                                wire:model="customFields.{{ $field->id }}" 
+                                            <flux:textarea
+                                                wire:model="customFields.{{ $field->id }}"
                                                 id="custom_{{ $field->id }}"
                                                 rows="3"
                                             />
@@ -240,8 +240,8 @@
                                             </flux:select>
                                         @elseif($field->field_type === 'checkbox')
                                             <div class="flex items-center">
-                                                <input 
-                                                    type="checkbox" 
+                                                <input
+                                                    type="checkbox"
                                                     wire:model="customFields.{{ $field->id }}"
                                                     id="custom_{{ $field->id }}"
                                                     value="1"
@@ -249,8 +249,8 @@
                                                 >
                                             </div>
                                         @endif
-                                        
-                                        @error('customFields.' . $field->id) 
+
+                                        @error('customFields.' . $field->id)
                                             <flux:error>{{ $message }}</flux:error>
                                         @enderror
                                     </flux:field>
@@ -277,17 +277,17 @@
     </div>
 
     <!-- Tag Creation Modal -->
-    <div x-data="{ show: @entangle('showTagModal') }" 
-         x-show="show" 
+    <div x-data="{ show: @entangle('showTagModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
-            
+
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Create New Tag</h3>
-                
+
                 <div class="space-y-4">
                     <div>
                         <flux:label>Tag Name</flux:label>
