@@ -1,12 +1,13 @@
 <div>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ $categoryId ? 'Edit Category' : 'Create Category' }} - {{ $event->name }}
-        </h2>
-    </x-slot>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $categoryId ? 'Edit Category' : 'Create Category' }} - {{ $event->name }}</h2>
+            </div>
+        </div>
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+        <div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <form wire:submit.prevent="save" class="p-6 space-y-6">
                     <!-- Category Name -->
@@ -83,6 +84,8 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>

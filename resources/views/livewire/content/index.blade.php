@@ -1,19 +1,16 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Content Library - {{ $event->name }}
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Content Library - {{ $event->name }}</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Manage media files, presentations, and documents
                 </p>
             </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div>
             @if (session()->has('message'))
                 <div class="mb-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 px-4 py-3 rounded">
                     {{ session('message') }}
@@ -504,4 +501,6 @@
         setInterval(tryInitQuill, 100);
     })();
     </script>
+        </div>
+    </div>
 </div>

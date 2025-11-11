@@ -1,17 +1,16 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ $sessionId ? 'Edit Session' : 'Create Session' }}
-            </h2>
+    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $sessionId ? 'Edit Session' : 'Create Session' }}</h2>
+            </div>
             <flux:button href="{{ route('events.sessions.index', $eventId) }}" variant="ghost">
                 Back to Sessions
             </flux:button>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-8">
                     <form wire:submit.prevent="save">
@@ -252,6 +251,7 @@
                     </div>
                 @endif
             @endif
+        </div>
         </div>
     </div>
 </div>

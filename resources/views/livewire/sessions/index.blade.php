@@ -1,11 +1,10 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Sessions for {{ $event->name }}
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Sessions for {{ $event->name }}</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     {{ $event->start_date->format('M d, Y') }} - {{ $event->end_date->format('M d, Y') }}
                 </p>
             </div>
@@ -24,10 +23,8 @@
                 </a>
             </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div>
             @if (session()->has('message'))
                 <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded-lg flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -218,4 +215,5 @@
             </flux:modal.content>
         </flux:modal>
     @endif
+    </div>
 </div>

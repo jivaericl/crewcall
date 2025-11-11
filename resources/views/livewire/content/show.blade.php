@@ -1,30 +1,16 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ $content->name }}
-                </h2>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $content->name }}</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Content Details - {{ $event->name }}
                 </p>
             </div>
-            <div class="flex gap-2">
-                <flux:button href="{{ route('events.content.index', $eventId) }}" variant="ghost">
-                    ← Back to Content
-                </flux:button>
-                <a
-                    href="{{ route('events.content.edit', ['eventId' => $eventId, 'contentId' => $contentId]) }}"
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white dark:text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                >
-                    Edit
-                </a>
-            </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div>
             <!-- Overview Stats -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -344,6 +330,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>

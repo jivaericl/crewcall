@@ -1,14 +1,11 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Manage Event Users') }}: {{ $event->name }}
-            </h2>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Manage Event Users') }}: {{ $event->name }}</h2>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-4">
+        <div class="mb-4">
             <div class="flex items-center gap-3">
                 <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
                     Assign Existing User

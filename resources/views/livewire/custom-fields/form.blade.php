@@ -1,17 +1,13 @@
 <div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ $fieldId ? 'Edit Custom Field' : 'Create Custom Field' }}
-            </h2>
-            <flux:button href="{{ route('custom-fields.index', $eventId) }}" variant="ghost">
-                Back to Custom Fields
-            </flux:button>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="mb-6 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $fieldId ? 'Edit Custom Field' : 'Create Custom Field' }}</h2>
+            </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+        <div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-8">
                     <form wire:submit.prevent="save">
@@ -145,6 +141,8 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>
