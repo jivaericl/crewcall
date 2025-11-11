@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="py-12">
+    <div>
 
             <!-- Session Info Card -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-6">
@@ -379,7 +379,6 @@
                 </div>
             </div>
         </div>
-    </div>
     
     <!-- Reset Confirmation Modal -->
     <div x-data="{ show: @entangle('showResetModal') }" 
@@ -431,5 +430,6 @@
                         Reset All Cues
                     </button>
                 </div>
+            </div>
     </div>
 </div>

@@ -52,7 +52,7 @@
 
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($speakers as $speaker)
-                    <flux:row>
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                         <td class="px-6 py-4">
                             @if($speaker->headshot_url)
                                 <img src="{{ $speaker->headshot_url }}" alt="{{ $speaker->name }}" class="w-12 h-12 rounded-full object-cover">
@@ -106,8 +106,8 @@
                         </td>
                     </tr>
                 @empty
-                    <flux:row>
-                        <flux:cell colspan="8">
+                    <tr>
+                        <td colspan="8" class="px-6 py-4">
                             <div class="text-center py-8 text-gray-500">
                                 No speakers found. <a href="{{ route('events.speakers.create', $eventId) }}" class="text-blue-600 hover:underline">Add your first speaker</a>
                             </div>
