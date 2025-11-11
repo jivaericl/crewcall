@@ -35,22 +35,25 @@
     </flux:card>
 
     <flux:card>
-        <flux:table>
-            <flux:columns>
-                <flux:column>Headshot</flux:column>
-                <flux:column>Name</flux:column>
-                <flux:column>Title & Company</flux:column>
-                <flux:column>Email</flux:column>
-                <flux:column>Sessions</flux:column>
-                <flux:column>Content</flux:column>
-                <flux:column>Tags</flux:column>
-                <flux:column>Actions</flux:column>
-            </flux:columns>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-900">
+                    <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Headshot</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title & Company</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sessions</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Content</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tags</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+            </tr>
+                </thead>
 
-            <flux:rows>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($speakers as $speaker)
                     <flux:row>
-                        <flux:cell>
+                        <td class="px-6 py-4">
                             @if($speaker->headshot_url)
                                 <img src="{{ $speaker->headshot_url }}" alt="{{ $speaker->name }}" class="w-12 h-12 rounded-full object-cover">
                             @else
@@ -58,8 +61,8 @@
                                     <span class="text-gray-500 dark:text-gray-400 font-semibold">{{ substr($speaker->name, 0, 1) }}</span>
                                 </div>
                             @endif
-                        </flux:cell>
-                        <flux:cell>
+                        </td>
+                        <td class="px-6 py-4">
                             <div class="font-semibold">{{ $speaker->name }}</div>
                             @if(!$speaker->is_active)
                                 <flux:badge color="gray" size="sm">Inactive</flux:badge>
@@ -67,16 +70,16 @@
                             @if($speaker->user_id)
                                 <flux:badge color="blue" size="sm">Has Account</flux:badge>
                             @endif
-                        </flux:cell>
-                        <flux:cell>{{ $speaker->full_title }}</flux:cell>
-                        <flux:cell>{{ $speaker->email }}</flux:cell>
-                        <flux:cell>
+                        </td>
+                        <td class="px-6 py-4">{{ $speaker->full_title }}</td>
+                        <td class="px-6 py-4">{{ $speaker->email }}</td>
+                        <td class="px-6 py-4">
                             <flux:badge color="purple">{{ $speaker->sessions->count() }}</flux:badge>
-                        </flux:cell>
-                        <flux:cell>
+                        </td>
+                        <td class="px-6 py-4">
                             <flux:badge color="blue">{{ $speaker->contentFiles->count() }}</flux:badge>
-                        </flux:cell>
-                        <flux:cell>
+                        </td>
+                        <td class="px-6 py-4">
                             <div class="flex flex-wrap gap-1">
                                 @foreach($speaker->tags->take(3) as $tag)
                                     <flux:badge :style="'background-color: ' . $tag->color . '; color: white;'" size="sm">
@@ -87,8 +90,8 @@
                                     <flux:badge color="gray" size="sm">+{{ $speaker->tags->count() - 3 }}</flux:badge>
                                 @endif
                             </div>
-                        </flux:cell>
-                        <flux:cell>
+                        </td>
+                        <td class="px-6 py-4">
                             <div class="flex gap-2">
                                 <flux:button size="sm" href="{{ route('events.speakers.show', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" icon="eye" variant="ghost">
                                     View
@@ -100,19 +103,20 @@
                                     Delete
                                 </flux:button>
                             </div>
-                        </flux:cell>
-                    </flux:row>
+                        </td>
+                    </tr>
                 @empty
                     <flux:row>
                         <flux:cell colspan="8">
                             <div class="text-center py-8 text-gray-500">
                                 No speakers found. <a href="{{ route('events.speakers.create', $eventId) }}" class="text-blue-600 hover:underline">Add your first speaker</a>
                             </div>
-                        </flux:cell>
-                    </flux:row>
+                        </td>
+                    </tr>
                 @endforelse
-            </flux:rows>
-        </flux:table>
+            </tbody>
+        </table>
+        </div>
 
         <div class="mt-4">
             {{ $speakers->links() }}
