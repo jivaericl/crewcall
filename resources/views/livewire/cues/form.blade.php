@@ -88,19 +88,23 @@
                         </div>
                     </div>
 
-                    <!-- Filename and Operator -->
+                    <!-- Content File and Operator -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <flux:label for="filename">Filename</flux:label>
-                            <flux:input 
-                                wire:model="filename" 
-                                id="filename" 
-                                type="text" 
-                                placeholder="e.g., intro-video.mp4, background-music.mp3"
-                                class="w-full"
-                            />
-                            <flux:description>For audio/video content</flux:description>
-                            @error('filename') <flux:error>{{ $message }}</flux:error> @enderror
+                            <flux:label for="content_file_id">Content File</flux:label>
+                            <flux:select wire:model="content_file_id" id="content_file_id" class="w-full">
+                                <option value="">Select content file...</option>
+                                @foreach($contentFiles as $file)
+                                    <option value="{{ $file->id }}">
+                                        {{ $file->file_type_icon }} {{ $file->name }}
+                                        @if($file->category)
+                                            ({{ $file->category->name }})
+                                        @endif
+                                    </option>
+                                @endforeach
+                            </flux:select>
+                            <flux:description>Select from content library</flux:description>
+                            @error('content_file_id') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
 
                         <div>

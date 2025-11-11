@@ -23,6 +23,7 @@ class Cue extends Model
         'status',
         'notes',
         'filename',
+        'content_file_id',
         'operator_id',
         'priority',
         'sort_order',
@@ -81,6 +82,11 @@ class Cue extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
+
+    public function contentFile()
+    {
+        return $this->belongsTo(ContentFile::class);
     }
 
     // Scopes

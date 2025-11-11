@@ -9,6 +9,7 @@ use App\Models\CueType;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\CustomField;
+use App\Models\ContentFile;
 
 class Form extends Component
 {
@@ -25,6 +26,7 @@ class Form extends Component
     public $status = 'standby';
     public $notes;
     public $filename;
+    public $content_file_id;
     public $operator_id;
     public $priority = 'normal';
     public $selectedTags = [];
@@ -41,6 +43,7 @@ class Form extends Component
             'status' => 'required|in:standby,go,complete,skip',
             'notes' => 'nullable|string',
             'filename' => 'nullable|string|max:255',
+            'content_file_id' => 'nullable|exists:content_files,id',
             'operator_id' => 'nullable|exists:users,id',
             'priority' => 'required|in:low,normal,high,critical',
             'selectedTags' => 'nullable|array|max:10',
@@ -64,6 +67,7 @@ class Form extends Component
             $this->status = $this->cue->status;
             $this->notes = $this->cue->notes;
             $this->filename = $this->cue->filename;
+            $this->content_file_id = $this->cue->content_file_id;
             $this->operator_id = $this->cue->operator_id;
             $this->priority = $this->cue->priority;
             $this->selectedTags = $this->cue->tags->pluck('id')->toArray();
@@ -89,6 +93,7 @@ class Form extends Component
             'status' => $this->status,
             'notes' => $this->notes,
             'filename' => $this->filename,
+            'content_file_id' => $this->content_file_id,
             'operator_id' => $this->operator_id,
             'priority' => $this->priority,
         ];
@@ -134,12 +139,19 @@ class Form extends Component
             ->forModelType('cue')
             ->ordered()
             ->get();
+        
+        // Get content files for this event
+        $contentFiles = ContentFile::where('event_id', $this->segment->session->event_id)
+            ->with('category')
+            ->orderBy('name')
+            ->get();
 
         return view('livewire.cues.form', [
             'cueTypes' => $cueTypes,
             'operators' => $operators,
             'allTags' => $allTags,
             'customFieldsList' => $customFieldsList,
+            'contentFiles' => $contentFiles,
         ]);
     }
 }
