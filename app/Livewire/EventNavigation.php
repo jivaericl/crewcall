@@ -61,6 +61,12 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Segments',
+                    'icon' => 'view-grid',
+                    'route' => 'events.all-segments',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'Cues',
                     'icon' => 'clipboard-list',
                     'route' => 'events.all-cues',

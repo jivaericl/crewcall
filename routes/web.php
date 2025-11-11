@@ -57,6 +57,7 @@ Route::middleware([
     Route::get('/events/{eventId}/custom-fields/{fieldId}/edit', App\Livewire\CustomFields\Form::class)->name('custom-fields.edit');
 
     // Segment routes
+    Route::get('/events/{eventId}/all-segments', App\Livewire\Segments\AllSegments::class)->name('events.all-segments');
     Route::get('/sessions/{sessionId}/segments', App\Livewire\Segments\Index::class)->name('sessions.segments.index');
     Route::get('/sessions/{sessionId}/segments/create', App\Livewire\Segments\Form::class)->name('sessions.segments.create');
     Route::get('/sessions/{sessionId}/segments/{segmentId}', App\Livewire\Segments\Show::class)->name('sessions.segments.show');
