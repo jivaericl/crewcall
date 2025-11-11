@@ -21,36 +21,39 @@
         <!-- Tags Table -->
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
             @if($tags->count() > 0)
-                <flux:table>
-                    <flux:columns>
-                        <flux:column>Tag</flux:column>
-                        <flux:column>Description</flux:column>
-                        <flux:column align="center">Usage</flux:column>
-                        <flux:column align="end">Actions</flux:column>
-                    </flux:columns>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
+                            <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tag</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Usage</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                    </tr>
+                        </thead>
 
-                    <flux:rows>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach($tags as $tag)
-                            <flux:row wire:key="tag-{{ $tag->id }}">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                 <!-- Tag -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     <span class="px-3 py-1 rounded-full text-sm font-medium"
                                         style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}">
                                         {{ $tag->name }}
                                     </span>
-                                </flux:cell>
+                                </td>
 
                                 <!-- Description -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     @if($tag->description)
                                         <span class="text-sm text-gray-900 dark:text-white">{{ $tag->description }}</span>
                                     @else
                                         <span class="text-sm text-gray-400 dark:text-gray-500">—</span>
                                     @endif
-                                </flux:cell>
+                                </td>
 
                                 <!-- Usage -->
-                                <flux:cell align="center">
+                                <td class="px-6 py-4 text-center">
                                     <div class="text-sm text-gray-900 dark:text-white">
                                         {{ $tag->sessions_count + $tag->segments_count + $tag->cues_count + $tag->speakers_count + $tag->contacts_count }} items
                                     </div>
@@ -61,7 +64,7 @@
                                         @if($tag->speakers_count > 0) {{ $tag->speakers_count }} speakers @endif
                                         @if($tag->contacts_count > 0) {{ $tag->contacts_count }} contacts @endif
                                     </div>
-                                </flux:cell>
+                                </td>
 
                                 <!-- Actions -->
                                 <flux:cell align="end">
@@ -73,11 +76,12 @@
                                             Delete
                                         </flux:button>
                                     </div>
-                                </flux:cell>
-                            </flux:row>
+                                </td>
+                            </tr>
                         @endforeach
-                    </flux:rows>
-                </flux:table>
+                    </tbody>
+                </table>
+                </div>
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">

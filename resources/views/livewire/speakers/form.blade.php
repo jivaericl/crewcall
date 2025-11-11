@@ -1,8 +1,11 @@
 <div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-    <flux:header class="mb-6">
-        <flux:heading size="xl">{{ $speakerId ? 'Edit' : 'Add' }} Speaker - {{ $event->name }}</flux:heading>
-    </flux:header>
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $speakerId ? 'Edit' : 'Add' }} Speaker - {{ $event->name }}</h2>
+        </div>
+        
+    </div>
 
     <form wire:submit="save">
         <div class="space-y-6">

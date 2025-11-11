@@ -30,10 +30,7 @@
     </div>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Main Content -->
-                <div class="lg:col-span-2 space-y-6">
+
             <!-- Session Info Card -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -228,8 +225,7 @@
                 </div>
                 </div>
 
-                <!-- Sidebar -->
-                <div class="space-y-6">
+
                     <!-- Tags -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
@@ -435,8 +431,5 @@
                         Reset All Cues
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
     </div>
 </div>

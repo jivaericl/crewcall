@@ -67,23 +67,26 @@
         <!-- Contacts Table -->
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
             @if($contacts->count() > 0)
-                <flux:table>
-                    <flux:columns>
-                        <flux:column>Name</flux:column>
-                        <flux:column>Company & Title</flux:column>
-                        <flux:column>Type</flux:column>
-                        <flux:column>Contact Info</flux:column>
-                        <flux:column>Sessions</flux:column>
-                        <flux:column>Tags</flux:column>
-                        <flux:column>Status</flux:column>
-                        <flux:column align="end">Actions</flux:column>
-                    </flux:columns>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
+                            <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Company & Title</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Contact Info</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sessions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tags</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                    </tr>
+                        </thead>
 
-                    <flux:rows>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach($contacts as $contact)
-                            <flux:row wire:key="contact-{{ $contact->id }}">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                 <!-- Name -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10">
                                             <div class="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -98,10 +101,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </flux:cell>
+                                </td>
 
                                 <!-- Company & Title -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     @if($contact->company || $contact->title)
                                         <div class="text-sm text-gray-900 dark:text-white">{{ $contact->company }}</div>
                                         @if($contact->title)
@@ -110,10 +113,10 @@
                                     @else
                                         <span class="text-sm text-gray-400 dark:text-gray-500">—</span>
                                     @endif
-                                </flux:cell>
+                                </td>
 
                                 <!-- Type -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     <span class="px-2 py-1 text-xs font-medium rounded-full
                                         {{ $contact->contact_type === 'client' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : '' }}
                                         {{ $contact->contact_type === 'producer' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' : '' }}
@@ -123,10 +126,10 @@
                                     ">
                                         {{ ucfirst($contact->contact_type) }}
                                     </span>
-                                </flux:cell>
+                                </td>
 
                                 <!-- Contact Info -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     @if($contact->email)
                                         <div class="text-sm text-gray-900 dark:text-white">{{ $contact->email }}</div>
                                     @endif
@@ -136,15 +139,15 @@
                                     @if(!$contact->email && !$contact->phone)
                                         <span class="text-sm text-gray-400 dark:text-gray-500">—</span>
                                     @endif
-                                </flux:cell>
+                                </td>
 
                                 <!-- Sessions -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     <span class="text-sm text-gray-900 dark:text-white">{{ $contact->sessions->count() }}</span>
-                                </flux:cell>
+                                </td>
 
                                 <!-- Tags -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     @if($contact->tags->count() > 0)
                                         <div class="flex flex-wrap gap-1">
                                             @foreach($contact->tags->take(3) as $tag)
@@ -162,10 +165,10 @@
                                     @else
                                         <span class="text-sm text-gray-400 dark:text-gray-500">—</span>
                                     @endif
-                                </flux:cell>
+                                </td>
 
                                 <!-- Status -->
-                                <flux:cell>
+                                <td class="px-6 py-4">
                                     @if($contact->is_active)
                                         <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                             Active
@@ -175,7 +178,7 @@
                                             Inactive
                                         </span>
                                     @endif
-                                </flux:cell>
+                                </td>
 
                                 <!-- Actions -->
                                 <flux:cell align="end">
@@ -187,11 +190,12 @@
                                             Edit
                                         </flux:button>
                                     </div>
-                                </flux:cell>
-                            </flux:row>
+                                </td>
+                            </tr>
                         @endforeach
-                    </flux:rows>
-                </flux:table>
+                    </tbody>
+                </table>
+                </div>
 
                 <!-- Pagination -->
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
