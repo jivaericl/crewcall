@@ -63,6 +63,7 @@ Route::middleware([
     Route::get('/sessions/{sessionId}/segments/{segmentId}/edit', App\Livewire\Segments\Form::class)->name('sessions.segments.edit');
 
     // Cue routes
+    Route::get('/events/{eventId}/all-cues', App\Livewire\Cues\AllCues::class)->name('events.all-cues');
     Route::get('/segments/{segmentId}/cues', App\Livewire\Cues\Index::class)->name('segments.cues.index');
     Route::get('/segments/{segmentId}/cues/create', App\Livewire\Cues\Form::class)->name('segments.cues.create');
     Route::get('/segments/{segmentId}/cues/{cueId}', App\Livewire\Cues\Show::class)->name('segments.cues.show');

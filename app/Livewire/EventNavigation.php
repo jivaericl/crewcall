@@ -61,6 +61,12 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Cues',
+                    'icon' => 'clipboard-list',
+                    'route' => 'events.all-cues',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'Audit Logs',
                     'icon' => 'clipboard-list',
                     'route' => 'audit-logs.index',
