@@ -114,7 +114,7 @@
                                                     @foreach($segment->cues as $cue)
                                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                                                {{ $cue->order }}
+                                                                {{ $cue->sort_order }}
                                                             </td>
                                                             <td class="px-6 py-4 whitespace-nowrap">
                                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $cue->name }}</div>

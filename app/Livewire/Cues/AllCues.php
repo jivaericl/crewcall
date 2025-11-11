@@ -23,10 +23,10 @@ class AllCues extends Component
         $sessions = Session::where('event_id', $this->eventId)
             ->with([
                 'segments.cues' => function ($query) {
-                    $query->orderBy('order');
+                    $query->orderBy('sort_order');
                 },
                 'segments' => function ($query) {
-                    $query->orderBy('order');
+                    $query->orderBy('sort_order');
                 }
             ])
             ->when($this->search, function ($query) {
