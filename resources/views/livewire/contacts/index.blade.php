@@ -65,7 +65,7 @@
         </div>
 
         <!-- Contacts Table -->
-        <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
+        <flux:card>
             @if($contacts->count() > 0)
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -217,6 +217,6 @@
                     </div>
                 </div>
             @endif
-        </div>
+        </flux:card>
     </div>
 </div>

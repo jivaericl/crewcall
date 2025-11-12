@@ -378,7 +378,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     
         <!-- Reset Confirmation Modal -->
         <div x-data="{ show: @entangle('showResetModal') }" 
@@ -431,6 +430,7 @@
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>
