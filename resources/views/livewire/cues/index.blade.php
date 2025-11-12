@@ -31,9 +31,9 @@
                                 type="button">
                                 Reset All Cues
                             </button>
-                            <flux:button href="{{ route('segments.cues.create', $segmentId) }}" variant="primary">
+                            <a href="{{ route('segments.cues.create', $segmentId) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                                 Add Cue
-                            </flux:button>
+                            </a>
                         </div>
                     </div>
 
@@ -175,9 +175,9 @@
                             <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No cues found</h3>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Get started by creating a new cue.</p>
                             <div class="mt-6">
-                                <flux:button href="{{ route('segments.cues.create', $segmentId) }}" variant="primary">
+                                <a href="{{ route('segments.cues.create', $segmentId) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                                     Add Cue
-                                </flux:button>
+                                </a>
                             </div>
                         </div>
                     @endif

@@ -185,9 +185,9 @@
                                 @if($segment->id == $activeSegmentId)
                                     <flux:badge color="green">ACTIVE</flux:badge>
                                 @else
-                                    <flux:button wire:click="setActiveSegment({{ $segment->id }})" size="sm" variant="primary">
+                                    <button wire:click="setActiveSegment({{ $segment->id }})" type="button" class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-md transition">
                                         Set Active
-                                    </flux:button>
+                                    </button>
                                 @endif
                             </td>
                         </tr>
@@ -241,9 +241,9 @@
                     <flux:button wire:click="closeColumnModal" variant="ghost">
                         Cancel
                     </flux:button>
-                    <flux:button wire:click="saveColumnPreferences" variant="primary">
+                    <button wire:click="saveColumnPreferences" type="button" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                         Save Preferences
-                    </flux:button>
+                    </button>
                 </div>
             </div>
         </div>

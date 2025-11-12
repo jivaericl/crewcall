@@ -244,9 +244,9 @@
                     </flux:checkbox>
 
                     <div class="flex gap-2">
-                        <flux:button type="submit" variant="primary">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                             {{ $speakerId ? 'Update' : 'Create' }} Speaker
-                        </flux:button>
+                        </button>
                         <flux:button href="{{ route('events.speakers.index', $eventId) }}" variant="ghost">
                             Cancel
                         </flux:button>

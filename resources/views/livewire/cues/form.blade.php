@@ -233,9 +233,9 @@
                         <flux:button href="{{ route('segments.cues.index', $segmentId) }}" variant="ghost">
                             Cancel
                         </flux:button>
-                        <flux:button type="submit" variant="primary">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                             {{ $cueId ? 'Update Cue' : 'Create Cue' }}
-                        </flux:button>
+                        </button>
                     </div>
                 </form>
             </div>
