@@ -109,14 +109,17 @@
                 
                 <div class="space-y-2">
                     @forelse($sessions as $session)
-                        <flux:checkbox wire:model="selectedSessions" value="{{ $session->id }}">
-                            {{ $session->name }} 
-                            @if($session->start_date)
-                                ({{ $session->start_date->format('M d, Y g:i A') }})
-                            @endif
-                        </flux:checkbox>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" wire:model="selectedSessions" value="{{ $session->id }}" class="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 dark:bg-gray-700">
+                            <span class="text-gray-900 dark:text-white">
+                                {{ $session->name }} 
+                                @if($session->start_date)
+                                    <span class="text-gray-500 dark:text-gray-400">({{ $session->start_date->format('M d, Y g:i A') }})</span>
+                                @endif
+                            </span>
+                        </label>
                     @empty
-                        <p class="text-gray-500">No sessions available for this event.</p>
+                        <p class="text-gray-500 dark:text-gray-400">No sessions available for this event.</p>
                     @endforelse
                 </div>
             </flux:card>
@@ -126,11 +129,14 @@
                 
                 <div class="space-y-2">
                     @forelse($contentFiles as $file)
-                        <flux:checkbox wire:model="selectedContent" value="{{ $file->id }}">
-                            {{ $file->name }} ({{ $file->file_type }})
-                        </flux:checkbox>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" wire:model="selectedContent" value="{{ $file->id }}" class="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 dark:bg-gray-700">
+                            <span class="text-gray-900 dark:text-white">
+                                {{ $file->name }} <span class="text-gray-500 dark:text-gray-400">({{ $file->file_type }})</span>
+                            </span>
+                        </label>
                     @empty
-                        <p class="text-gray-500">No content files available for this event.</p>
+                        <p class="text-gray-500 dark:text-gray-400">No content files available for this event.</p>
                     @endforelse
                 </div>
             </flux:card>

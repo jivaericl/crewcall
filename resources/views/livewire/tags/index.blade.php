@@ -148,11 +148,7 @@
                             @error('color') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
-                        <div>
-                            <flux:label>Description</flux:label>
-                            <flux:textarea wire:model="description" rows="3" />
-                            @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        </div>
+
                     </div>
 
                     <div class="mt-6 flex justify-end gap-3">
