@@ -86,13 +86,9 @@
 
                         <!-- Actions -->
                         <div class="flex items-center gap-2">
-                            <flux:button 
-                                href="{{ $mention->comment->getActionUrl() }}" 
-                                variant="primary" 
-                                size="sm"
-                            >
+                            <a href="{{ $mention->comment->getActionUrl() }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-md transition">
                                 View Comment
-                            </flux:button>
+                            </a>
 
                             @if (!$mention->is_read)
                                 <flux:button 
