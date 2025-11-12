@@ -109,8 +109,14 @@
     </div>
 
     <!-- Create/Edit Modal -->
-    <flux:modal wire:model.live="showModal">
-            <flux:modal.content>
+    @if($showModal)
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" wire:click="closeModal"></div>
+        
+        <!-- Modal -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
                     {{ $tagId ? 'Edit Tag' : 'Create Tag' }}
                 </h3>
@@ -118,25 +124,25 @@
                 <form wire:submit="save">
                     <div class="space-y-4">
                         <div>
-                            <flux:label>Tag Name *</flux:label>
-                            <flux:input wire:model="name" required />
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tag Name *</label>
+                            <input type="text" wire:model="name" required class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" />
                             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
-                            <flux:label>Model Type *</flux:label>
-                            <flux:select wire:model="model_type" required>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Model Type *</label>
+                            <select wire:model="model_type" required class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="event">Event</option>
                                 <option value="session">Session</option>
                                 <option value="segment">Segment</option>
                                 <option value="cue">Cue</option>
-                            </flux:select>
+                            </select>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tags can only be assigned to the selected model type</p>
                             @error('model_type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         </div>
 
                         <div>
-                            <flux:label>Color *</flux:label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Color *</label>
                             <div class="flex items-center gap-3">
                                 <input type="color" wire:model.live="color" class="h-10 w-20 rounded border-gray-300 dark:border-gray-600" />
                                 <span class="px-3 py-1 rounded-full text-sm font-medium"
@@ -151,32 +157,42 @@
                     </div>
 
                     <div class="mt-6 flex justify-end gap-3">
-                        <flux:button type="button" variant="ghost" wire:click="closeModal">
+                        <button type="button" wire:click="closeModal" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition">
                             Cancel
-                        </flux:button>
+                        </button>
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                             {{ $tagId ? 'Update Tag' : 'Create Tag' }}
                         </button>
                     </div>
                 </form>
-            </flux:modal.content>
-    </flux:modal>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Delete Confirmation Modal -->
-    <flux:modal wire:model.live="showDeleteModal">
-            <flux:modal.content>
+    @if($showDeleteModal)
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" wire:click="$set('showDeleteModal', false)"></div>
+        
+        <!-- Modal -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Delete Tag</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
                     Are you sure you want to delete this tag? This action cannot be undone.
                 </p>
                 <div class="flex justify-end gap-3">
-                    <flux:button type="button" variant="ghost" wire:click="$set('showDeleteModal', false)">
+                    <button type="button" wire:click="$set('showDeleteModal', false)" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition">
                         Cancel
-                    </flux:button>
-                    <flux:button type="button" variant="danger" wire:click="delete">
+                    </button>
+                    <button type="button" wire:click="delete" class="px-4 py-2 bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white font-medium rounded-md transition">
                         Delete Tag
-                    </flux:button>
+                    </button>
                 </div>
-            </flux:modal.content>
-    </flux:modal>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
