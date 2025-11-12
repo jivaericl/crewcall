@@ -118,7 +118,7 @@ class Comment extends Model
         // Generate URL based on commentable type
         $type = class_basename($this->commentable_type);
         
-        return match($type) {
+        $baseUrl = match($type) {
             'Event' => "/events/{$this->commentable_id}",
             'Session' => "/events/{$this->event_id}/sessions",
             'Segment' => "/segments/{$this->commentable_id}",
@@ -126,6 +126,9 @@ class Comment extends Model
             'ContentFile' => "/events/{$this->event_id}/content",
             default => "/events/{$this->event_id}",
         };
+        
+        // Add anchor to scroll to specific comment
+        return $baseUrl . '#comment-' . $this->id;
     }
 
     public function getCommentableNameAttribute()

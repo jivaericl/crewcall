@@ -38,7 +38,7 @@
     <!-- Mentions List -->
     <div class="space-y-3">
         @forelse ($mentions as $mention)
-            <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 border {{ $mention->is_read ? 'border-zinc-200 dark:border-zinc-700' : 'border-blue-500 dark:border-blue-400' }}">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border {{ $mention->is_read ? 'border-gray-200 dark:border-gray-700' : 'border-blue-500 dark:border-blue-400' }}">
                 <div class="flex items-start gap-4">
                     <!-- User Avatar -->
                     <div class="w-12 h-12 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white font-semibold flex-shrink-0">
@@ -50,12 +50,12 @@
                         <!-- Header -->
                         <div class="flex items-start justify-between gap-2 mb-2">
                             <div>
-                                <p class="text-sm text-zinc-900 dark:text-white">
+                                <p class="text-sm text-gray-900 dark:text-white">
                                     <span class="font-semibold">{{ $mention->comment->user->name }}</span>
                                     mentioned you in
                                     <span class="font-medium">{{ $mention->comment->commentable_type_name }}</span>
                                 </p>
-                                <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                     {{ $mention->created_at->diffForHumans() }}
                                     @if ($mention->is_read)
                                         · Read {{ $mention->read_at->diffForHumans() }}
@@ -69,14 +69,14 @@
                         </div>
 
                         <!-- Comment Preview -->
-                        <div class="bg-zinc-50 dark:bg-zinc-900 rounded p-3 mb-3">
-                            <p class="text-sm text-zinc-700 dark:text-zinc-300 line-clamp-3">
+                        <div class="bg-gray-50 dark:bg-gray-900 rounded p-3 mb-3">
+                            <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
                                 {!! nl2br($mention->comment->formatted_comment) !!}
                             </p>
                         </div>
 
                         <!-- Context -->
-                        <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 mb-3">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
                             <span>Event: {{ $mention->comment->event->name }}</span>
                             @if ($mention->comment->commentable)
                                 <span>·</span>
@@ -105,12 +105,12 @@
             </div>
         @empty
             <div class="text-center py-12">
-                <div class="text-zinc-400 dark:text-zinc-500 mb-2">
+                <div class="text-gray-400 dark:text-gray-500 mb-2">
                     <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
                 </div>
-                <p class="text-zinc-500 dark:text-zinc-400">
+                <p class="text-gray-500 dark:text-gray-400">
                     @if ($filter === 'unread')
                         No unread mentions
                     @else

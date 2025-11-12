@@ -1,5 +1,5 @@
-<div class="mt-8 border-t border-zinc-200 dark:border-zinc-700 pt-8">
-    <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+<div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-8">
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Comments ({{ $comments->count() }})
     </h3>
 
@@ -22,19 +22,19 @@
 
                 <!-- User Suggestions Dropdown -->
                 @if ($showUserSuggestions && count($userSuggestions) > 0)
-                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-xl max-h-48 overflow-y-auto" style="top: 100%;">
+                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-48 overflow-y-auto" style="top: 100%;">
                         @foreach ($userSuggestions as $user)
                             <button 
                                 type="button"
                                 wire:click="selectUser({{ $user->id }}, '{{ addslashes($user->name) }}')"
-                                class="w-full px-4 py-2 text-left hover:bg-zinc-100 dark:hover:bg-zinc-700 flex items-center gap-2"
+                                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
                             >
                                 <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <div class="text-sm font-medium text-zinc-900 dark:text-white">{{ $user->name }}</div>
-                                    <div class="text-xs text-zinc-500 dark:text-zinc-400">{{ $user->email }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $user->name }}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->email }}</div>
                                 </div>
                             </button>
                         @endforeach
@@ -63,7 +63,7 @@
     <!-- Comments List -->
     <div class="space-y-4">
         @forelse ($comments as $comment)
-            <div class="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-4">
+            <div id="comment-{{ $comment->id }}" class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 scroll-mt-20">
                 <!-- Comment Header -->
                 <div class="flex items-start justify-between mb-2">
                     <div class="flex items-center gap-2">
@@ -71,8 +71,8 @@
                             {{ strtoupper(substr($comment->user->name, 0, 1)) }}
                         </div>
                         <div>
-                            <div class="font-medium text-zinc-900 dark:text-white">{{ $comment->user->name }}</div>
-                            <div class="text-xs text-zinc-500 dark:text-zinc-400">{{ $comment->created_at->diffForHumans() }}</div>
+                            <div class="font-medium text-gray-900 dark:text-white">{{ $comment->user->name }}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</div>
                         </div>
                     </div>
 
@@ -116,7 +116,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+                    <div class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                         {!! nl2br($comment->formatted_comment) !!}
                     </div>
 
@@ -133,17 +133,17 @@
 
                 <!-- Replies -->
                 @if ($comment->replies->count() > 0)
-                    <div class="mt-4 ml-8 space-y-3 border-l-2 border-zinc-200 dark:border-zinc-700 pl-4">
+                    <div class="mt-4 ml-8 space-y-3 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
                         @foreach ($comment->replies as $reply)
-                            <div class="bg-white dark:bg-zinc-800 rounded-lg p-3">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-3">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2">
                                         <div class="w-8 h-8 rounded-full bg-green-500 dark:bg-green-600 flex items-center justify-center text-white text-sm font-semibold">
                                             {{ strtoupper(substr($reply->user->name, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <div class="text-sm font-medium text-zinc-900 dark:text-white">{{ $reply->user->name }}</div>
-                                            <div class="text-xs text-zinc-500 dark:text-zinc-400">{{ $reply->created_at->diffForHumans() }}</div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $reply->user->name }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $reply->created_at->diffForHumans() }}</div>
                                         </div>
                                     </div>
 
@@ -159,7 +159,7 @@
                                     @endif
                                 </div>
 
-                                <div class="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+                                <div class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                                     {!! nl2br($reply->formatted_comment) !!}
                                 </div>
                             </div>
@@ -168,7 +168,7 @@
                 @endif
             </div>
         @empty
-            <div class="text-center py-8 text-zinc-500 dark:text-zinc-400">
+            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
                 No comments yet. Be the first to comment!
             </div>
         @endforelse
