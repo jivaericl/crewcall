@@ -58,7 +58,7 @@
                     </div>
                     <div class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                         <p class="text-sm font-medium text-green-600 dark:text-green-400">Tags</p>
-                        <p class="text-2xl font-bold text-green-900 dark:text-green-100">{{ $event->tags->count() }}</p>
+                        <p class="text-2xl font-bold text-green-900 dark:text-white">{{ $event->tags->count() }}</p>
                     </div>
                 </div>
             </div>

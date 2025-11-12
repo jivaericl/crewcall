@@ -151,7 +151,7 @@
                                         </div>
                                         <flux:description>Select speakers assigned to this session</flux:description>
                                     @else
-                                        <p class="text-sm text-gray-500">No speakers available. <a href="{{ route('events.speakers.create', $eventId) }}" class="text-blue-600 hover:underline">Create a speaker</a></p>
+                                        <p class="text-sm text-gray-500">No speakers available. <a href="{{ route('events.speakers.create', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:underline">Create a speaker</a></p>
                                     @endif
                                 </flux:field>
                             </div>

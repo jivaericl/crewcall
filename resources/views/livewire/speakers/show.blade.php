@@ -78,7 +78,7 @@
                     <div class="border-b border-gray-200 dark:border-gray-700 py-3 last:border-0">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 class="font-semibold">{{ $session->name }}</h4>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">{{ $session->name }}</h4>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
                                     {{ $session->start_date->format('M d, Y g:i A') }} - {{ $session->end_date->format('g:i A') }}
                                 </p>
