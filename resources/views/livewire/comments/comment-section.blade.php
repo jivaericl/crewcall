@@ -47,9 +47,9 @@
             </div>
 
             <div class="flex items-center gap-2 mt-3">
-                <flux:button type="submit" variant="primary">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                     {{ $replyingTo ? 'Post Reply' : 'Post Comment' }}
-                </flux:button>
+                </button>
                 
                 @if ($replyingTo)
                     <flux:button type="button" wire:click="cancelReply" variant="ghost">
@@ -107,9 +107,9 @@
                             rows="3"
                         />
                         <div class="flex items-center gap-2 mt-2">
-                            <flux:button wire:click="saveEdit" variant="primary" size="sm">
+                            <button wire:click="saveEdit" type="button" class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-md transition">
                                 Save
-                            </flux:button>
+                            </button>
                             <flux:button wire:click="cancelEdit" variant="ghost" size="sm">
                                 Cancel
                             </flux:button>

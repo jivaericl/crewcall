@@ -268,9 +268,9 @@
                                 Cancel
                             </flux:button>
                         </a>
-                        <flux:button type="submit" variant="primary">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                             {{ $contactId ? 'Update Contact' : 'Create Contact' }}
-                        </flux:button>
+                        </button>
                     </div>
                 </form>
             </div>

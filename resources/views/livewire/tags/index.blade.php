@@ -7,10 +7,12 @@
                     Manage tags for {{ $event->name }}
                 </p>
             </div>
-            <flux:button wire:click="openCreateModal" variant="primary">
-                <flux:icon.plus class="w-5 h-5" />
+            <button wire:click="openCreateModal" type="button" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
                 Create Tag
-            </flux:button>
+            </button>
         </div>
 
         <!-- Search -->
@@ -157,9 +159,9 @@
                         <flux:button type="button" variant="ghost" wire:click="closeModal">
                             Cancel
                         </flux:button>
-                        <flux:button type="submit" variant="primary">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                             {{ $tagId ? 'Update Tag' : 'Create Tag' }}
-                        </flux:button>
+                        </button>
                     </div>
                 </form>
             </flux:modal.content>
