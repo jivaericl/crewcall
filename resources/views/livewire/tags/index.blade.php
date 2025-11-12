@@ -109,8 +109,7 @@
     </div>
 
     <!-- Create/Edit Modal -->
-    @if($showModal)
-        <flux:modal wire:model.live="showModal">
+    <flux:modal wire:model.live="showModal">
             <flux:modal.content>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
                     {{ $tagId ? 'Edit Tag' : 'Create Tag' }}
@@ -161,12 +160,10 @@
                     </div>
                 </form>
             </flux:modal.content>
-        </flux:modal>
-    @endif
+    </flux:modal>
 
     <!-- Delete Confirmation Modal -->
-    @if($showDeleteModal)
-        <flux:modal wire:model.live="showDeleteModal">
+    <flux:modal wire:model.live="showDeleteModal">
             <flux:modal.content>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Delete Tag</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
@@ -181,6 +178,5 @@
                     </flux:button>
                 </div>
             </flux:modal.content>
-        </flux:modal>
-    @endif
+    </flux:modal>
 </div>
