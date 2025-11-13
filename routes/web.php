@@ -75,6 +75,10 @@ Route::middleware([
     Route::get('/events/{eventId}/content/{contentId}', App\Livewire\Content\Show::class)->name('events.content.show');
     Route::get('/events/{eventId}/content/{contentId}/edit', App\Livewire\Content\Edit::class)->name('events.content.edit');
     
+    // Content download routes (for text-based content)
+    Route::get('/content/{contentId}/download', [App\Http\Controllers\ContentController::class, 'download'])->name('content.download');
+    Route::get('/content/version/{versionId}/download', [App\Http\Controllers\ContentController::class, 'downloadVersion'])->name('content.version.download');
+    
     // Content categories routes
     Route::get('/events/{eventId}/content-categories', App\Livewire\ContentCategories\Index::class)->name('events.content-categories.index');
     Route::get('/events/{eventId}/content-categories/create', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.create');
