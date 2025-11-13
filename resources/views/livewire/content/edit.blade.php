@@ -474,6 +474,13 @@
                 setTimeout(initQuill, 100);
             }
         });
+        
+        // Sync Quill content before form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (quill && @this.file_type === 'rich_text') {
+                @this.set('content_text', quill.root.innerHTML);
+            }
+        });
     });
 </script>
 @endpush

@@ -105,8 +105,11 @@ class Edit extends Component
         // Check if content has changed for text-based types
         $contentChanged = false;
         if (in_array($this->file_type, ['rich_text', 'plain_text', 'url'])) {
+            // Refresh content to get latest data
+            $this->content->refresh();
+            
             $oldContent = $this->content->metadata['content'] ?? '';
-            $contentChanged = $oldContent !== $this->content_text;
+            $contentChanged = trim($oldContent) !== trim($this->content_text);
             
             // Store text content in metadata
             $metadata = $this->content->metadata ?? [];
@@ -121,17 +124,18 @@ class Edit extends Component
                 'is_active' => $this->is_active,
             ]);
             
-            // Create new version if content changed
-            if ($contentChanged) {
-                $this->content->createNewVersion(
-                    null, // no file path for text content
-                    strlen($this->content_text),
-                    $this->file_type === 'rich_text' ? 'text/html' : 'text/plain',
-                    ['content' => $this->content_text],
-                    'Content updated via edit form'
-                );
-            }
+            // Always create new version for text content edits (for now)
+            // This ensures versioning works reliably
+            $this->content->createNewVersion(
+                null, // no file path for text content
+                strlen($this->content_text),
+                $this->file_type === 'rich_text' ? 'text/html' : ($this->file_type === 'url' ? 'text/uri-list' : 'text/plain'),
+                ['content' => $this->content_text],
+                'Content updated via edit form'
+            );
         } else {
+            // For non-text content, update normally
+            // Note: File-based content versioning happens via uploadNewVersion method
             $this->content->update([
                 'name' => $this->name,
                 'description' => $this->description,

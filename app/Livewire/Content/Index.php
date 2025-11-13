@@ -164,19 +164,37 @@ class Index extends Component
                 ]);
             } else {
                 // Handle content types (URL, rich_text, plain_text)
-                $contentData['content'] = $this->uploadContent;
-                $contentData['mime_type'] = match($this->uploadType) {
+                $mimeType = match($this->uploadType) {
                     'url' => 'text/uri-list',
                     'rich_text' => 'text/html',
                     'plain_text' => 'text/plain',
                     default => 'text/plain',
                 };
+                
+                $contentData['mime_type'] = $mimeType;
                 $contentData['current_file_size'] = strlen($this->uploadContent);
                 $contentData['current_file_path'] = null; // No file path for content types
                 $contentData['current_version'] = 1;
+                $contentData['metadata'] = [
+                    'content' => $this->uploadContent,
+                ];
                 
                 // Create content file record
                 $contentFile = ContentFile::create($contentData);
+                
+                // Create initial version record for text content
+                \App\Models\ContentFileVersion::create([
+                    'content_file_id' => $contentFile->id,
+                    'version_number' => 1,
+                    'file_path' => null,
+                    'file_size' => strlen($this->uploadContent),
+                    'mime_type' => $mimeType,
+                    'metadata' => [
+                        'content' => $this->uploadContent,
+                    ],
+                    'change_notes' => 'Initial creation',
+                    'uploaded_by' => auth()->id(),
+                ]);
             }
             
             // Sync relationships
