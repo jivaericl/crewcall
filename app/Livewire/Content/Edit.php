@@ -126,28 +126,13 @@ class Edit extends Component
             
             // Always create new version for text content edits (for now)
             // This ensures versioning works reliably
-            \Log::info('Creating new version', [
-                'file_path' => null,
-                'file_size' => strlen($this->content_text),
-                'mime_type' => $this->file_type === 'rich_text' ? 'text/html' : ($this->file_type === 'url' ? 'text/uri-list' : 'text/plain'),
-                'metadata' => ['content' => $this->content_text],
-            ]);
-            
-            try {
-                $this->content->createNewVersion(
-                    null, // no file path for text content
-                    strlen($this->content_text),
-                    $this->file_type === 'rich_text' ? 'text/html' : ($this->file_type === 'url' ? 'text/uri-list' : 'text/plain'),
-                    ['content' => $this->content_text],
-                    'Content updated via edit form'
-                );
-            } catch (\Exception $e) {
-                \Log::error('Version creation failed', [
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString(),
-                ]);
-                throw $e;
-            }
+            $this->content->createNewVersion(
+                null, // no file path for text content
+                strlen($this->content_text),
+                $this->file_type === 'rich_text' ? 'text/html' : ($this->file_type === 'url' ? 'text/uri-list' : 'text/plain'),
+                ['content' => $this->content_text],
+                'Content updated via edit form'
+            );
         } else {
             // For non-text content, update normally
             // Note: File-based content versioning happens via uploadNewVersion method
