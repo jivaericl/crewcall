@@ -426,71 +426,72 @@
         </div>
     </div>
 
-@push('scripts')
+@assets
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+@endassets
+
+@script
 <script>
-    document.addEventListener('livewire:initialized', () => {
-        let quill = null;
-        
-        function initQuill() {
-            console.log('initQuill called');
-            const editor = document.getElementById('quill-editor');
-            console.log('Editor element:', editor);
-            console.log('Quill already initialized:', !!quill);
-            if (editor && !quill) {
-                console.log('Initializing Quill...');
-                quill = new Quill(editor, {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            ['blockquote', 'code-block'],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            [{ 'color': [] }, { 'background': [] }],
-                            ['link'],
-                            ['clean']
-                        ]
-                    }
-                });
-                
-                // Set initial content
-                const content = @this.content_text || '';
-                console.log('Setting initial content:', content);
-                quill.root.innerHTML = content;
-                console.log('Quill initialized successfully');
-                
-                // Update Livewire property on text change
-                quill.on('text-change', function() {
-                    @this.set('content_text', quill.root.innerHTML);
-                });
-            }
+    let quill = null;
+    
+    function initQuill() {
+        console.log('initQuill called');
+        const editor = document.getElementById('quill-editor');
+        console.log('Editor element:', editor);
+        console.log('Quill already initialized:', !!quill);
+        if (editor && !quill) {
+            console.log('Initializing Quill...');
+            quill = new Quill(editor, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['link'],
+                        ['clean']
+                    ]
+                }
+            });
+            
+            // Set initial content
+            const content = $wire.content_text || '';
+            console.log('Setting initial content:', content);
+            quill.root.innerHTML = content;
+            console.log('Quill initialized successfully');
+            
+            // Update Livewire property on text change
+            quill.on('text-change', function() {
+                $wire.set('content_text', quill.root.innerHTML);
+            });
         }
-        
-        // Initialize on page load if rich_text is selected
-        console.log('File type:', @this.file_type);
-        if (@this.file_type === 'rich_text') {
-            console.log('Rich text detected, initializing Quill in 100ms');
+    }
+    
+    // Initialize on page load if rich_text is selected
+    console.log('File type:', $wire.file_type);
+    if ($wire.file_type === 'rich_text') {
+        console.log('Rich text detected, initializing Quill in 100ms');
+        setTimeout(initQuill, 100);
+    } else {
+        console.log('Not rich text, skipping Quill initialization');
+    }
+    
+    // Re-initialize when file_type changes
+    Livewire.on('file-type-changed', () => {
+        if ($wire.file_type === 'rich_text') {
+            quill = null;
             setTimeout(initQuill, 100);
-        } else {
-            console.log('Not rich text, skipping Quill initialization');
         }
-        
-        // Re-initialize when file_type changes
-        Livewire.on('file-type-changed', () => {
-            if (@this.file_type === 'rich_text') {
-                quill = null;
-                setTimeout(initQuill, 100);
-            }
-        });
-        
-        // Sync Quill content before form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (quill && @this.file_type === 'rich_text') {
-                @this.set('content_text', quill.root.innerHTML);
-            }
-        });
+    });
+    
+    // Sync Quill content before form submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (quill && $wire.file_type === 'rich_text') {
+            $wire.set('content_text', quill.root.innerHTML);
+        }
     });
 </script>
-@endpush
+@endscript
