@@ -13,8 +13,11 @@ class ChatMessage extends Model
     protected $fillable = [
         'event_id',
         'user_id',
+        'recipient_id',
+        'is_direct_message',
         'message_type',
         'message',
+        'mentions',
         'metadata',
         'is_pinned',
         'is_broadcast',
@@ -23,8 +26,10 @@ class ChatMessage extends Model
 
     protected $casts = [
         'metadata' => 'array',
+        'mentions' => 'array',
         'is_pinned' => 'boolean',
         'is_broadcast' => 'boolean',
+        'is_direct_message' => 'boolean',
         'read_at' => 'datetime',
     ];
 
@@ -37,6 +42,17 @@ class ChatMessage extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function recipient()
+    {
+        return $this->belongsTo(User::class, 'recipient_id');
+    }
+
+    public function mentionedUsers()
+    {
+        if (!$this->mentions) return collect();
+        return User::whereIn('id', $this->mentions)->get();
     }
 
     // Scopes
@@ -63,6 +79,22 @@ class ChatMessage extends Model
     public function scopeRecent($query, $hours = 24)
     {
         return $query->where('created_at', '>=', now()->subHours($hours));
+    }
+
+    public function scopeDirectMessages($query)
+    {
+        return $query->where('is_direct_message', true);
+    }
+
+    public function scopeForConversation($query, $userId1, $userId2)
+    {
+        return $query->where(function($q) use ($userId1, $userId2) {
+            $q->where(function($q2) use ($userId1, $userId2) {
+                $q2->where('user_id', $userId1)->where('recipient_id', $userId2);
+            })->orWhere(function($q2) use ($userId1, $userId2) {
+                $q2->where('user_id', $userId2)->where('recipient_id', $userId1);
+            });
+        })->where('is_direct_message', true);
     }
 
     // Helper methods

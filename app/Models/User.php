@@ -27,6 +27,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'is_super_admin', 'first_name', 'last_name',
+        'chat_sound_enabled', 'chat_widget_enabled', 'chat_notifications_enabled', 'chat_desktop_notifications',
     ];
 
     /**
@@ -49,6 +50,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_super_admin' => 'boolean',
+        'chat_sound_enabled' => 'boolean',
+        'chat_widget_enabled' => 'boolean',
+        'chat_notifications_enabled' => 'boolean',
+        'chat_desktop_notifications' => 'boolean',
     ];
 
     /**

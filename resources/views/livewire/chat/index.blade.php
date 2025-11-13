@@ -1,4 +1,4 @@
-<div wire:poll.3s="refreshChat" class="h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+<div wire:poll.3s="refreshChat" class="flex flex-col bg-gray-50 dark:bg-gray-900" style="height: calc(100vh - 4rem);">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
         <div class="flex items-center justify-between">
