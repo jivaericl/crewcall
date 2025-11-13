@@ -92,12 +92,12 @@ class Widget extends Component
     #[On('refresh-chat')]
     public function refreshChat()
     {
-        $previousCount = $this->messages->count();
+        $previousCount = count($this->messages);
         $this->loadMessages();
         
         // Check for new messages and trigger notification
-        if ($this->messages->count() > $previousCount && !$this->isOpen) {
-            $latestMessage = $this->messages->last();
+        if (count($this->messages) > $previousCount && !$this->isOpen) {
+            $latestMessage = end($this->messages);
             if ($latestMessage && $latestMessage->user_id !== auth()->id()) {
                 $this->triggerNotification($latestMessage);
             }
