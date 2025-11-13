@@ -69,7 +69,7 @@
                                     <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold">
                                         {{ substr($msg->user->name, 0, 1) }}
                                     </div>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $msg->user->name }}</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $msg->user->id }} })">{{ $msg->user->name }}</span>
                                     <span class="text-xs text-gray-500 dark:text-gray-400">{{ $msg->created_at->format('g:i A') }}</span>
                                 </div>
                             @endif
