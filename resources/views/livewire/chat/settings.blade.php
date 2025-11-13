@@ -32,38 +32,44 @@
                     
                     <div class="space-y-4">
                         <!-- Sound Enabled -->
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 dark:text-white">Play sound on new messages</span>
+                        <div class="flex items-start gap-3">
+                            <input 
+                                type="checkbox" 
+                                wire:model="chat_sound_enabled" 
+                                id="sound_enabled"
+                                class="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            >
+                            <label for="sound_enabled" class="cursor-pointer">
+                                <span class="text-sm font-medium text-gray-900 dark:text-white block">Play sound on new messages</span>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Hear a notification sound when you receive a message</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="chat_sound_enabled" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
 
                         <!-- Notifications Enabled -->
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 dark:text-white">Enable chat notifications</span>
+                        <div class="flex items-start gap-3">
+                            <input 
+                                type="checkbox" 
+                                wire:model="chat_notifications_enabled" 
+                                id="notifications_enabled"
+                                class="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            >
+                            <label for="notifications_enabled" class="cursor-pointer">
+                                <span class="text-sm font-medium text-gray-900 dark:text-white block">Enable chat notifications</span>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Show notifications for new messages</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="chat_notifications_enabled" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
 
                         <!-- Desktop Notifications -->
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 dark:text-white">Desktop notifications</span>
+                        <div class="flex items-start gap-3">
+                            <input 
+                                type="checkbox" 
+                                wire:model="chat_desktop_notifications" 
+                                id="desktop_notifications"
+                                class="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            >
+                            <label for="desktop_notifications" class="cursor-pointer">
+                                <span class="text-sm font-medium text-gray-900 dark:text-white block">Desktop notifications</span>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Show browser notifications even when tab is not active</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="chat_desktop_notifications" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
                     </div>
@@ -75,14 +81,16 @@
                     
                     <div class="space-y-4">
                         <!-- Widget Enabled -->
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-sm font-medium text-gray-900 dark:text-white">Show floating chat button</span>
+                        <div class="flex items-start gap-3">
+                            <input 
+                                type="checkbox" 
+                                wire:model="chat_widget_enabled" 
+                                id="widget_enabled"
+                                class="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            >
+                            <label for="widget_enabled" class="cursor-pointer">
+                                <span class="text-sm font-medium text-gray-900 dark:text-white block">Show floating chat button</span>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Display the chat bubble in the bottom right corner</p>
-                            </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" wire:model="chat_widget_enabled" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                             </label>
                         </div>
                     </div>
