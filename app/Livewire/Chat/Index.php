@@ -23,7 +23,19 @@ class Index extends Component
 
     public function mount()
     {
-        $this->eventId = session('current_event_id');
+        // Try to get event ID from multiple sources
+        $this->eventId = session('current_event_id') 
+            ?? request()->route('eventId') 
+            ?? request()->get('event_id');
+        
+        // If still no event, try to get the first event the user is assigned to
+        if (!$this->eventId && auth()->check()) {
+            $event = auth()->user()->events()->first();
+            if ($event) {
+                $this->eventId = $event->id;
+            }
+        }
+        
         if ($this->eventId) {
             $this->event = Event::find($this->eventId);
             $this->loadOnlineUsers();
@@ -39,7 +51,8 @@ class Index extends Component
             ->where('event_id', $this->eventId)
             ->where('status', 'online')
             ->where('last_seen_at', '>=', now()->subMinutes(5))
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function sendMessage()
