@@ -4,11 +4,12 @@ namespace App\Livewire\Speakers;
 
 use App\Models\Speaker;
 use App\Models\Event;
-use App\Models\User;
 use App\Models\Tag;
 use App\Models\Session;
 use App\Models\ContentFile;
 use App\Models\CustomField;
+use App\Models\Contact;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,12 @@ class Form extends Component
     public $headshot;
     public $existingHeadshot = null;
     public $is_active = true;
+    public $contactSearch = '';
+    public $contactSuggestions = [];
+    public $showContactSuggestions = false;
+    public $companySearch = '';
+    public $companySuggestions = [];
+    public $showCompanySuggestions = false;
 
     // Relationships
     public $selectedTags = [];
@@ -68,6 +75,201 @@ class Form extends Component
             'selectedSessions' => 'array',
             'selectedContent' => 'array',
         ];
+    }
+
+    public function updatedContactPerson($value)
+    {
+        $value ??= '';
+
+        if (preg_match('/@([^\s]*)$/', $value, $matches)) {
+            $this->contactSearch = $matches[1];
+            $shouldForce = $this->contactSearch === '';
+        } else {
+            $this->contactSearch = trim($value);
+            $shouldForce = false;
+        }
+
+        if ($this->contactSearch === '' && !$shouldForce) {
+            $this->resetContactSuggestions();
+            return;
+        }
+
+        $this->loadContactSuggestions($shouldForce);
+    }
+
+    protected function loadContactSuggestions(bool $force = false): void
+    {
+        $search = $this->contactSearch;
+
+        $contactsQuery = Contact::where('event_id', $this->eventId);
+        $usersQuery = User::whereHas('assignedEvents', function ($q) {
+            $q->where('event_id', $this->eventId);
+        });
+
+        if ($search !== '') {
+            $contactsQuery->where(function ($subQuery) use ($search) {
+                $subQuery->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%')
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ['%' . $search . '%'])
+                    ->orWhere('company', 'like', '%' . $search . '%');
+            });
+
+            $usersQuery->where(function ($subQuery) use ($search) {
+                $subQuery->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        } elseif (!$force) {
+            $this->resetContactSuggestions();
+            return;
+        }
+
+        $contactSuggestions = $contactsQuery
+            ->orderBy('first_name')
+            ->orderBy('last_name')
+            ->limit(5)
+            ->get()
+            ->map(function ($contact) {
+                return [
+                    'id' => $contact->id,
+                    'name' => $contact->full_name ?: trim($contact->first_name . ' ' . $contact->last_name),
+                    'company' => $contact->company,
+                    'email' => $contact->email,
+                    'title' => $contact->title,
+                    'type' => 'contact',
+                ];
+            });
+
+        $userSuggestions = $usersQuery
+            ->orderBy('name')
+            ->limit(5)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'company' => null,
+                    'email' => $user->email,
+                    'title' => 'Team Member',
+                    'type' => 'user',
+                ];
+            });
+
+        $suggestions = $contactSuggestions
+            ->concat($userSuggestions)
+            ->unique(function ($item) {
+                return strtolower($item['type'] . '|' . $item['name'] . '|' . ($item['email'] ?? ''));
+            })
+            ->take(8)
+            ->values()
+            ->toArray();
+
+        $this->contactSuggestions = $suggestions;
+        $this->showContactSuggestions = !empty($suggestions);
+    }
+
+    public function selectContactSuggestion(string $type, int $referenceId): void
+    {
+        if ($type === 'user') {
+            $user = User::where('id', $referenceId)
+                ->whereHas('assignedEvents', function ($q) {
+                    $q->where('event_id', $this->eventId);
+                })
+                ->first();
+
+            if ($user) {
+                $this->contact_person = $user->name;
+                $this->contactSearch = '';
+                $this->resetContactSuggestions();
+                return;
+            }
+        } else {
+            $contact = Contact::where('event_id', $this->eventId)
+                ->where('id', $referenceId)
+                ->first();
+
+            if ($contact) {
+                $this->contact_person = $contact->full_name ?: trim($contact->first_name . ' ' . $contact->last_name);
+
+                if (!$this->company && $contact->company) {
+                    $this->company = $contact->company;
+                }
+
+                $this->contactSearch = '';
+                $this->resetContactSuggestions();
+                return;
+            }
+        }
+
+        $this->resetContactSuggestions();
+    }
+
+    public function hideContactSuggestions(): void
+    {
+        $this->resetContactSuggestions();
+    }
+
+    protected function resetContactSuggestions(): void
+    {
+        $this->contactSuggestions = [];
+        $this->showContactSuggestions = false;
+    }
+
+    public function updatedCompany($value)
+    {
+        $this->companySearch = trim($value ?? '');
+
+        if ($this->companySearch === '') {
+            $this->resetCompanySuggestions();
+            return;
+        }
+
+        $this->loadCompanySuggestions();
+    }
+
+    protected function loadCompanySuggestions(): void
+    {
+        $search = $this->companySearch;
+
+        $contactCompanies = Contact::where('event_id', $this->eventId)
+            ->whereNotNull('company');
+
+        $speakerCompanies = Speaker::where('event_id', $this->eventId)
+            ->whereNotNull('company');
+
+        if ($search !== '') {
+            $contactCompanies->where('company', 'like', '%' . $search . '%');
+            $speakerCompanies->where('company', 'like', '%' . $search . '%');
+        }
+
+        $suggestions = $contactCompanies->pluck('company')
+            ->merge($speakerCompanies->pluck('company'))
+            ->filter()
+            ->unique()
+            ->sort()
+            ->take(10)
+            ->values()
+            ->toArray();
+
+        $this->companySuggestions = $suggestions;
+        $this->showCompanySuggestions = !empty($suggestions);
+    }
+
+    public function selectCompanySuggestion($company): void
+    {
+        $this->company = $company;
+        $this->companySearch = '';
+        $this->resetCompanySuggestions();
+    }
+
+    public function hideCompanySuggestions(): void
+    {
+        $this->resetCompanySuggestions();
+    }
+
+    protected function resetCompanySuggestions(): void
+    {
+        $this->companySuggestions = [];
+        $this->showCompanySuggestions = false;
     }
 
     public function mount($eventId, $speakerId = null)
@@ -185,10 +387,6 @@ class Form extends Component
         $contentFiles = ContentFile::where('event_id', $this->eventId)->orderBy('name')->get();
         
         // Get unique contact persons and companies from event contacts for autosuggest
-        $contacts = \App\Models\Contact::where('event_id', $this->eventId)->get();
-        $contactPersons = $contacts->pluck('name')->filter()->unique()->values()->toArray();
-        $companies = $contacts->pluck('company')->filter()->unique()->values()->toArray();
-        
         // Get custom fields for speakers
         $customFieldsList = CustomField::forEvent($this->eventId)
             ->forModelType('speaker')
@@ -199,8 +397,6 @@ class Form extends Component
             'allTags' => $allTags,
             'sessions' => $sessions,
             'contentFiles' => $contentFiles,
-            'contactPersons' => $contactPersons,
-            'companies' => $companies,
             'customFieldsList' => $customFieldsList,
         ]);
     }

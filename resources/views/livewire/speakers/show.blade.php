@@ -103,7 +103,7 @@
                     <div class="border-b border-gray-200 dark:border-gray-700 py-3 last:border-0">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 class="font-semibold">{{ $file->name }}</h4>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">{{ $file->name }}</h4>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
                                     {{ strtoupper($file->file_type) }} • {{ $file->formatted_size }}
                                 </p>
@@ -114,7 +114,7 @@
                         </div>
                     </div>
                 @empty
-                    <p class="text-gray-500">No content files assigned.</p>
+                    <p class="text-gray-500 dark:text-gray-400">No content files assigned.</p>
                 @endforelse
             </flux:card>
 

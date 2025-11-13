@@ -20,17 +20,30 @@
                     <div>
                         <flux:field>
                             <flux:label>Company</flux:label>
-                            <flux:input 
-                                type="text"
-                                wire:model.blur="company" 
-                                list="companies-list"
-                                placeholder="Acme Corp"
-                            />
-                            <datalist id="companies-list">
-                                @foreach($companies as $comp)
-                                    <option value="{{ $comp }}">
-                                @endforeach
-                            </datalist>
+                            <div class="relative" wire:click.away="hideCompanySuggestions">
+                                <flux:input 
+                                    type="text"
+                                    wire:model.live="company"
+                                    wire:keydown.escape="hideCompanySuggestions"
+                                    placeholder="Acme Corp"
+                                    autocomplete="off"
+                                />
+
+                                @if($showCompanySuggestions && count($companySuggestions) > 0)
+                                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                                        @foreach($companySuggestions as $suggestion)
+                                            <button
+                                                type="button"
+                                                wire:click="selectCompanySuggestion('{{ addslashes($suggestion) }}')"
+                                                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-gray-900 dark:text-gray-100"
+                                            >
+                                                {{ $suggestion }}
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                            <flux:description>Start typing to reuse a company used in this event</flux:description>
                         </flux:field>
                     </div>
                     
@@ -48,18 +61,44 @@
                     <div>
                         <flux:field>
                             <flux:label>Contact Person</flux:label>
-                            <flux:input 
-                                type="text"
-                                wire:model.blur="contact_person" 
-                                list="contact-persons-list"
-                                placeholder="Jane Smith"
-                            />
-                            <datalist id="contact-persons-list">
-                                @foreach($contactPersons as $person)
-                                    <option value="{{ $person }}">
-                                @endforeach
-                            </datalist>
-                            <flux:description>Start typing to see suggestions from event contacts</flux:description>
+                            <div class="relative" wire:click.away="hideContactSuggestions">
+                                <flux:input
+                                    type="text"
+                                    wire:model.live="contact_person"
+                                    wire:keydown.escape="hideContactSuggestions"
+                                    placeholder="Jane Smith"
+                                    autocomplete="off"
+                                />
+
+                                @if($showContactSuggestions && count($contactSuggestions) > 0)
+                                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                                        @foreach($contactSuggestions as $contact)
+                                            <button
+                                                type="button"
+                                                wire:click="selectContactSuggestion('{{ $contact['type'] }}', {{ $contact['id'] }})"
+                                                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex flex-col gap-1"
+                                            >
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $contact['name'] }}</span>
+                                                    <span class="text-[10px] uppercase tracking-wide font-semibold px-2 py-0.5 rounded-full {{ $contact['type'] === 'contact' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200' : 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200' }}">
+                                                        {{ $contact['type'] === 'contact' ? 'Event Contact' : 'Team Member' }}
+                                                    </span>
+                                                </div>
+                                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                                    {{ $contact['title'] ?? ($contact['type'] === 'contact' ? 'Contact' : 'Team Member') }}
+                                                    @if(!empty($contact['company']))
+                                                        · {{ $contact['company'] }}
+                                                    @endif
+                                                    @if(!empty($contact['email']))
+                                                        · {{ $contact['email'] }}
+                                                    @endif
+                                                </span>
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                            <flux:description>Start typing (or type @ to see quick suggestions) from event contacts</flux:description>
                         </flux:field>
                     </div>
                 </div>
