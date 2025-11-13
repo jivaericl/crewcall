@@ -5,6 +5,7 @@ namespace App\Livewire\Content;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\ContentFile;
+use App\Models\ContentFileVersion;
 use App\Models\ContentCategory;
 use App\Models\CustomField;
 use App\Models\Event;
@@ -75,7 +76,12 @@ class Edit extends Component
         // Load existing data
         $this->name = $this->content->name;
         $this->description = $this->content->description;
-        $this->content_text = $this->content->content;
+        // Load content from metadata for text types, otherwise from content field
+        if (in_array($this->content->file_type, ['rich_text', 'plain_text', 'url'])) {
+            $this->content_text = $this->content->metadata['content'] ?? '';
+        } else {
+            $this->content_text = $this->content->content;
+        }
         $this->category_id = $this->content->category_id;
         $this->file_type = $this->content->file_type;
         $this->is_active = $this->content->is_active;
@@ -96,14 +102,45 @@ class Edit extends Component
     {
         $this->validate();
 
-        $this->content->update([
-            'name' => $this->name,
-            'description' => $this->description,
-            'content' => $this->content_text,
-            'category_id' => $this->category_id,
-            'file_type' => $this->file_type,
-            'is_active' => $this->is_active,
-        ]);
+        // Check if content has changed for text-based types
+        $contentChanged = false;
+        if (in_array($this->file_type, ['rich_text', 'plain_text', 'url'])) {
+            $oldContent = $this->content->metadata['content'] ?? '';
+            $contentChanged = $oldContent !== $this->content_text;
+            
+            // Store text content in metadata
+            $metadata = $this->content->metadata ?? [];
+            $metadata['content'] = $this->content_text;
+            
+            $this->content->update([
+                'name' => $this->name,
+                'description' => $this->description,
+                'metadata' => $metadata,
+                'category_id' => $this->category_id,
+                'file_type' => $this->file_type,
+                'is_active' => $this->is_active,
+            ]);
+            
+            // Create new version if content changed
+            if ($contentChanged) {
+                $this->content->createNewVersion(
+                    null, // no file path for text content
+                    strlen($this->content_text),
+                    $this->file_type === 'rich_text' ? 'text/html' : 'text/plain',
+                    ['content' => $this->content_text],
+                    'Content updated via edit form'
+                );
+            }
+        } else {
+            $this->content->update([
+                'name' => $this->name,
+                'description' => $this->description,
+                'content' => $this->content_text,
+                'category_id' => $this->category_id,
+                'file_type' => $this->file_type,
+                'is_active' => $this->is_active,
+            ]);
+        }
 
         // Sync relationships
         $this->content->tags()->sync($this->selectedTags);
@@ -122,6 +159,38 @@ class Edit extends Component
     {
         $this->showVersionModal = true;
         $this->reset(['newVersionFile', 'changeNotes']);
+    }
+
+    public function downloadVersion($versionId)
+    {
+        $version = ContentFileVersion::findOrFail($versionId);
+        
+        // Check if this version belongs to the current content
+        if ($version->content_file_id !== $this->contentId) {
+            abort(403);
+        }
+        
+        // If version has text content in metadata
+        if (isset($version->metadata['content'])) {
+            $extension = $version->mime_type === 'text/html' ? 'html' : 'txt';
+            $filename = str_replace(' ', '_', $this->content->name) . '_v' . $version->version_number . '.' . $extension;
+            
+            $fileContent = $version->metadata['content'];
+            
+            // For rich text, wrap in basic HTML
+            if ($version->mime_type === 'text/html') {
+                $fileContent = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset='UTF-8'>\n<title>{$this->content->name} - Version {$version->version_number}</title>\n</head>\n<body>\n{$fileContent}\n</body>\n</html>";
+            }
+            
+            return response()->streamDownload(function() use ($fileContent) {
+                echo $fileContent;
+            }, $filename, [
+                'Content-Type' => $version->mime_type,
+            ]);
+        }
+        
+        // For file-based versions, redirect to storage URL
+        return redirect($version->download_url);
     }
 
     public function restoreVersion($versionNumber)

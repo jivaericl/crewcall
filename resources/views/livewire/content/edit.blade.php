@@ -293,7 +293,7 @@
                     @endif
 
                     <!-- Version History -->
-                    @if($content->versions->count() > 1)
+                    @if($content->versions->count() > 0)
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Version History</h3>
                             <div class="space-y-3">
@@ -319,9 +319,13 @@
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-2">
-                                            <a href="{{ $version->download_url }}" target="_blank" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
-                                                <flux:button size="sm" variant="ghost">Download</flux:button>
-                                            </a>
+                                            <button 
+                                                wire:click="downloadVersion({{ $version->id }})"
+                                                type="button"
+                                                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 px-3 py-1.5 text-sm"
+                                            >
+                                                Download
+                                            </button>
                                             @if($version->version_number != $content->current_version)
                                                 <button 
                                                     wire:click="restoreVersion({{ $version->version_number }})" 

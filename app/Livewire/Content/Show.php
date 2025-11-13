@@ -40,6 +40,29 @@ class Show extends Component
         session(['selected_event_id' => $this->eventId]);
     }
 
+    public function download()
+    {
+        $content = ContentFile::findOrFail($this->contentId);
+        
+        // Generate filename based on content type
+        $extension = $content->file_type === 'rich_text' ? 'html' : 'txt';
+        $filename = str_replace(' ', '_', $content->name) . '.' . $extension;
+        
+        // Get content from metadata
+        $fileContent = $content->metadata['content'] ?? '';
+        
+        // For rich text, wrap in basic HTML
+        if ($content->file_type === 'rich_text') {
+            $fileContent = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset='UTF-8'>\n<title>{$content->name}</title>\n</head>\n<body>\n{$fileContent}\n</body>\n</html>";
+        }
+        
+        return response()->streamDownload(function() use ($fileContent) {
+            echo $fileContent;
+        }, $filename, [
+            'Content-Type' => $content->file_type === 'rich_text' ? 'text/html' : 'text/plain',
+        ]);
+    }
+
     public function render()
     {
         return view('livewire.content.show')->layout('layouts.app');

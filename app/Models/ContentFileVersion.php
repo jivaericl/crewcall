@@ -52,6 +52,11 @@ class ContentFileVersion extends Model
 
     public function getDownloadUrlAttribute()
     {
+        // For text-based content stored in metadata
+        if ($this->file_path === null && isset($this->metadata['content'])) {
+            return route('content.version.download', $this->id);
+        }
+        
         return Storage::url($this->file_path);
     }
 }

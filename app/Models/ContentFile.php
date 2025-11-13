@@ -231,6 +231,11 @@ class ContentFile extends Model
 
     public function getDownloadUrlAttribute()
     {
+        // For text and rich_text types, generate download route
+        if (in_array($this->file_type, ['plain_text', 'rich_text'])) {
+            return route('content.download', $this->id);
+        }
+        
         return Storage::url($this->current_file_path);
     }
 
@@ -249,13 +254,19 @@ class ContentFile extends Model
             'uploaded_by' => auth()->id(),
         ]);
 
-        $this->update([
-            'current_file_path' => $filePath,
-            'current_file_size' => $fileSize,
+        // Only update file path if provided (for file uploads)
+        $updateData = [
             'current_version' => $newVersionNumber,
             'mime_type' => $mimeType,
             'metadata' => $metadata,
-        ]);
+        ];
+        
+        if ($filePath !== null) {
+            $updateData['current_file_path'] = $filePath;
+            $updateData['current_file_size'] = $fileSize;
+        }
+        
+        $this->update($updateData);
 
         return $version;
     }
