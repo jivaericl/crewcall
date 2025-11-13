@@ -21,7 +21,7 @@ class ChatBadge extends Component
     {
         // Get count of unread messages for the current user
         // Messages from other users in events the user is part of
-        $this->unreadCount = ChatMessage::whereHas('event.users', function ($query) {
+        $this->unreadCount = ChatMessage::whereHas('event.assignedUsers', function ($query) {
             $query->where('users.id', Auth::id());
         })
         ->where('user_id', '!=', Auth::id())
