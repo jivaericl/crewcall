@@ -99,8 +99,8 @@
                             <div wire:ignore>
                                 <div 
                                     id="quill-editor"
-                                    style="min-height: 300px; background: white;"
-                                    class="rounded-md border border-gray-300 dark:border-gray-600"
+                                    style="min-height: 300px;"
+                                    class="rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
                                 ></div>
                                 <input type="hidden" wire:model="content_text" id="content_text_hidden">
                             </div>
@@ -429,6 +429,79 @@
 @assets
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<style>
+    /* Dark mode styles for Quill editor */
+    .dark .ql-toolbar.ql-snow {
+        background-color: rgb(31 41 55); /* gray-800 */
+        border-color: rgb(75 85 99); /* gray-600 */
+    }
+    
+    .dark .ql-container.ql-snow {
+        background-color: rgb(31 41 55); /* gray-800 */
+        border-color: rgb(75 85 99); /* gray-600 */
+        color: rgb(243 244 246); /* gray-100 */
+    }
+    
+    .dark .ql-editor {
+        color: rgb(243 244 246); /* gray-100 */
+    }
+    
+    .dark .ql-editor.ql-blank::before {
+        color: rgb(156 163 175); /* gray-400 */
+    }
+    
+    /* Toolbar button styles in dark mode */
+    .dark .ql-snow .ql-stroke {
+        stroke: rgb(209 213 219); /* gray-300 */
+    }
+    
+    .dark .ql-snow .ql-fill {
+        fill: rgb(209 213 219); /* gray-300 */
+    }
+    
+    .dark .ql-snow .ql-picker-label {
+        color: rgb(209 213 219); /* gray-300 */
+    }
+    
+    .dark .ql-snow .ql-picker-options {
+        background-color: rgb(31 41 55); /* gray-800 */
+        border-color: rgb(75 85 99); /* gray-600 */
+    }
+    
+    .dark .ql-snow .ql-picker-item:hover {
+        color: rgb(96 165 250); /* blue-400 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button:hover,
+    .dark .ql-snow .ql-toolbar button:hover {
+        color: rgb(96 165 250); /* blue-400 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button:hover .ql-stroke,
+    .dark .ql-snow .ql-toolbar button:hover .ql-stroke {
+        stroke: rgb(96 165 250); /* blue-400 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button:hover .ql-fill,
+    .dark .ql-snow .ql-toolbar button:hover .ql-fill {
+        fill: rgb(96 165 250); /* blue-400 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button.ql-active,
+    .dark .ql-snow .ql-toolbar button.ql-active {
+        color: rgb(59 130 246); /* blue-500 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+    .dark .ql-snow .ql-toolbar button.ql-active .ql-stroke {
+        stroke: rgb(59 130 246); /* blue-500 */
+    }
+    
+    .dark .ql-snow.ql-toolbar button.ql-active .ql-fill,
+    .dark .ql-snow .ql-toolbar button.ql-active .ql-fill {
+        fill: rgb(59 130 246); /* blue-500 */
+    }
+</style>
 @endassets
 
 @script
@@ -436,12 +509,8 @@
     let quill = null;
     
     function initQuill() {
-        console.log('initQuill called');
         const editor = document.getElementById('quill-editor');
-        console.log('Editor element:', editor);
-        console.log('Quill already initialized:', !!quill);
         if (editor && !quill) {
-            console.log('Initializing Quill...');
             quill = new Quill(editor, {
                 theme: 'snow',
                 modules: {
@@ -459,9 +528,7 @@
             
             // Set initial content
             const content = $wire.content_text || '';
-            console.log('Setting initial content:', content);
             quill.root.innerHTML = content;
-            console.log('Quill initialized successfully');
             
             // Update Livewire property on text change
             quill.on('text-change', function() {
@@ -471,12 +538,8 @@
     }
     
     // Initialize on page load if rich_text is selected
-    console.log('File type:', $wire.file_type);
     if ($wire.file_type === 'rich_text') {
-        console.log('Rich text detected, initializing Quill in 100ms');
         setTimeout(initQuill, 100);
-    } else {
-        console.log('Not rich text, skipping Quill initialization');
     }
     
     // Re-initialize when file_type changes
