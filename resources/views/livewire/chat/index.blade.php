@@ -164,13 +164,13 @@
                     <div class="flex items-center gap-2">
                         <div class="relative">
                             <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-                                {{ substr($presence->user->name, 0, 1) }}
+                                {{ substr($presence['user']['name'], 0, 1) }}
                             </div>
                             <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $presence->user->name }}</p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $presence->current_page }}</p>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $presence['user']['name'] }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $presence['current_page'] ?? 'chat' }}</p>
                         </div>
                     </div>
                 @endforeach
