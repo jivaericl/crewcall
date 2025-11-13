@@ -95,14 +95,14 @@
                     <!-- Rich Text Content -->
                     @if($file_type === 'rich_text')
                         <div>
-                            <flux:label for="content_text" required>Rich Text Content</flux:label>
+                            <flux:label for="quill-editor" required>Rich Text Content</flux:label>
                             <div wire:ignore>
-                                <textarea 
-                                    id="content_text"
-                                    wire:model="content_text"
-                                    rows="10"
-                                    class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                                ></textarea>
+                                <div 
+                                    id="quill-editor"
+                                    style="min-height: 300px; background: white;"
+                                    class="rounded-md border border-gray-300 dark:border-gray-600"
+                                ></div>
+                                <input type="hidden" wire:model="content_text" id="content_text_hidden">
                             </div>
                             @error('content_text') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
@@ -434,7 +434,7 @@
         let quill = null;
         
         function initQuill() {
-            const editor = document.getElementById('content_text');
+            const editor = document.getElementById('quill-editor');
             if (editor && !quill) {
                 quill = new Quill(editor, {
                     theme: 'snow',
