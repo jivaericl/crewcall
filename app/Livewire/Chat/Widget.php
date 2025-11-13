@@ -126,7 +126,7 @@ class Widget extends Component
         // Check for new messages and trigger notification
         if (count($this->messages) > $previousCount && !$this->isOpen) {
             $latestMessage = end($this->messages);
-            if ($latestMessage && $latestMessage->user_id !== auth()->id()) {
+            if ($latestMessage && $latestMessage['user_id'] !== auth()->id()) {
                 $this->triggerNotification($latestMessage);
             }
         }
@@ -140,8 +140,8 @@ class Widget extends Component
         if (!$event) return;
 
         $this->dispatch('new-message-notification', [
-            'userName' => $message->user->name,
-            'message' => \Illuminate\Support\Str::limit($message->message, 100),
+            'userName' => $message['user']['name'],
+            'message' => \Illuminate\Support\Str::limit($message['message'], 100),
             'soundEnabled' => $event->chat_sound_enabled ?? true,
         ]);
     }
