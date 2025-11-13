@@ -172,11 +172,23 @@
                             <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
                                 {{ substr($presence['user']['name'], 0, 1) }}
                             </div>
-                            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                            @php
+                                $lastSeen = \Carbon\Carbon::parse($presence['last_seen_at'] ?? $presence['updated_at']);
+                                $isOnline = $lastSeen->gt(now()->subMinutes(5));
+                            @endphp
+                            @if($isOnline)
+                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
+                            @else
+                                <div class="absolute bottom-0 right-0 w-3 h-3 bg-gray-400 rounded-full border-2 border-white dark:border-gray-800"></div>
+                            @endif
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ $presence['user']['name'] }}</p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $presence['current_page'] ?? 'chat' }}</p>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $presence['user']['id'] }} })">{{ $presence['user']['name'] }}</p>
+                            @if($isOnline)
+                                <p class="text-xs text-green-500 dark:text-green-400">● Online now</p>
+                            @else
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Last seen {{ $lastSeen->diffForHumans() }}</p>
+                            @endif
                         </div>
                     </div>
                 @endforeach

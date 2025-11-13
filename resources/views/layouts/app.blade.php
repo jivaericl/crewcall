@@ -64,6 +64,7 @@
         <!-- Global Chat Widget -->
         @auth
             @livewire('chat.widget')
+            @livewire('chat.user-profile-modal')
         @endauth
 
         @livewireScripts
