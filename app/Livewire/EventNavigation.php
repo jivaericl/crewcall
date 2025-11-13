@@ -49,6 +49,19 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Chat',
+                    'icon' => 'chat',
+                    'route' => 'chat.index',
+                    'params' => [],
+                    'badge' => \App\Models\ChatMessage::whereHas('event.assignedUsers', function ($query) {
+                        $query->where('users.id', auth()->id());
+                    })
+                    ->where('user_id', '!=', auth()->id())
+                    ->where('created_at', '>', now()->subDays(7))
+                    ->whereNull('read_at')
+                    ->count(),
+                ],
+                [
                     'label' => 'Sessions',
                     'icon' => 'calendar',
                     'route' => 'events.sessions.index',
