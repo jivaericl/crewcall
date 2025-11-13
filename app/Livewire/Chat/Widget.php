@@ -41,6 +41,20 @@ class Widget extends Component
     {
         $this->isOpen = !$this->isOpen;
         if ($this->isOpen) {
+            // Re-check for event ID when opening
+            if (!$this->eventId) {
+                $this->eventId = request()->route('eventId') 
+                    ?? session('current_event_id')
+                    ?? request()->get('event_id');
+                
+                if (!$this->eventId && auth()->check()) {
+                    $event = auth()->user()->events()->first();
+                    if ($event) {
+                        $this->eventId = $event->id;
+                    }
+                }
+            }
+            
             $this->unreadCount = 0;
             $this->loadMessages();
             $this->dispatch('chat-opened');

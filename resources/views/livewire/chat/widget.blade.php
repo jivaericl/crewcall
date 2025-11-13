@@ -22,7 +22,11 @@
             <div class="bg-blue-600 dark:bg-blue-500 text-white p-4 rounded-t-lg flex justify-between items-center">
                 <div>
                     <h3 class="font-semibold">Team Chat</h3>
-                    <p class="text-xs text-blue-100">{{ count($onlineUsers) }} online</p>
+                    @if($eventId)
+                        <p class="text-xs text-blue-100">{{ count($onlineUsers) }} online</p>
+                    @else
+                        <p class="text-xs text-blue-100">No event selected</p>
+                    @endif
                 </div>
                 <button wire:click="toggleChat" class="hover:bg-blue-700 dark:hover:bg-blue-600 rounded p-1">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,12 +68,14 @@
                     <input 
                         type="text"
                         wire:model="message"
-                        placeholder="Type a message..."
-                        class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500"
+                        placeholder="{{ $eventId ? 'Type a message...' : 'Select an event to chat' }}"
+                        {{ !$eventId ? 'disabled' : '' }}
+                        class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                     <button 
                         type="submit"
-                        class="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg px-4 py-2 transition-colors"
+                        {{ !$eventId ? 'disabled' : '' }}
+                        class="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg px-4 py-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
