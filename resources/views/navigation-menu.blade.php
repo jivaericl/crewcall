@@ -21,6 +21,18 @@
                         @livewire('event-selector')
                     </div>
                     
+                    <!-- Chat Link with Badge -->
+                    <div class="flex items-center">
+                        <a href="{{ route('chat.index') }}" 
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out {{ request()->routeIs('chat.*') ? 'border-blue-400 dark:border-blue-600 text-gray-900 dark:text-gray-100' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }}">
+                            <svg class="w-5 h-5 me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            {{ __('Chat') }}
+                            @livewire('chat-badge')
+                        </a>
+                    </div>
+                    
                     @if(auth()->user()->isSuperAdmin())
                         <x-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.*')">
                             {{ __('Roles') }}
@@ -185,6 +197,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('audit-logs.index') }}" :active="request()->routeIs('audit-logs.*')">
                 {{ __('Audit Logs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('chat.index') }}" :active="request()->routeIs('chat.*')">
+                <div class="flex items-center justify-between">
+                    <span>{{ __('Chat') }}</span>
+                    @livewire('chat-badge')
+                </div>
             </x-responsive-nav-link>
             @if(auth()->user()->isSuperAdmin())
                 <x-responsive-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.*')">

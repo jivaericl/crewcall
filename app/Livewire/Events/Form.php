@@ -23,6 +23,10 @@ class Form extends Component
     public $showTagModal = false;
     public $duration = '';
     public $customFields = [];
+    public $chat_enabled = true;
+    public $chat_notifications_enabled = true;
+    public $chat_sound_enabled = true;
+    public $chat_desktop_notifications = false;
 
     protected $rules = [
         'name' => 'required|string|max:255|min:3',
@@ -56,6 +60,12 @@ class Form extends Component
             $this->end_date = $event->end_date->format('Y-m-d\TH:i');
             $this->timezone = $event->timezone;
             $this->selectedTags = $event->tags->pluck('id')->toArray();
+            
+            // Load chat settings
+            $this->chat_enabled = $event->chat_enabled;
+            $this->chat_notifications_enabled = $event->chat_notifications_enabled;
+            $this->chat_sound_enabled = $event->chat_sound_enabled;
+            $this->chat_desktop_notifications = $event->chat_desktop_notifications;
             
             // Load custom field values
             foreach ($event->customFieldValues as $value) {
@@ -156,6 +166,10 @@ class Form extends Component
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'timezone' => $this->timezone,
+                'chat_enabled' => $this->chat_enabled,
+                'chat_notifications_enabled' => $this->chat_notifications_enabled,
+                'chat_sound_enabled' => $this->chat_sound_enabled,
+                'chat_desktop_notifications' => $this->chat_desktop_notifications,
             ]);
             
             $message = 'Event "' . $event->name . '" updated successfully.';

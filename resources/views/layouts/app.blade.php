@@ -61,6 +61,11 @@
 
         @stack('modals')
 
+        <!-- Global Chat Widget -->
+        @auth
+            @livewire('chat.widget')
+        @endauth
+
         @livewireScripts
     </body>
 </html>

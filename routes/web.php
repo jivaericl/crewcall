@@ -45,6 +45,9 @@ Route::middleware([
     // Activity feed route
     Route::get('/activity-feed', App\Livewire\ActivityFeed\Index::class)->name('activity-feed.index');
 
+    // Chat route
+    Route::get('/chat', App\Livewire\Chat\Index::class)->name('chat.index');
+
     // Session routes
     Route::get('/events/{eventId}/sessions', App\Livewire\Sessions\Index::class)->name('events.sessions.index');
     Route::get('/events/{eventId}/sessions/create', App\Livewire\Sessions\Form::class)->name('events.sessions.create');

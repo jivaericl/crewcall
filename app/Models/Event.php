@@ -22,6 +22,10 @@ class Event extends Model
         'start_date',
         'end_date',
         'timezone',
+        'chat_enabled',
+        'chat_notifications_enabled',
+        'chat_sound_enabled',
+        'chat_desktop_notifications',
         'created_by',
         'updated_by',
     ];
@@ -29,6 +33,10 @@ class Event extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'chat_enabled' => 'boolean',
+        'chat_notifications_enabled' => 'boolean',
+        'chat_sound_enabled' => 'boolean',
+        'chat_desktop_notifications' => 'boolean',
     ];
 
     /**
