@@ -5,7 +5,7 @@
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Team Chat</h1>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ $onlineUsers->count() }} {{ Str::plural('person', $onlineUsers->count()) }} online
+                    {{ count($onlineUsers) }} {{ Str::plural('person', count($onlineUsers)) }} online
                 </p>
             </div>
             
@@ -34,7 +34,7 @@
         <!-- Main Chat Area -->
         <div class="flex-1 flex flex-col">
             <!-- Pinned Messages -->
-            @if($pinnedMessages->count() > 0)
+            @if(count($pinnedMessages) > 0)
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-200 dark:border-yellow-800 p-3">
                     <div class="flex items-start gap-2">
                         <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -158,7 +158,7 @@
 
         <!-- Online Users Sidebar -->
         <div class="w-64 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 p-4">
-            <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Online Now ({{ $onlineUsers->count() }})</h3>
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Online Now ({{ count($onlineUsers) }})</h3>
             <div class="space-y-2">
                 @foreach($onlineUsers as $presence)
                     <div class="flex items-center gap-2">
