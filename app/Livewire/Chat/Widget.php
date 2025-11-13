@@ -71,7 +71,8 @@ class Widget extends Component
             ->limit(50)
             ->get()
             ->reverse()
-            ->values();
+            ->values()
+            ->toArray();
 
         $this->loadOnlineUsers();
         
@@ -89,7 +90,8 @@ class Widget extends Component
             ->where('event_id', $this->eventId)
             ->where('status', 'online')
             ->where('last_seen_at', '>=', now()->subMinutes(5))
-            ->get();
+            ->get()
+            ->toArray();
     }
 
     public function sendMessage()
