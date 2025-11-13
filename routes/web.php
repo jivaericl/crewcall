@@ -47,6 +47,7 @@ Route::middleware([
 
     // Chat route
     Route::get('/chat', App\Livewire\Chat\Index::class)->name('chat.index');
+    Route::get('/chat/settings', App\Livewire\Chat\Settings::class)->name('chat.settings');
 
     // Session routes
     Route::get('/events/{eventId}/sessions', App\Livewire\Sessions\Index::class)->name('events.sessions.index');

@@ -184,6 +184,11 @@ class Widget extends Component
 
     public function render()
     {
+        // Check if user has widget enabled
+        if (!auth()->check() || !auth()->user()->chat_widget_enabled) {
+            return view('livewire.chat.widget-disabled');
+        }
+        
         return view('livewire.chat.widget');
     }
 }
