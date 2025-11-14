@@ -2,10 +2,10 @@
     <div class="py-6">
         <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Page Header -->
-            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 mb-4">
+            <div class="mb-6">
                 <div class="flex justify-between items-center">
                     <div>
-                        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                             Show Calling - {{ $event->name }}
                         </h2>
                         @if($selectedSession)
