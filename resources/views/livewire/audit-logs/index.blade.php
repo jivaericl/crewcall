@@ -130,13 +130,25 @@
                                                 <div class="text-xs">{{ $log->created_at->diffForHumans() }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <flux:button 
-                                                    wire:click="showDetails({{ $log->id }})" 
-                                                    variant="ghost" 
-                                                    size="sm"
-                                                >
-                                                    View Details
-                                                </flux:button>
+                                                <div class="flex justify-end gap-2">
+                                                    @if($log->record_url)
+                                                        <a href="{{ $log->record_url }}">
+                                                            <flux:button 
+                                                                variant="primary" 
+                                                                size="sm"
+                                                            >
+                                                                View Record
+                                                            </flux:button>
+                                                        </a>
+                                                    @endif
+                                                    <flux:button 
+                                                        wire:click="showDetails({{ $log->id }})" 
+                                                        variant="ghost" 
+                                                        size="sm"
+                                                    >
+                                                        View Details
+                                                    </flux:button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

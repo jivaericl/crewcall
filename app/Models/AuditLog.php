@@ -89,4 +89,30 @@ class AuditLog extends Model
 
         return $changes;
     }
+
+    /**
+     * Get the URL to view the audited record.
+     */
+    public function getRecordUrlAttribute(): ?string
+    {
+        // If the record was deleted and no longer exists, return null
+        if ($this->event === 'deleted' && !$this->auditable) {
+            return null;
+        }
+
+        $modelName = class_basename($this->auditable_type);
+        $id = $this->auditable_id;
+
+        // Map model names to their routes
+        return match($modelName) {
+            'Event' => route('events.show', ['eventId' => $id]),
+            'Session' => $this->auditable?->event_id ? route('events.sessions.show', ['eventId' => $this->auditable->event_id, 'sessionId' => $id]) : null,
+            'Segment' => $this->auditable?->session_id ? route('sessions.segments.show', ['sessionId' => $this->auditable->session_id, 'segmentId' => $id]) : null,
+            'Cue' => $this->auditable?->segment_id ? route('segments.cues.show', ['segmentId' => $this->auditable->segment_id, 'cueId' => $id]) : null,
+            'Role' => route('roles.edit', ['roleId' => $id]),
+            'User' => route('profile.show'),
+            'CustomField' => $this->auditable?->event_id ? route('custom-fields.edit', ['eventId' => $this->auditable->event_id, 'fieldId' => $id]) : null,
+            default => null,
+        };
+    }
 }
