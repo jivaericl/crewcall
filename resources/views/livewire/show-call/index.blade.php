@@ -1,29 +1,30 @@
-<div x-data="{ clockInterval: null }" x-init="clockInterval = setInterval(() => $wire.updateClock(), 1000)">
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Show Calling - {{ $event->name }}
-                </h2>
-                @if($selectedSession)
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {{ $selectedSession->name }} • {{ \Carbon\Carbon::parse($selectedSession->start_date)->format('M d, Y') }}
-                    </p>
-                @endif
-            </div>
-            <div class="text-right">
-                <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
-                    {{ $clockTime }}
-                </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">
-                    Current Time
-                </div>
-            </div>
-        </div>
-    </x-slot>
-
+<div x-data="{ clockInterval: null }" x-init="clockInterval = setInterval(() => $wire.updateClock(), 1000)" x-destroy="clearInterval(clockInterval)">
     <div class="py-6">
         <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Page Header -->
+            <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 mb-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+                            Show Calling - {{ $event->name }}
+                        </h2>
+                        @if($selectedSession)
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                {{ $selectedSession->name }} • {{ \Carbon\Carbon::parse($selectedSession->start_date)->format('M d, Y') }}
+                            </p>
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
+                            {{ $clockTime }}
+                        </div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            Current Time
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             @if (session()->has('message'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
                     {{ session('message') }}
