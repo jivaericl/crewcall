@@ -43,12 +43,16 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <flux:button wire:click="setViewMode('table')" variant="{{ $viewMode === 'table' ? 'primary' : 'ghost' }}" color="{{ $viewMode === 'table' ? 'blue' : null }}" size="sm">
+                        <button 
+                            wire:click="setViewMode('table')" 
+                            class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $viewMode === 'table' ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500' : 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
                             Table View
-                        </flux:button>
-                        <flux:button wire:click="setViewMode('timeline')" variant="{{ $viewMode === 'timeline' ? 'primary' : 'ghost' }}" color="{{ $viewMode === 'timeline' ? 'blue' : null }}" size="sm">
+                        </button>
+                        <button 
+                            wire:click="setViewMode('timeline')" 
+                            class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $viewMode === 'timeline' ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500' : 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
                             Timeline View
-                        </flux:button>
+                        </button>
                     </div>
 
                     <div class="flex gap-2 items-center">
