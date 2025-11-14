@@ -134,6 +134,7 @@
                                                     @if($log->record_url)
                                                         <flux:button 
                                                             href="{{ $log->record_url }}"
+                                                            wire:navigate
                                                             variant="primary" 
                                                             size="sm"
                                                         >

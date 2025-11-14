@@ -86,7 +86,7 @@
                                     <p class="text-sm text-gray-500">{{ $session->location }}</p>
                                 @endif
                             </div>
-                            <flux:button size="sm" href="{{ route('events.sessions.edit', ['eventId' => $eventId, 'sessionId' => $session->id]) }}" variant="ghost">
+                            <flux:button size="sm" href="{{ route('events.sessions.show', ['eventId' => $eventId, 'sessionId' => $session->id]) }}" variant="ghost">
                                 View
                             </flux:button>
                         </div>
@@ -108,9 +108,14 @@
                                     {{ strtoupper($file->file_type) }} • {{ $file->formatted_size }}
                                 </p>
                             </div>
-                            <flux:button size="sm" href="{{ $file->download_url }}" variant="ghost" target="_blank">
-                                Download
-                            </flux:button>
+                            <div class="flex gap-2">
+                                <flux:button size="sm" href="{{ route('events.content.show', ['eventId' => $eventId, 'contentId' => $file->id]) }}" variant="ghost">
+                                    View
+                                </flux:button>
+                                <flux:button size="sm" href="{{ $file->download_url }}" variant="ghost" target="_blank">
+                                    Download
+                                </flux:button>
+                            </div>
                         </div>
                     </div>
                 @empty
