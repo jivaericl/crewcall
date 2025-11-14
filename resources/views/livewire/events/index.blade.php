@@ -350,9 +350,8 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Delete Confirmation Modal -->
+        <!-- Delete Confirmation Modal -->
     <div x-data="{ show: @entangle('showDeleteModal') }" 
          x-show="show" 
          x-cloak
