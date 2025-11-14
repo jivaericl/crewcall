@@ -179,7 +179,7 @@ class Index extends Component
         $this->skipCue($cueId);
     }
 
-    public function reset($cueId)
+    public function resetCueStatus($cueId)
     {
         $this->resetCue($cueId);
     }

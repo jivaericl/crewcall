@@ -78,7 +78,7 @@
                                             <flux:button wire:click="skip({{ $cue->id }})" variant="ghost" size="sm">
                                                 Skip
                                             </flux:button>
-                                            <flux:button wire:click="reset({{ $cue->id }})" variant="ghost" size="sm">
+                                            <flux:button wire:click="resetCueStatus({{ $cue->id }})" variant="ghost" size="sm">
                                                 Reset
                                             </flux:button>
                                         </div>
