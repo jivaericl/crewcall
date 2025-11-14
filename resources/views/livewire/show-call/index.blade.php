@@ -43,10 +43,10 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <flux:button wire:click="setViewMode('table')" variant="{{ $viewMode === 'table' ? 'primary' : 'ghost' }}" size="sm">
+                        <flux:button wire:click="setViewMode('table')" variant="{{ $viewMode === 'table' ? 'primary' : 'ghost' }}" color="{{ $viewMode === 'table' ? 'zinc' : null }}" size="sm">
                             Table View
                         </flux:button>
-                        <flux:button wire:click="setViewMode('timeline')" variant="{{ $viewMode === 'timeline' ? 'primary' : 'ghost' }}" size="sm">
+                        <flux:button wire:click="setViewMode('timeline')" variant="{{ $viewMode === 'timeline' ? 'primary' : 'ghost' }}" color="{{ $viewMode === 'timeline' ? 'zinc' : null }}" size="sm">
                             Timeline View
                         </flux:button>
                     </div>
