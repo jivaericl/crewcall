@@ -1,4 +1,45 @@
-<div wire:poll.5s="refreshMessages" class="flex flex-col bg-gray-50 dark:bg-gray-900" style="height: calc(100vh - 4rem);">
+<div wire:poll.5s="refreshMessages" class="flex bg-gray-50 dark:bg-gray-900" style="height: calc(100vh - 4rem);">
+    <!-- Conversations Sidebar -->
+    <div class="w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto">
+            @forelse($conversations as $conv)
+                <button 
+                    wire:click="switchConversation('{{ $conv['type'] }}', {{ $conv['id'] }})"
+                    class="w-full p-4 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 text-left transition-colors {{ $conv['type'] === 'dm' && $conv['id'] == $userId ? 'bg-blue-50 dark:bg-blue-900/20' : '' }}"
+                >
+                    <div class="w-12 h-12 rounded-full {{ $conv['type'] === 'event' ? 'bg-green-500' : 'bg-blue-500' }} flex items-center justify-center text-white font-semibold flex-shrink-0">
+                        {{ $conv['avatar'] }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-medium text-gray-900 dark:text-white truncate">{{ $conv['name'] }}</h3>
+                            @if($conv['unread_count'] > 0)
+                                <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $conv['unread_count'] }}</span>
+                            @endif
+                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ Str::limit($conv['last_message'], 40) }}</p>
+                        @if($conv['last_message_at'])
+                            <p class="text-xs text-gray-400 dark:text-gray-500">{{ $conv['last_message_at']->diffForHumans() }}</p>
+                        @endif
+                    </div>
+                </button>
+            @empty
+                <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+                    <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    <p class="text-sm">No conversations yet</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+    
+    <!-- Main DM Area -->
+    <div class="flex-1 flex flex-col">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
         <div class="flex items-center justify-between">
@@ -106,3 +147,5 @@
         }, 100);
     });
 </script>
+    </div>
+</div>
