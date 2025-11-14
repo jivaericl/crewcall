@@ -113,6 +113,7 @@ class AuditLog extends Model
             'Speaker' => $this->auditable?->event_id ? route('events.speakers.index', ['eventId' => $this->auditable->event_id]) : null,
             'Contact' => $this->auditable?->event_id ? route('events.contacts.index', ['eventId' => $this->auditable->event_id]) : null,
             'Tag' => $this->auditable?->event_id ? route('events.tags.index', ['eventId' => $this->auditable->event_id]) : null,
+            'ContentFile' => $this->auditable?->event_id ? route('events.content.show', ['eventId' => $this->auditable->event_id, 'contentId' => $id]) : null,
             'Role' => route('roles.edit', ['roleId' => $id]),
             'User' => route('profile.show'),
             'CustomField' => $this->auditable?->event_id ? route('custom-fields.edit', ['eventId' => $this->auditable->event_id, 'fieldId' => $id]) : null,
