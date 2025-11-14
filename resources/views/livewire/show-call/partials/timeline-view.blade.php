@@ -61,8 +61,8 @@
                                             <div class="flex gap-4 text-xs text-gray-500 dark:text-gray-400">
                                                 <span>Operator: {{ $cue->operator ?? 'Unassigned' }}</span>
                                                 <span>Status: 
-                                                    <span class="font-medium {{ $cue->status === 'completed' ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400' }}">
-                                                        {{ ucfirst($cue->status ?? 'pending') }}
+                                                    <span class="font-medium {{ $cue->status === 'complete' ? 'text-green-600 dark:text-green-400' : ($cue->status === 'skip' ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-900 dark:text-gray-100') }}">
+                                                        {{ ucfirst($cue->status ?? 'standby') }}
                                                     </span>
                                                 </span>
                                             </div>
