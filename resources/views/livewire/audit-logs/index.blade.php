@@ -18,9 +18,9 @@
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Search -->
                         <div>
-                            <flux:input 
-                                wire:model.live.debounce.300ms="search" 
-                                type="text" 
+                            <flux:input
+                                wire:model.live.debounce.300ms="search"
+                                type="text"
                                 placeholder="Search..."
                                 class="w-full"
                             />
@@ -132,18 +132,18 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-2">
                                                     @if($log->record_url)
-                                                        <flux:button 
+                                                        <flux:button
                                                             href="{{ $log->record_url }}"
                                                             wire:navigate
-                                                            variant="primary" 
+                                                            variant="ghost"
                                                             size="sm"
                                                         >
                                                             View Record
                                                         </flux:button>
                                                     @endif
-                                                    <flux:button 
-                                                        wire:click="showDetails({{ $log->id }})" 
-                                                        variant="ghost" 
+                                                    <flux:button
+                                                        wire:click="showDetails({{ $log->id }})"
+                                                        variant="ghost"
                                                         size="sm"
                                                     >
                                                         View Details
@@ -169,14 +169,14 @@
         </div>
 
         <!-- Details Modal -->
-        <div x-data="{ show: @entangle('showDetailsModal') }" 
-         x-show="show" 
+        <div x-data="{ show: @entangle('showDetailsModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
-            
+
             @if($selectedLog)
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
