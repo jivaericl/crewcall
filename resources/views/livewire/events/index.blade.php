@@ -1,6 +1,7 @@
-<div>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
+<div class="py-6">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-6">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Events') }}
             </h2>
@@ -11,10 +12,6 @@
                 Create Event
             </a>
         </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session()->has('message'))
                 <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded-lg flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
