@@ -2,7 +2,18 @@
     <!-- Conversations Sidebar -->
     <div class="w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+                <button 
+                    wire:click="$dispatch('openNewMessage')"
+                    class="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white p-2 rounded-lg transition-colors"
+                    title="New Message"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
         
         <div class="flex-1 overflow-y-auto">

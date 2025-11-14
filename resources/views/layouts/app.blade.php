@@ -65,6 +65,7 @@
         @auth
             @livewire('chat.widget')
             @livewire('chat.user-profile-modal')
+            @livewire('chat.new-message')
         @endauth
 
         @livewireScripts
