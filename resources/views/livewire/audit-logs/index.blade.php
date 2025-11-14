@@ -132,14 +132,13 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-2">
                                                     @if($log->record_url)
-                                                        <a href="{{ $log->record_url }}">
-                                                            <flux:button 
-                                                                variant="primary" 
-                                                                size="sm"
-                                                            >
-                                                                View Record
-                                                            </flux:button>
-                                                        </a>
+                                                        <flux:button 
+                                                            href="{{ $log->record_url }}"
+                                                            variant="primary" 
+                                                            size="sm"
+                                                        >
+                                                            View Record
+                                                        </flux:button>
                                                     @endif
                                                     <flux:button 
                                                         wire:click="showDetails({{ $log->id }})" 

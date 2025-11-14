@@ -106,9 +106,13 @@ class AuditLog extends Model
         // Map model names to their routes
         return match($modelName) {
             'Event' => route('events.show', ['eventId' => $id]),
+            'EventSession' => $this->auditable?->event_id ? route('events.sessions.show', ['eventId' => $this->auditable->event_id, 'sessionId' => $id]) : null,
             'Session' => $this->auditable?->event_id ? route('events.sessions.show', ['eventId' => $this->auditable->event_id, 'sessionId' => $id]) : null,
             'Segment' => $this->auditable?->session_id ? route('sessions.segments.show', ['sessionId' => $this->auditable->session_id, 'segmentId' => $id]) : null,
             'Cue' => $this->auditable?->segment_id ? route('segments.cues.show', ['segmentId' => $this->auditable->segment_id, 'cueId' => $id]) : null,
+            'Speaker' => $this->auditable?->event_id ? route('events.speakers.index', ['eventId' => $this->auditable->event_id]) : null,
+            'Contact' => $this->auditable?->event_id ? route('events.contacts.index', ['eventId' => $this->auditable->event_id]) : null,
+            'Tag' => $this->auditable?->event_id ? route('events.tags.index', ['eventId' => $this->auditable->event_id]) : null,
             'Role' => route('roles.edit', ['roleId' => $id]),
             'User' => route('profile.show'),
             'CustomField' => $this->auditable?->event_id ? route('custom-fields.edit', ['eventId' => $this->auditable->event_id, 'fieldId' => $id]) : null,
