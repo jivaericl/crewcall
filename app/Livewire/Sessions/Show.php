@@ -150,6 +150,7 @@ class Show extends Component
         $this->session->comments()->create([
             'user_id' => auth()->id(),
             'comment' => $this->newComment,
+            'event_id' => $this->eventId,
         ]);
 
         $this->newComment = '';
