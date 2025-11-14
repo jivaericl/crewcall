@@ -1,5 +1,8 @@
 <?php
 
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
+
 return [
 
     /*
