@@ -163,6 +163,27 @@ class Index extends Component
         $this->currentTime = now()->format('H:i:s');
     }
 
+    // Shorthand methods for button actions
+    public function standby($cueId)
+    {
+        $this->setStandby($cueId);
+    }
+
+    public function go($cueId)
+    {
+        $this->executeCue($cueId);
+    }
+
+    public function skip($cueId)
+    {
+        $this->skipCue($cueId);
+    }
+
+    public function reset($cueId)
+    {
+        $this->resetCue($cueId);
+    }
+
     public function render()
     {
         // Get all sessions for this event

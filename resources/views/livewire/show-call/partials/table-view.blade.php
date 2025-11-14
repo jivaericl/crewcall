@@ -71,7 +71,7 @@
                                     <flux:button wire:click="standby({{ $cue->id }})" variant="ghost" size="sm">
                                         Standby
                                     </flux:button>
-                                    <flux:button wire:click="go({{ $cue->id }})" variant="primary" size="sm">
+                                    <flux:button wire:click="go({{ $cue->id }})" variant="primary" color="green" size="sm">
                                         GO
                                     </flux:button>
                                     <flux:button wire:click="skip({{ $cue->id }})" variant="ghost" size="sm">

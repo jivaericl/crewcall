@@ -1,6 +1,5 @@
 <div x-data="{ clockInterval: null }" x-init="clockInterval = setInterval(() => $wire.updateClock(), 1000)" x-destroy="clearInterval(clockInterval)">
-    <div class="py-6">
-        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
             <!-- Page Header -->
             <div class="mb-6">
                 <div class="flex justify-between items-center">
