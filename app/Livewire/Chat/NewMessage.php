@@ -35,13 +35,19 @@ class NewMessage extends Component
             return;
         }
 
-        $this->searchResults = User::where('id', '!=', auth()->id())
-            ->where(function($query) {
-                $query->where('name', 'like', '%' . $this->searchQuery . '%')
-                      ->orWhere('email', 'like', '%' . $this->searchQuery . '%');
-            })
-            ->whereNotIn('id', array_column($this->recipients, 'id'))
-            ->limit(10)
+        $recipientIds = !empty($this->recipients) ? array_column($this->recipients, 'id') : [];
+        
+        $query = User::where('id', '!=', auth()->id())
+            ->where(function($q) {
+                $q->where('name', 'like', '%' . $this->searchQuery . '%')
+                  ->orWhere('email', 'like', '%' . $this->searchQuery . '%');
+            });
+        
+        if (!empty($recipientIds)) {
+            $query->whereNotIn('id', $recipientIds);
+        }
+        
+        $this->searchResults = $query->limit(10)
             ->get()
             ->toArray();
     }
