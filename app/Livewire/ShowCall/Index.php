@@ -123,7 +123,7 @@ class Index extends Component
     {
         $cue = Cue::find($cueId);
         if ($cue) {
-            $cue->update(['status' => 'pending']);
+            $cue->update(['status' => 'standby']);
         }
         
         if ($this->standbyCueId == $cueId) {
@@ -136,7 +136,7 @@ class Index extends Component
 
     private function autoAdvanceToNextCue($currentCueId)
     {
-        // Find next pending cue
+        // Find next standby cue
         $currentCue = Cue::find($currentCueId);
         if (!$currentCue) return;
         
@@ -146,7 +146,7 @@ class Index extends Component
             });
         })
         ->where('time', '>', $currentCue->time)
-        ->where('status', 'pending')
+        ->where('status', 'standby')
         ->orderBy('time')
         ->first();
         
@@ -161,6 +161,27 @@ class Index extends Component
     {
         $this->clockTime = now()->format('g:i:s A');
         $this->currentTime = now()->format('H:i:s');
+    }
+
+    // Shorthand methods for button actions
+    public function standby($cueId)
+    {
+        $this->setStandby($cueId);
+    }
+
+    public function go($cueId)
+    {
+        $this->executeCue($cueId);
+    }
+
+    public function skip($cueId)
+    {
+        $this->skipCue($cueId);
+    }
+
+    public function resetCueStatus($cueId)
+    {
+        $this->resetCue($cueId);
     }
 
     public function render()
@@ -193,7 +214,7 @@ class Index extends Component
             ->with(['segment', 'cueType', 'operator', 'tags']);
             
             if (!$this->showCompleted) {
-                $cuesQuery->whereIn('status', ['pending', 'standby']);
+                $cuesQuery->where('status', 'standby');
             }
             
             if ($this->filterSegmentId) {

@@ -1,29 +1,29 @@
-<div x-data="{ clockInterval: null }" x-init="clockInterval = setInterval(() => $wire.updateClock(), 1000)">
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                    Show Calling - {{ $event->name }}
-                </h2>
-                @if($selectedSession)
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {{ $selectedSession->name }} • {{ \Carbon\Carbon::parse($selectedSession->start_date)->format('M d, Y') }}
-                    </p>
-                @endif
-            </div>
-            <div class="text-right">
-                <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
-                    {{ $clockTime }}
+<div x-data="{ clockInterval: null }" x-init="clockInterval = setInterval(() => $wire.updateClock(), 1000)" x-destroy="clearInterval(clockInterval)">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+            <!-- Page Header -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                            Show Calling - {{ $event->name }}
+                        </h2>
+                        @if($selectedSession)
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                {{ $selectedSession->name }} • {{ \Carbon\Carbon::parse($selectedSession->start_date)->format('M d, Y') }}
+                            </p>
+                        @endif
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums">
+                            {{ $clockTime }}
+                        </div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            Current Time
+                        </div>
+                    </div>
                 </div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">
-                    Current Time
-                </div>
             </div>
-        </div>
-    </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
             @if (session()->has('message'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
                     {{ session('message') }}
@@ -43,12 +43,16 @@
                     </div>
 
                     <div class="flex gap-2">
-                        <flux:button wire:click="setViewMode('table')" variant="{{ $viewMode === 'table' ? 'primary' : 'ghost' }}" size="sm">
+                        <button 
+                            wire:click="setViewMode('table')" 
+                            class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $viewMode === 'table' ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500' : 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
                             Table View
-                        </flux:button>
-                        <flux:button wire:click="setViewMode('timeline')" variant="{{ $viewMode === 'timeline' ? 'primary' : 'ghost' }}" size="sm">
+                        </button>
+                        <button 
+                            wire:click="setViewMode('timeline')" 
+                            class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors {{ $viewMode === 'timeline' ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500' : 'bg-transparent text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700' }}">
                             Timeline View
-                        </flux:button>
+                        </button>
                     </div>
 
                     <div class="flex gap-2 items-center">

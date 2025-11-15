@@ -104,6 +104,11 @@ class EventNavigation extends Component
                             'route' => 'events.users',
                             'params' => [$this->eventId],
                         ],
+                        [
+                            'label' => 'Travel',
+                            'route' => 'events.travel.index',
+                            'params' => [$this->eventId],
+                        ],
                     ],
                 ],
                 [

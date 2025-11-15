@@ -61,8 +61,8 @@
                                             <div class="flex gap-4 text-xs text-gray-500 dark:text-gray-400">
                                                 <span>Operator: {{ $cue->operator ?? 'Unassigned' }}</span>
                                                 <span>Status: 
-                                                    <span class="font-medium {{ $cue->status === 'completed' ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400' }}">
-                                                        {{ ucfirst($cue->status ?? 'pending') }}
+                                                    <span class="font-medium {{ $cue->status === 'complete' ? 'text-green-600 dark:text-green-400' : ($cue->status === 'skip' ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-900 dark:text-gray-100') }}">
+                                                        {{ ucfirst($cue->status ?? 'standby') }}
                                                     </span>
                                                 </span>
                                             </div>
@@ -72,13 +72,15 @@
                                             <flux:button wire:click="standby({{ $cue->id }})" variant="ghost" size="sm">
                                                 Standby
                                             </flux:button>
-                                            <flux:button wire:click="go({{ $cue->id }})" variant="primary" size="sm">
+                                            <button 
+                                                wire:click="go({{ $cue->id }})" 
+                                                class="px-3 py-1.5 text-sm font-medium rounded-md bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-600 dark:text-white dark:hover:bg-emerald-500 transition-colors">
                                                 GO
-                                            </flux:button>
+                                            </button>
                                             <flux:button wire:click="skip({{ $cue->id }})" variant="ghost" size="sm">
                                                 Skip
                                             </flux:button>
-                                            <flux:button wire:click="reset({{ $cue->id }})" variant="ghost" size="sm">
+                                            <flux:button wire:click="resetCueStatus({{ $cue->id }})" variant="ghost" size="sm">
                                                 Reset
                                             </flux:button>
                                         </div>
