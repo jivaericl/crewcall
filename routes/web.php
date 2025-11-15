@@ -79,16 +79,16 @@ Route::middleware([
     Route::get('/events/{eventId}/content', App\Livewire\Content\Index::class)->name('events.content.index');
     Route::get('/events/{eventId}/content/{contentId}', App\Livewire\Content\Show::class)->name('events.content.show');
     Route::get('/events/{eventId}/content/{contentId}/edit', App\Livewire\Content\Edit::class)->name('events.content.edit');
-    
+
     // Content download routes (for text-based content)
     Route::get('/content/{contentId}/download', [App\Http\Controllers\ContentController::class, 'download'])->name('content.download');
     Route::get('/content/version/{versionId}/download', [App\Http\Controllers\ContentController::class, 'downloadVersion'])->name('content.version.download');
-    
+
     // Content categories routes
     Route::get('/events/{eventId}/content-categories', App\Livewire\ContentCategories\Index::class)->name('events.content-categories.index');
     Route::get('/events/{eventId}/content-categories/create', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.create');
     Route::get('/events/{eventId}/content-categories/{categoryId}/edit', App\Livewire\ContentCategories\Form::class)->name('events.content-categories.edit');
-    
+
     // Cue types routes
     Route::get('/events/{eventId}/cue-types', App\Livewire\CueTypes\Index::class)->name('events.cue-types.index');
     Route::get('/events/{eventId}/cue-types/create', App\Livewire\CueTypes\Form::class)->name('events.cue-types.create');
@@ -106,6 +106,12 @@ Route::middleware([
     Route::get('/events/{eventId}/contacts/{contactId}/edit', App\Livewire\Contacts\Form::class)->name('events.contacts.edit');
     Route::get('/events/{eventId}/contacts/{contactId}', App\Livewire\Contacts\Show::class)->name('events.contacts.show');
 
+    // Travel routes
+    Route::get('/events/{eventId}/travel', App\Livewire\Travel\Index::class)->name('events.travel.index');
+    Route::get('/events/{eventId}/travel/{travelId}/flights', App\Livewire\Travel\Flights::class)->name('events.travel.flights');
+    Route::get('/events/{eventId}/travel/{travelId}/hotel-reservations', App\Livewire\Travel\HotelReservations::class)->name('events.travel.hotel-reservations');
+    Route::get('/events/{eventId}/hotels', App\Livewire\Travel\Hotels::class)->name('events.travel.hotels');
+
     // Event-specific Tags and Audit routes
     // TODO: Create Tags\Index component
     Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');
@@ -115,7 +121,7 @@ Route::middleware([
     // Show calling routes
     Route::get('/events/{eventId}/show-call', App\Livewire\ShowCall\Index::class)->name('show-call.index');
     Route::get('/events/{eventId}/show-call/{sessionId}', App\Livewire\ShowCall\Index::class)->name('show-call.session');
-    
+
     // Run of Show routes
     Route::get('/sessions/{sessionId}/run-of-show', App\Livewire\RunOfShow\Index::class)->name('sessions.run-of-show');
 });
