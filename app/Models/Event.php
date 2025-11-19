@@ -132,6 +132,30 @@ class Event extends Model
     }
 
     /**
+     * Get the speakers for this event.
+     */
+    public function speakers(): HasMany
+    {
+        return $this->hasMany(Speaker::class);
+    }
+
+    /**
+     * Get all cues for this event through sessions and segments.
+     */
+    public function cues()
+    {
+        return $this->hasManyThrough(
+            Cue::class,
+            Session::class,
+            'event_id',
+            'segment_id',
+            'id',
+            'id'
+        )->join('segments', 'cues.segment_id', '=', 'segments.id')
+         ->where('segments.session_id', '=', 'sessions.id');
+    }
+
+    /**
      * Boot the model and set up event observers.
      */
     protected static function boot()
