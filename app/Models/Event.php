@@ -74,6 +74,14 @@ class Event extends Model
     }
 
     /**
+     * Alias for assignedUsers() for consistency.
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->assignedUsers();
+    }
+
+    /**
      * Get the roles assigned to this event.
      */
     public function assignedRoles(): BelongsToMany
