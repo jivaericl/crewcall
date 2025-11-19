@@ -29,10 +29,11 @@
         </div>
     </div>
 
-    <div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-6">
 
             <!-- Session Info Card -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-6">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -61,10 +62,11 @@
                         </div>
                     @endif
                 </div>
+
             </div>
 
             <!-- Filters -->
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-6">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Search -->
@@ -225,95 +227,6 @@
                 </div>
                 </div>
 
-
-                    <!-- Tags -->
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
-                        @if($session->tags->count() > 0)
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($session->tags as $tag)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" 
-                                          style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}; border: 1px solid {{ $tag->color }};">
-                                        {{ $tag->name }}
-                                    </span>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">No tags assigned</p>
-                        @endif
-                    </div>
-
-                    <!-- Metadata -->
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6 mb-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Metadata</h3>
-                        <dl class="space-y-3">
-                            <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Created By</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                    {{ $session->creator?->name ?: 'Unknown' }}
-                                    <span class="text-xs text-gray-500 dark:text-gray-400 block">{{ $session->created_at->format('M d, Y g:i A') }}</span>
-                                </dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Last Updated By</dt>
-                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                                    {{ $session->updater?->name ?: 'Unknown' }}
-                                    <span class="text-xs text-gray-500 dark:text-gray-400 block">{{ $session->updated_at->format('M d, Y g:i A') }}</span>
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-
-                    <!-- History (Collapsible) -->
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-6" x-data="{ open: false }">
-                        <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">History</h3>
-                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div x-show="open" x-collapse class="border-t border-gray-200 dark:border-gray-700">
-                            <div class="p-6">
-                                @if($auditLogs->count() > 0)
-                                    <div class="space-y-4">
-                                        @foreach($auditLogs as $log)
-                                            <div class="border-l-4 border-blue-500 dark:border-blue-400 pl-4 py-2">
-                                                <div class="flex justify-between items-start">
-                                                    <div class="flex-1">
-                                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                            {{ ucfirst($log->action) }}
-                                                        </p>
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                            by {{ $log->user->name }} • {{ $log->created_at->diffForHumans() }}
-                                                        </p>
-                                                        @if($log->changes && count($log->changes) > 0)
-                                                            <div class="mt-2 space-y-1">
-                                                                @foreach($log->changes as $field => $change)
-                                                                    <p class="text-xs text-gray-600 dark:text-gray-300">
-                                                                        <span class="font-medium">{{ ucfirst(str_replace('_', ' ', $field)) }}:</span>
-                                                                        @if(isset($change['old']) && isset($change['new']))
-                                                                            <span class="text-red-600 dark:text-red-400">{{ $change['old'] ?: '(empty)' }}</span>
-                                                                            →
-                                                                            <span class="text-green-600 dark:text-green-400">{{ $change['new'] ?: '(empty)' }}</span>
-                                                                        @else
-                                                                            {{ json_encode($change) }}
-                                                                        @endif
-                                                                    </p>
-                                                                @endforeach
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <p class="text-gray-500 dark:text-gray-400 text-sm">No history available</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Comments -->
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Comments</h3>
@@ -377,10 +290,100 @@
                         @endif
                     </div>
                 </div>
+
+                <div class="space-y-6">
+                    <!-- Tags -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Tags</h3>
+                        @if($session->tags->count() > 0)
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($session->tags as $tag)
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium" 
+                                          style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}; border: 1px solid {{ $tag->color }};">
+                                        {{ $tag->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">No tags assigned</p>
+                        @endif
+                    </div>
+
+                    <!-- Metadata -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Metadata</h3>
+                        <dl class="space-y-3">
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Created By</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $session->creator?->name ?: 'Unknown' }}
+                                    <span class="text-xs text-gray-500 dark:text-gray-400 block">{{ $session->created_at->format('M d, Y g:i A') }}</span>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Last Updated By</dt>
+                                <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $session->updater?->name ?: 'Unknown' }}
+                                    <span class="text-xs text-gray-500 dark:text-gray-400 block">{{ $session->updated_at->format('M d, Y g:i A') }}</span>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <!-- History (Collapsible) -->
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg" x-data="{ open: false }">
+                        <button @click="open = !open" class="w-full p-6 text-left flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">History</h3>
+                            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="open" x-collapse class="border-t border-gray-200 dark:border-gray-700">
+                            <div class="p-6">
+                                @if($auditLogs->count() > 0)
+                                    <div class="space-y-4">
+                                        @foreach($auditLogs as $log)
+                                            <div class="border-l-4 border-blue-500 dark:border-blue-400 pl-4 py-2">
+                                                <div class="flex justify-between items-start">
+                                                    <div class="flex-1">
+                                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                            {{ ucfirst($log->action) }}
+                                                        </p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                            by {{ $log->user->name }} • {{ $log->created_at->diffForHumans() }}
+                                                        </p>
+                                                        @if($log->changes && count($log->changes) > 0)
+                                                            <div class="mt-2 space-y-1">
+                                                                @foreach($log->changes as $field => $change)
+                                                                    <p class="text-xs text-gray-600 dark:text-gray-300">
+                                                                        <span class="font-medium">{{ ucfirst(str_replace('_', ' ', $field)) }}:</span>
+                                                                        @if(isset($change['old']) && isset($change['new']))
+                                                                            <span class="text-red-600 dark:text-red-400">{{ $change['old'] ?: '(empty)' }}</span>
+                                                                            →
+                                                                            <span class="text-green-600 dark:text-green-400">{{ $change['new'] ?: '(empty)' }}</span>
+                                                                        @else
+                                                                            {{ json_encode($change) }}
+                                                                        @endif
+                                                                    </p>
+                                                                @endforeach
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">No history available</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-    
-        <!-- Reset Confirmation Modal -->
-        <div x-data="{ show: @entangle('showResetModal') }" 
+
+    <!-- Reset Confirmation Modal -->
+    <div x-data="{ show: @entangle('showResetModal') }" 
          x-show="show" 
          x-cloak
          class="fixed inset-0 z-50 overflow-y-auto" 
@@ -430,7 +433,6 @@
                     </button>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 </div>
