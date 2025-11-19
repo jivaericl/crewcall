@@ -11,20 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('travels', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_traveling')->default(false);
-            $table->text('notes')->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users');
-            $table->foreignId('updated_by')->nullable()->constrained('users');
-            $table->timestamps();
-            $table->softDeletes();
-
-            // Ensure each user has only one travel record per event
-            $table->unique(['event_id', 'user_id']);
-        });
+        // Legacy placeholder. Actual travels table is created in a later migration after
+        // dependent tables (like events) exist.
     }
 
     /**

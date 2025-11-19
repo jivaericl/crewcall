@@ -11,26 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hotels', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('address');
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('zip')->nullable();
-            $table->string('country')->nullable();
-            $table->string('maps_link')->nullable();
-            $table->string('website')->nullable();
-            $table->string('email')->nullable();
-            $table->string('contact_person')->nullable();
-            $table->string('phone')->nullable();
-            $table->text('notes')->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users');
-            $table->foreignId('updated_by')->nullable()->constrained('users');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        // Legacy placeholder. The hotels table is created in a later migration to preserve
+        // proper foreign key ordering.
     }
 
     /**
