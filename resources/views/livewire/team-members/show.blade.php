@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <button 
-                        wire:click="$set('showEditModal', true)" 
+                        wire:click="openEditModal" 
                         class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
                         Edit Health & Safety
                     </button>
@@ -270,7 +270,7 @@
                 </div>
 
                 <div class="flex justify-end gap-3 mt-6">
-                    <flux:button wire:click="$set('showEditModal', false)" variant="ghost">
+                    <flux:button wire:click="closeEditModal" variant="ghost">
                         Cancel
                     </flux:button>
                     <flux:button wire:click="saveHealthSafety" variant="primary">

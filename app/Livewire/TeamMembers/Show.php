@@ -79,6 +79,16 @@ class Show extends Component
         }
     }
 
+    public function openEditModal()
+    {
+        $this->showEditModal = true;
+    }
+    
+    public function closeEditModal()
+    {
+        $this->showEditModal = false;
+    }
+    
     public function saveHealthSafety()
     {
         $this->user->update([
