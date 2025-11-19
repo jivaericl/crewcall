@@ -1,5 +1,12 @@
 <div class="py-12">
     <div class="mx-auto sm:px-6 lg:px-8">
+        <!-- Success Message -->
+        @if (session()->has('message'))
+            <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 rounded-md">
+                {{ session('message') }}
+            </div>
+        @endif
+
         <!-- Header -->
         <div class="mb-6">
             <div class="flex items-center justify-between">
@@ -14,9 +21,14 @@
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ $user->email }}</p>
                     </div>
                 </div>
-                <a href="{{ route('events.travel.index', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
-                    ← Back to Travel
-                </a>
+                <div class="flex items-center gap-3">
+                    <flux:button wire:click="$set('showEditModal', true)" variant="primary" size="sm">
+                        Edit Health & Safety
+                    </flux:button>
+                    <a href="{{ route('events.travel.index', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
+                        ← Back to Travel
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -211,4 +223,58 @@
             </div>
         @endif
     </div>
+</div>
+
+    <!-- Edit Health & Safety Modal -->
+    <flux:modal name="showEditModal" wire:model="showEditModal">
+        <flux:modal.header>
+            <flux:heading size="lg">Edit Health & Safety Information</flux:heading>
+        </flux:modal.header>
+
+        <flux:modal.body>
+            <div class="space-y-4">
+                <!-- Dietary Restrictions -->
+                <div>
+                    <flux:label>Dietary Restrictions</flux:label>
+                    <flux:textarea 
+                        wire:model="editDietaryRestrictions" 
+                        placeholder="e.g., Gluten-free, Vegan, Vegetarian, Lactose intolerant"
+                        rows="3"
+                    />
+                    <flux:description>List any dietary restrictions or preferences</flux:description>
+                </div>
+
+                <!-- Allergies -->
+                <div>
+                    <flux:label>Allergies</flux:label>
+                    <flux:textarea 
+                        wire:model="editAllergies" 
+                        placeholder="e.g., Nuts, Shellfish, Peanuts, Dairy"
+                        rows="3"
+                    />
+                    <flux:description>List any food or environmental allergies</flux:description>
+                </div>
+
+                <!-- Health Notes -->
+                <div>
+                    <flux:label>Additional Health Notes</flux:label>
+                    <flux:textarea 
+                        wire:model="editHealthNotes" 
+                        placeholder="Any other health information that should be noted"
+                        rows="4"
+                    />
+                    <flux:description>Any additional health or medical information</flux:description>
+                </div>
+            </div>
+        </flux:modal.body>
+
+        <flux:modal.footer>
+            <flux:button wire:click="$set('showEditModal', false)" variant="ghost">
+                Cancel
+            </flux:button>
+            <flux:button wire:click="saveHealthSafety" variant="primary">
+                Save Changes
+            </flux:button>
+        </flux:modal.footer>
+    </flux:modal>
 </div>

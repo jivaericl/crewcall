@@ -15,6 +15,12 @@ class Show extends Component
     public $user;
     public $travel;
     public $assignments = [];
+    
+    // Edit modal properties
+    public $showEditModal = false;
+    public $editDietaryRestrictions = '';
+    public $editAllergies = '';
+    public $editHealthNotes = '';
 
     public function mount($eventId, $userId)
     {
@@ -32,6 +38,11 @@ class Show extends Component
         
         // Get assignments (roles in this event)
         $this->loadAssignments();
+        
+        // Load current health/safety data
+        $this->editDietaryRestrictions = $this->user->dietary_restrictions ?? '';
+        $this->editAllergies = $this->user->allergies ?? '';
+        $this->editHealthNotes = $this->user->health_notes ?? '';
     }
 
     public function loadAssignments()
@@ -68,6 +79,24 @@ class Show extends Component
         }
     }
 
+    public function saveHealthSafety()
+    {
+        $this->user->update([
+            'dietary_restrictions' => $this->editDietaryRestrictions,
+            'allergies' => $this->editAllergies,
+            'health_notes' => $this->editHealthNotes,
+        ]);
+        
+        // Refresh user data
+        $this->user = $this->user->fresh();
+        
+        // Close modal
+        $this->showEditModal = false;
+        
+        // Show success message
+        session()->flash('message', 'Health & safety information updated successfully.');
+    }
+    
     public function render()
     {
         return view('livewire.team-members.show');
