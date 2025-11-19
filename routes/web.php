@@ -111,6 +111,9 @@ Route::middleware([
     Route::get('/events/{eventId}/travel/{travelId}/flights', App\Livewire\Travel\Flights::class)->name('events.travel.flights');
     Route::get('/events/{eventId}/travel/{travelId}/hotel-reservations', App\Livewire\Travel\HotelReservations::class)->name('events.travel.hotel-reservations');
     Route::get('/events/{eventId}/hotels', App\Livewire\Travel\Hotels::class)->name('events.travel.hotels');
+    
+    // Team member routes
+    Route::get('/events/{eventId}/team-members/{userId}', App\Livewire\TeamMembers\Show::class)->name('events.team-members.show');
 
     // Event-specific Tags and Audit routes
     // TODO: Create Tags\Index component
