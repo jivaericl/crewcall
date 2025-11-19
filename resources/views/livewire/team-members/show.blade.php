@@ -222,11 +222,9 @@
                 </flux:card>
             </div>
         @endif
-    </div>
-</div>
 
-    <!-- Edit Health & Safety Modal -->
-    <flux:modal wire:model.live="showEditModal">
+        <!-- Edit Health & Safety Modal -->
+        <flux:modal wire:model.live="showEditModal">
         <flux:modal.content>
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Edit Health & Safety Information</h3>
@@ -280,4 +278,5 @@
             </div>
         </flux:modal.content>
     </flux:modal>
+    </div>
 </div>
