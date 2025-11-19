@@ -22,9 +22,11 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <flux:button wire:click="$set('showEditModal', true)" variant="primary" size="sm">
+                    <button 
+                        wire:click="$set('showEditModal', true)" 
+                        class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
                         Edit Health & Safety
-                    </flux:button>
+                    </button>
                     <a href="{{ route('events.travel.index', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                         ← Back to Travel
                     </a>
@@ -224,7 +226,7 @@
         @endif
 
         <!-- Edit Health & Safety Modal -->
-        <flux:modal wire:model.live="showEditModal">
+        <flux:modal wire:model="showEditModal">
         <flux:modal.content>
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Edit Health & Safety Information</h3>
