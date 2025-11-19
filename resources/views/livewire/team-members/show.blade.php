@@ -226,55 +226,58 @@
 </div>
 
     <!-- Edit Health & Safety Modal -->
-    <flux:modal name="showEditModal" wire:model="showEditModal">
-        <flux:modal.header>
-            <flux:heading size="lg">Edit Health & Safety Information</flux:heading>
-        </flux:modal.header>
+    <flux:modal wire:model.live="showEditModal">
+        <flux:modal.content>
+            <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Edit Health & Safety Information</h3>
+                
+                <div class="space-y-4">
+                    <!-- Dietary Restrictions -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dietary Restrictions</label>
+                        <textarea 
+                            wire:model="editDietaryRestrictions" 
+                            placeholder="e.g., Gluten-free, Vegan, Vegetarian, Lactose intolerant"
+                            rows="3"
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        ></textarea>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">List any dietary restrictions or preferences</p>
+                    </div>
 
-        <flux:modal.body>
-            <div class="space-y-4">
-                <!-- Dietary Restrictions -->
-                <div>
-                    <flux:label>Dietary Restrictions</flux:label>
-                    <flux:textarea 
-                        wire:model="editDietaryRestrictions" 
-                        placeholder="e.g., Gluten-free, Vegan, Vegetarian, Lactose intolerant"
-                        rows="3"
-                    />
-                    <flux:description>List any dietary restrictions or preferences</flux:description>
+                    <!-- Allergies -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Allergies</label>
+                        <textarea 
+                            wire:model="editAllergies" 
+                            placeholder="e.g., Nuts, Shellfish, Peanuts, Dairy"
+                            rows="3"
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        ></textarea>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">List any food or environmental allergies</p>
+                    </div>
+
+                    <!-- Health Notes -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Health Notes</label>
+                        <textarea 
+                            wire:model="editHealthNotes" 
+                            placeholder="Any other health information that should be noted"
+                            rows="4"
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        ></textarea>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Any additional health or medical information</p>
+                    </div>
                 </div>
 
-                <!-- Allergies -->
-                <div>
-                    <flux:label>Allergies</flux:label>
-                    <flux:textarea 
-                        wire:model="editAllergies" 
-                        placeholder="e.g., Nuts, Shellfish, Peanuts, Dairy"
-                        rows="3"
-                    />
-                    <flux:description>List any food or environmental allergies</flux:description>
-                </div>
-
-                <!-- Health Notes -->
-                <div>
-                    <flux:label>Additional Health Notes</flux:label>
-                    <flux:textarea 
-                        wire:model="editHealthNotes" 
-                        placeholder="Any other health information that should be noted"
-                        rows="4"
-                    />
-                    <flux:description>Any additional health or medical information</flux:description>
+                <div class="flex justify-end gap-3 mt-6">
+                    <flux:button wire:click="$set('showEditModal', false)" variant="ghost">
+                        Cancel
+                    </flux:button>
+                    <flux:button wire:click="saveHealthSafety" variant="primary">
+                        Save Changes
+                    </flux:button>
                 </div>
             </div>
-        </flux:modal.body>
-
-        <flux:modal.footer>
-            <flux:button wire:click="$set('showEditModal', false)" variant="ghost">
-                Cancel
-            </flux:button>
-            <flux:button wire:click="saveHealthSafety" variant="primary">
-                Save Changes
-            </flux:button>
-        </flux:modal.footer>
+        </flux:modal.content>
     </flux:modal>
 </div>
