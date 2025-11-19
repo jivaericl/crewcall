@@ -9,56 +9,17 @@
         </flux:alert>
     @endif
 
-    <!-- Comment Form -->
-    <div class="mb-6">
-        <form wire:submit="addComment">
-            <div class="relative">
-                <flux:textarea 
-                    wire:model.live="newComment" 
-                    :label="$replyingTo ? 'Reply' : 'Add a comment'"
-                    placeholder="Type @ to mention someone..."
-                    rows="3"
-                />
-
-                <!-- User Suggestions Dropdown -->
-                @if ($showUserSuggestions && count($userSuggestions) > 0)
-                    <div class="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-48 overflow-y-auto" style="top: 100%;">
-                        @foreach ($userSuggestions as $user)
-                            <button 
-                                type="button"
-                                wire:click="selectUser({{ $user->id }}, '{{ addslashes($user->name) }}')"
-                                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
-                            >
-                                <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
-                                    {{ strtoupper(substr($user->name, 0, 1)) }}
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $user->name }}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->email }}</div>
-                                </div>
-                            </button>
-                        @endforeach
-                    </div>
-                @endif
-
-                @error('newComment') 
-                    <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> 
-                @enderror
-            </div>
-
-            <div class="flex items-center gap-2 mt-3">
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
-                    {{ $replyingTo ? 'Post Reply' : 'Post Comment' }}
-                </button>
-                
-                @if ($replyingTo)
-                    <flux:button type="button" wire:click="cancelReply" variant="ghost">
-                        Cancel Reply
-                    </flux:button>
-                @endif
-            </div>
-        </form>
-    </div>
+    @if (!$replyingTo)
+        <!-- Comment Form -->
+        <div class="mb-6">
+            @include('livewire.comments.partials.comment-form', [
+                'formKey' => 'comment-form-root',
+                'label' => 'Add a comment',
+                'submitLabel' => 'Post Comment',
+                'showCancel' => false,
+            ])
+        </div>
+    @endif
 
     <!-- Comments List -->
     <div class="space-y-4">
@@ -116,23 +77,25 @@
                         </div>
                     </div>
                 @else
-                    <div class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                        {!! nl2br($comment->formatted_comment) !!}
-                    </div>
+                    <div class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{!! nl2br($comment->formatted_comment) !!}</div>
 
-                    <div class="mt-2">
-                        <flux:button 
-                            wire:click="startReply({{ $comment->id }})" 
-                            variant="ghost" 
-                            size="sm"
-                        >
-                            Reply
-                        </flux:button>
-                    </div>
+                    @if ($replyingTo === $comment->id)
+                        <div class="mt-2 text-sm text-blue-500 dark:text-blue-300">Replying to this comment…</div>
+                    @else
+                        <div class="mt-2">
+                            <flux:button 
+                                wire:click="startReply({{ $comment->id }})" 
+                                variant="ghost" 
+                                size="sm"
+                            >
+                                Reply
+                            </flux:button>
+                        </div>
+                    @endif
                 @endif
 
                 <!-- Replies -->
-                @if ($comment->replies->count() > 0)
+                @if ($comment->replies->count() > 0 || $replyingTo === $comment->id)
                     <div class="mt-4 ml-8 space-y-3 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
                         @foreach ($comment->replies as $reply)
                             <div class="bg-white dark:bg-gray-800 rounded-lg p-3">
@@ -159,11 +122,20 @@
                                     @endif
                                 </div>
 
-                                <div class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                                    {!! nl2br($reply->formatted_comment) !!}
-                                </div>
+                                <div class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{!! nl2br($reply->formatted_comment) !!}</div>
                             </div>
                         @endforeach
+
+                        @if ($replyingTo === $comment->id)
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                                @include('livewire.comments.partials.comment-form', [
+                                    'formKey' => 'reply-form-' . $comment->id,
+                                    'label' => 'Reply',
+                                    'submitLabel' => 'Post Reply',
+                                    'showCancel' => true,
+                                ])
+                            </div>
+                        @endif
                     </div>
                 @endif
             </div>

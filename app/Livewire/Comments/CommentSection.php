@@ -98,7 +98,7 @@ class CommentSection extends Component
 
         $this->newComment = '';
         $this->replyingTo = null;
-        session()->forget('temp_mentions');
+        $this->resetMentionState();
         
         session()->flash('comment-success', 'Comment added successfully!');
         $this->dispatch('comment-added');
@@ -107,12 +107,15 @@ class CommentSection extends Component
     public function startReply($commentId)
     {
         $this->replyingTo = $commentId;
+        $this->newComment = '';
+        $this->resetMentionState();
     }
 
     public function cancelReply()
     {
         $this->replyingTo = null;
         $this->newComment = '';
+        $this->resetMentionState();
     }
 
     public function startEdit($commentId, $currentText)
@@ -154,6 +157,14 @@ class CommentSection extends Component
             session()->flash('comment-success', 'Comment deleted successfully!');
             $this->dispatch('comment-deleted');
         }
+    }
+
+    protected function resetMentionState()
+    {
+        $this->showUserSuggestions = false;
+        $this->userSuggestions = [];
+        $this->searchUsers = '';
+        session()->forget('temp_mentions');
     }
 
     #[On('comment-added')]
