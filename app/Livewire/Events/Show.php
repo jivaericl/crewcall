@@ -12,9 +12,6 @@ class Show extends Component
     public $event;
     public $auditLogs;
     
-    // Comments
-    public $newComment = '';
-
     public function mount($eventId)
     {
         $this->eventId = $eventId;
@@ -34,22 +31,4 @@ class Show extends Component
         return view('livewire.events.show');
     }
     
-    public function postComment()
-    {
-        $this->validate([
-            'newComment' => 'required|string|max:1000',
-        ]);
-
-        $this->event->comments()->create([
-            'user_id' => auth()->id(),
-            'comment' => $this->newComment,
-        ]);
-
-        $this->newComment = '';
-        
-        // Reload comments
-        $this->event->load('comments.user');
-        
-        session()->flash('message', 'Comment posted successfully.');
-    }
 }
