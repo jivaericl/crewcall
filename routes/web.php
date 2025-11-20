@@ -34,6 +34,10 @@ Route::middleware([
     Route::get('/events/{eventId}/edit', App\Livewire\Events\Form::class)->name('events.edit');
     Route::get('/events/{eventId}/users', App\Livewire\Events\ManageUsers::class)->name('events.users');
 
+    // Super Admin routes
+    Route::get('/admin', App\Livewire\Admin\Dashboard::class)->name('admin.dashboard');
+    Route::get('/admin/users', App\Livewire\Admin\Users::class)->name('admin.users');
+
     // Role management routes (super admin only)
     Route::get('/roles', App\Livewire\Roles\Index::class)->name('roles.index');
     Route::get('/roles/create', App\Livewire\Roles\Form::class)->name('roles.create');
@@ -115,6 +119,7 @@ Route::middleware([
     // Team member routes
     Route::get('/events/{eventId}/team-members/{userId}', App\Livewire\TeamMembers\Show::class)->name('events.team-members.show');
     Route::get('/events/{eventId}/team-members/{userId}/edit', App\Livewire\TeamMembers\Edit::class)->name('events.team-members.edit');
+    Route::get('/events/{eventId}/team-members/{userId}/edit-profile', App\Livewire\TeamMembers\EditProfile::class)->name('events.team-members.edit-profile');
 
     // Team roles routes
     Route::get('/events/{eventId}/team-roles', App\Livewire\TeamRoles\Index::class)->name('events.team-roles.index');

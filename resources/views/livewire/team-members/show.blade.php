@@ -22,8 +22,12 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('events.team-members.edit', [$eventId, $userId]) }}" 
+                    <a href="{{ route('events.team-members.edit-profile', [$eventId, $userId]) }}" 
                        class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
+                        Edit Profile
+                    </a>
+                    <a href="{{ route('events.team-members.edit', [$eventId, $userId]) }}" 
+                       class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-gray-600 text-white hover:bg-gray-700 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500">
                         Edit Health & Safety
                     </a>
                     <a href="{{ route('events.travel.index', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">

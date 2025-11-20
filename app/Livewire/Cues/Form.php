@@ -82,11 +82,11 @@ class Form extends Component
     
     public function updatedCueTypeId($value)
     {
-        // When cue type changes, set default operator if not already set
-        if (!$this->operator_id && $value) {
-            $cueType = CueType::with('defaultTeamRole.users')->find($value);
+        // When cue type changes and we're creating a new cue (not editing), set default operator
+        if (!$this->cueId && $value) {
+            $cueType = CueType::with('defaultTeamRole')->find($value);
             
-            if ($cueType && $cueType->defaultTeamRole) {
+            if ($cueType && $cueType->default_team_role_id) {
                 // Get users assigned to this role for this event
                 $usersWithRole = DB::table('event_user_roles')
                     ->where('event_id', $this->segment->session->event_id)
