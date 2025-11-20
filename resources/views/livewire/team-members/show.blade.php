@@ -22,12 +22,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button 
-                        type="button"
-                        wire:click.prevent="openEditModal" 
-                        class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
+                    <a href="{{ route('events.team-members.edit', [$eventId, $userId]) }}" 
+                       class="px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
                         Edit Health & Safety
-                    </button>
+                    </a>
                     <a href="{{ route('events.travel.index', $eventId) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                         ← Back to Travel
                     </a>
@@ -226,62 +224,6 @@
             </div>
         @endif
 
-        <!-- Edit Health & Safety Modal -->
-        @if($showEditModal)
-            <flux:modal wire:model.live="showEditModal">
-                <flux:modal.content>
-            <div class="p-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Edit Health & Safety Information</h3>
-                
-                <div class="space-y-4">
-                    <!-- Dietary Restrictions -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dietary Restrictions</label>
-                        <textarea 
-                            wire:model="editDietaryRestrictions" 
-                            placeholder="e.g., Gluten-free, Vegan, Vegetarian, Lactose intolerant"
-                            rows="3"
-                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        ></textarea>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">List any dietary restrictions or preferences</p>
-                    </div>
 
-                    <!-- Allergies -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Allergies</label>
-                        <textarea 
-                            wire:model="editAllergies" 
-                            placeholder="e.g., Nuts, Shellfish, Peanuts, Dairy"
-                            rows="3"
-                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        ></textarea>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">List any food or environmental allergies</p>
-                    </div>
-
-                    <!-- Health Notes -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Health Notes</label>
-                        <textarea 
-                            wire:model="editHealthNotes" 
-                            placeholder="Any other health information that should be noted"
-                            rows="4"
-                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        ></textarea>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Any additional health or medical information</p>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-3 mt-6">
-                    <flux:button wire:click="closeEditModal" variant="ghost">
-                        Cancel
-                    </flux:button>
-                    <flux:button wire:click="saveHealthSafety" variant="primary">
-                        Save Changes
-                    </flux:button>
-                </div>
-            </div>
-                </flux:modal.content>
-            </flux:modal>
-        @endif
     </div>
 </div>
