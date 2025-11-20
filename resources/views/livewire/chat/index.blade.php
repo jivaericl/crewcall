@@ -102,7 +102,7 @@
                             <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300 mb-1">Pinned Messages</p>
                             @foreach($pinnedMessages as $pinned)
                                 <div class="text-sm text-yellow-700 dark:text-yellow-200 mb-1">
-                                    <span class="font-medium">{{ $pinned->user->name }}:</span> {{ Str::limit($pinned->message, 100) }}
+                                    <span class="font-medium">{{ $pinned->user->name }}:</span> {{ Str::limit($pinned->plain_message, 100) }}
                                 </div>
                             @endforeach
                         </div>
@@ -138,7 +138,7 @@
                                         </div>
                                     @endif
                                     
-                                    <p class="text-sm break-words whitespace-pre-wrap">{{ $msg->message }}</p>
+                                    <p class="text-sm break-words whitespace-pre-wrap">{!! nl2br($msg->formatted_message) !!}</p>
                                     
                                     @if($msg->user_id === auth()->id())
                                         <p class="text-xs text-blue-100 mt-1">{{ $msg->created_at->format('g:i A') }}</p>
@@ -191,13 +191,35 @@
             <!-- Message Input -->
             <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
                 <form wire:submit="sendMessage" class="flex gap-3">
-                    <textarea 
-                        wire:model="message"
-                        placeholder="Type your message..."
-                        rows="2"
-                        class="flex-1 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 resize-none"
-                        wire:keydown.ctrl.enter="sendMessage"
-                    ></textarea>
+                    <div class="flex-1 relative">
+                        <textarea 
+                            wire:model.live="message"
+                            placeholder="Type your message... Use @ to mention someone"
+                            rows="2"
+                            class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 resize-none"
+                            wire:keydown.ctrl.enter="sendMessage"
+                        ></textarea>
+
+                        @if ($showUserSuggestions && count($userSuggestions) > 0)
+                            <div class="absolute bottom-full left-0 mb-2 z-50 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                                @foreach ($userSuggestions as $user)
+                                    <button 
+                                        type="button"
+                                        wire:click="selectUser({{ $user->id }})"
+                                        class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                    >
+                                        <div class="w-8 h-8 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $user->name }}</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->email }}</div>
+                                        </div>
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                     <button 
                         type="submit"
                         class="bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded-lg px-6 py-2 transition-colors self-end"

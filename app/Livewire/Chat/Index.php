@@ -3,8 +3,10 @@
 namespace App\Livewire\Chat;
 
 use App\Models\ChatMessage;
-use App\Models\UserPresence;
 use App\Models\Event;
+use App\Models\Notification;
+use App\Models\User;
+use App\Models\UserPresence;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -23,6 +25,10 @@ class Index extends Component
     public $conversations = [];
     public $activeConversationType = 'event'; // 'event' or 'dm'
     public $activeConversationId = null;
+    public $showUserSuggestions = false;
+    public $userSuggestions = [];
+    public $mentionSearch = '';
+    public $mentionMappings = [];
 
     public function mount()
     {
@@ -71,14 +77,18 @@ class Index extends Component
             'message' => 'required|string|max:2000',
         ]);
 
-        ChatMessage::create([
+        [$parsedMessage, $mentionIds] = $this->prepareMessageWithMentions($this->message);
+
+        $chatMessage = ChatMessage::create([
             'event_id' => $this->eventId,
             'user_id' => auth()->id(),
-            'message' => $this->message,
+            'message' => $parsedMessage,
             'message_type' => 'message',
+            'mentions' => !empty($mentionIds) ? $mentionIds : null,
         ]);
 
-        $this->message = '';
+        $this->notifyMentionedUsers($chatMessage, $mentionIds);
+        $this->resetMessageComposer();
         $this->dispatch('message-sent');
         $this->dispatch('scroll-to-bottom');
     }
@@ -171,7 +181,7 @@ class Index extends Component
                 'id' => $event->id,
                 'name' => $event->name,
                 'avatar' => substr($event->name, 0, 1),
-                'last_message' => $lastMessage ? $lastMessage->message : 'No messages yet',
+                'last_message' => $lastMessage ? $lastMessage->plain_message : 'No messages yet',
                 'last_message_at' => $lastMessage ? $lastMessage->created_at : null,
                 'unread_count' => 0, // TODO: Implement unread count
             ];
@@ -211,7 +221,7 @@ class Index extends Component
                 'id' => $user->id,
                 'name' => $user->name,
                 'avatar' => substr($user->name, 0, 1),
-                'last_message' => $lastMessage ? $lastMessage->message : 'No messages yet',
+                'last_message' => $lastMessage ? $lastMessage->plain_message : 'No messages yet',
                 'last_message_at' => $lastMessage ? $lastMessage->created_at : null,
                 'unread_count' => 0, // TODO: Implement unread count
             ];
@@ -250,5 +260,135 @@ class Index extends Component
             'messages' => $this->messages,
             'pinnedMessages' => $this->pinnedMessages,
         ]);
+    }
+
+    public function updatedMessage($value)
+    {
+        if (preg_match('/@([^\s]*)$/', $value, $matches)) {
+            $this->mentionSearch = $matches[1];
+            $this->loadUserSuggestions();
+        } else {
+            $this->showUserSuggestions = false;
+            $this->mentionSearch = '';
+        }
+    }
+
+    public function selectUser($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            return;
+        }
+
+        $firstName = explode(' ', $user->name)[0];
+
+        $this->message = preg_replace('/@[^\s]*$/', '@' . $firstName . ' ', $this->message);
+        $this->mentionMappings['@' . $firstName] = [
+            'id' => $user->id,
+            'name' => $user->name,
+        ];
+
+        $this->showUserSuggestions = false;
+        $this->mentionSearch = '';
+    }
+
+    protected function loadUserSuggestions()
+    {
+        if (!$this->eventId) {
+            $this->userSuggestions = [];
+            $this->showUserSuggestions = false;
+            return;
+        }
+
+        $query = User::whereHas('assignedEvents', function ($q) {
+            $q->where('event_id', $this->eventId);
+        });
+
+        if (strlen($this->mentionSearch) > 0) {
+            $query->where('name', 'like', '%' . $this->mentionSearch . '%');
+        }
+
+        $this->userSuggestions = $query
+            ->orderBy('name')
+            ->limit(10)
+            ->get(['id', 'name', 'email']);
+
+        $this->showUserSuggestions = $this->userSuggestions->isNotEmpty();
+    }
+
+    protected function prepareMessageWithMentions($message)
+    {
+        $converted = $message;
+        $mentionIds = [];
+
+        foreach ($this->mentionMappings as $placeholder => $userData) {
+            if (str_contains($converted, $placeholder)) {
+                $converted = str_replace(
+                    $placeholder,
+                    '@[' . $userData['name'] . ':' . $userData['id'] . ']',
+                    $converted
+                );
+                $mentionIds[] = $userData['id'];
+            }
+        }
+
+        preg_match_all('/@\[[^:]+:(\d+)\]/', $converted, $matches);
+        if (!empty($matches[1])) {
+            $mentionIds = array_merge($mentionIds, $matches[1]);
+        }
+
+        return [$converted, array_values(array_unique($mentionIds))];
+    }
+
+    protected function notifyMentionedUsers(ChatMessage $message, array $mentionIds)
+    {
+        if (empty($mentionIds)) {
+            return;
+        }
+
+        $baseUrl = url('/chat');
+        $params = [];
+
+        if ($message->event_id) {
+            $params['event_id'] = $message->event_id;
+        }
+
+        $actionUrl = $baseUrl . (!empty($params) ? ('?' . http_build_query($params)) : '') . '#message-' . $message->id;
+
+        $senderName = auth()->user()->name ?? 'A teammate';
+
+        foreach ($mentionIds as $userId) {
+            if ((int)$userId === auth()->id()) {
+                continue;
+            }
+
+            Notification::create([
+                'event_id' => $message->event_id,
+                'user_id' => $userId,
+                'type' => 'mention',
+                'title' => 'You were mentioned in chat',
+                'message' => $senderName . ' mentioned you in team chat.',
+                'action_url' => $actionUrl,
+                'data' => [
+                    'chat_message_id' => $message->id,
+                    'event_id' => $message->event_id,
+                ],
+            ]);
+        }
+    }
+
+    protected function resetMessageComposer()
+    {
+        $this->message = '';
+        $this->resetMentionState();
+    }
+
+    protected function resetMentionState()
+    {
+        $this->showUserSuggestions = false;
+        $this->userSuggestions = [];
+        $this->mentionSearch = '';
+        $this->mentionMappings = [];
     }
 }

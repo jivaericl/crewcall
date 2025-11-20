@@ -33,6 +33,8 @@ class ChatMessage extends Model
         'read_at' => 'datetime',
     ];
 
+    protected $appends = ['formatted_message'];
+
     // Relationships
     public function event()
     {
@@ -114,5 +116,31 @@ class ChatMessage extends Model
             'system' => '⚙️',
             default => '💬',
         };
+    }
+
+    public function getFormattedMessageAttribute()
+    {
+        $escaped = e($this->message);
+
+        return preg_replace_callback(
+            '/@\[([^:]+):(\d+)\]/',
+            function ($matches) {
+                $name = e($matches[1]);
+                return '<span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">@' . $name . '</span>';
+            },
+            $escaped
+        );
+    }
+
+    public function getPlainMessageAttribute()
+    {
+        return preg_replace_callback(
+            '/@\[([^:]+):(\d+)\]/',
+            function ($matches) {
+                $firstName = explode(' ', $matches[1])[0] ?? $matches[1];
+                return '@' . $firstName;
+            },
+            $this->message
+        );
     }
 }
