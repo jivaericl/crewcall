@@ -26,6 +26,13 @@ class EditProfile extends Component
     public $allergies;
     public $health_notes;
     
+    // Emergency Contact
+    public $emergency_contact_first_name;
+    public $emergency_contact_last_name;
+    public $emergency_contact_relationship;
+    public $emergency_contact_phone;
+    public $emergency_contact_email;
+    
     protected function rules()
     {
         return [
@@ -37,6 +44,11 @@ class EditProfile extends Component
             'dietary_restrictions' => 'nullable|string',
             'allergies' => 'nullable|string',
             'health_notes' => 'nullable|string',
+            'emergency_contact_first_name' => 'nullable|string|max:255',
+            'emergency_contact_last_name' => 'nullable|string|max:255',
+            'emergency_contact_relationship' => 'nullable|string|max:255',
+            'emergency_contact_phone' => 'nullable|string|max:255',
+            'emergency_contact_email' => 'nullable|email|max:255',
         ];
     }
     
@@ -56,6 +68,11 @@ class EditProfile extends Component
         $this->dietary_restrictions = $this->user->dietary_restrictions;
         $this->allergies = $this->user->allergies;
         $this->health_notes = $this->user->health_notes;
+        $this->emergency_contact_first_name = $this->user->emergency_contact_first_name;
+        $this->emergency_contact_last_name = $this->user->emergency_contact_last_name;
+        $this->emergency_contact_relationship = $this->user->emergency_contact_relationship;
+        $this->emergency_contact_phone = $this->user->emergency_contact_phone;
+        $this->emergency_contact_email = $this->user->emergency_contact_email;
     }
     
     public function save()
@@ -71,6 +88,11 @@ class EditProfile extends Component
             'dietary_restrictions' => $this->dietary_restrictions,
             'allergies' => $this->allergies,
             'health_notes' => $this->health_notes,
+            'emergency_contact_first_name' => $this->emergency_contact_first_name,
+            'emergency_contact_last_name' => $this->emergency_contact_last_name,
+            'emergency_contact_relationship' => $this->emergency_contact_relationship,
+            'emergency_contact_phone' => $this->emergency_contact_phone,
+            'emergency_contact_email' => $this->emergency_contact_email,
         ]);
         
         session()->flash('message', 'User profile updated successfully.');

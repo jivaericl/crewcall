@@ -22,6 +22,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'timezone' => ['nullable', 'string', 'timezone'],
+            'emergency_contact_first_name' => ['nullable', 'string', 'max:255'],
+            'emergency_contact_last_name' => ['nullable', 'string', 'max:255'],
+            'emergency_contact_relationship' => ['nullable', 'string', 'max:255'],
+            'emergency_contact_phone' => ['nullable', 'string', 'max:255'],
+            'emergency_contact_email' => ['nullable', 'email', 'max:255'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -36,6 +41,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'timezone' => $input['timezone'] ?? 'UTC',
+                'emergency_contact_first_name' => $input['emergency_contact_first_name'] ?? null,
+                'emergency_contact_last_name' => $input['emergency_contact_last_name'] ?? null,
+                'emergency_contact_relationship' => $input['emergency_contact_relationship'] ?? null,
+                'emergency_contact_phone' => $input['emergency_contact_phone'] ?? null,
+                'emergency_contact_email' => $input['emergency_contact_email'] ?? null,
             ])->save();
         }
     }
@@ -52,6 +62,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
             'timezone' => $input['timezone'] ?? 'UTC',
+            'emergency_contact_first_name' => $input['emergency_contact_first_name'] ?? null,
+            'emergency_contact_last_name' => $input['emergency_contact_last_name'] ?? null,
+            'emergency_contact_relationship' => $input['emergency_contact_relationship'] ?? null,
+            'emergency_contact_phone' => $input['emergency_contact_phone'] ?? null,
+            'emergency_contact_email' => $input['emergency_contact_email'] ?? null,
         ])->save();
 
         $user->sendEmailVerificationNotification();

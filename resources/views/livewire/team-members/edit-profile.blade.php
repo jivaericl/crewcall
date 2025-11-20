@@ -126,6 +126,64 @@
                     </div>
                 </div>
 
+                <!-- Emergency Contact Information -->
+                <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Emergency Contact</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- First Name -->
+                        <div>
+                            <flux:input 
+                                wire:model="emergency_contact_first_name" 
+                                label="First Name"
+                                placeholder="John"
+                            />
+                            @error('emergency_contact_first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Last Name -->
+                        <div>
+                            <flux:input 
+                                wire:model="emergency_contact_last_name" 
+                                label="Last Name"
+                                placeholder="Doe"
+                            />
+                            @error('emergency_contact_last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Relationship -->
+                        <div>
+                            <flux:input 
+                                wire:model="emergency_contact_relationship" 
+                                label="Relationship"
+                                placeholder="e.g., Spouse, Parent, Sibling"
+                            />
+                            @error('emergency_contact_relationship') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <flux:input 
+                                wire:model="emergency_contact_phone" 
+                                type="tel"
+                                label="Phone Number"
+                                placeholder="(555) 123-4567"
+                            />
+                            @error('emergency_contact_phone') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+
+                        <!-- Email -->
+                        <div class="md:col-span-2">
+                            <flux:input 
+                                wire:model="emergency_contact_email" 
+                                type="email"
+                                label="Email Address"
+                                placeholder="emergency@example.com"
+                            />
+                            @error('emergency_contact_email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <a href="{{ route('events.team-members.show', [$eventId, $userId]) }}" 

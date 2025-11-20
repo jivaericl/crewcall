@@ -29,6 +29,8 @@ class User extends Authenticatable
         'name', 'email', 'password', 'is_super_admin', 'first_name', 'last_name',
         'chat_sound_enabled', 'chat_widget_enabled', 'chat_notifications_enabled', 'chat_desktop_notifications',
         'dietary_restrictions', 'allergies', 'health_notes', 'timezone',
+        'emergency_contact_first_name', 'emergency_contact_last_name', 'emergency_contact_relationship',
+        'emergency_contact_phone', 'emergency_contact_email',
     ];
 
     /**

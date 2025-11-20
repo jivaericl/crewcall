@@ -116,6 +116,65 @@
                     </div>
                 </div>
             </flux:card>
+
+            <!-- Emergency Contact -->
+            <flux:card class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Emergency Contact</h3>
+                
+                @if($user->emergency_contact_first_name || $user->emergency_contact_last_name || $user->emergency_contact_phone || $user->emergency_contact_email)
+                    <div class="space-y-3">
+                        @if($user->emergency_contact_first_name || $user->emergency_contact_last_name)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Name
+                                </label>
+                                <p class="text-sm text-gray-900 dark:text-white">
+                                    {{ trim(($user->emergency_contact_first_name ?? '') . ' ' . ($user->emergency_contact_last_name ?? '')) }}
+                                </p>
+                            </div>
+                        @endif
+
+                        @if($user->emergency_contact_relationship)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Relationship
+                                </label>
+                                <p class="text-sm text-gray-900 dark:text-white">
+                                    {{ $user->emergency_contact_relationship }}
+                                </p>
+                            </div>
+                        @endif
+
+                        @if($user->emergency_contact_phone)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Phone
+                                </label>
+                                <p class="text-sm text-gray-900 dark:text-white">
+                                    <a href="tel:{{ $user->emergency_contact_phone }}" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                        {{ $user->emergency_contact_phone }}
+                                    </a>
+                                </p>
+                            </div>
+                        @endif
+
+                        @if($user->emergency_contact_email)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    Email
+                                </label>
+                                <p class="text-sm text-gray-900 dark:text-white">
+                                    <a href="mailto:{{ $user->emergency_contact_email }}" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                        {{ $user->emergency_contact_email }}
+                                    </a>
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500 dark:text-gray-400 italic">No emergency contact specified</p>
+                @endif
+            </flux:card>
         </div>
 
         <!-- Travel Information -->

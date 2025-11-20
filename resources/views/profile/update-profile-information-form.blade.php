@@ -93,6 +93,47 @@
             <x-input-error for="timezone" class="mt-2" />
             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Your personal timezone for viewing event times</p>
         </div>
+
+        <!-- Emergency Contact Section Header -->
+        <div class="col-span-6 sm:col-span-4">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Emergency Contact</h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Provide emergency contact information for event organizers.</p>
+        </div>
+
+        <!-- Emergency Contact First Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="emergency_contact_first_name" value="{{ __('Emergency Contact First Name') }}" />
+            <x-input id="emergency_contact_first_name" type="text" class="mt-1 block w-full" wire:model="state.emergency_contact_first_name" autocomplete="off" />
+            <x-input-error for="emergency_contact_first_name" class="mt-2" />
+        </div>
+
+        <!-- Emergency Contact Last Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="emergency_contact_last_name" value="{{ __('Emergency Contact Last Name') }}" />
+            <x-input id="emergency_contact_last_name" type="text" class="mt-1 block w-full" wire:model="state.emergency_contact_last_name" autocomplete="off" />
+            <x-input-error for="emergency_contact_last_name" class="mt-2" />
+        </div>
+
+        <!-- Emergency Contact Relationship -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="emergency_contact_relationship" value="{{ __('Relationship') }}" />
+            <x-input id="emergency_contact_relationship" type="text" class="mt-1 block w-full" wire:model="state.emergency_contact_relationship" placeholder="e.g., Spouse, Parent, Sibling" autocomplete="off" />
+            <x-input-error for="emergency_contact_relationship" class="mt-2" />
+        </div>
+
+        <!-- Emergency Contact Phone -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="emergency_contact_phone" value="{{ __('Emergency Contact Phone') }}" />
+            <x-input id="emergency_contact_phone" type="tel" class="mt-1 block w-full" wire:model="state.emergency_contact_phone" placeholder="(555) 123-4567" autocomplete="off" />
+            <x-input-error for="emergency_contact_phone" class="mt-2" />
+        </div>
+
+        <!-- Emergency Contact Email -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="emergency_contact_email" value="{{ __('Emergency Contact Email') }}" />
+            <x-input id="emergency_contact_email" type="email" class="mt-1 block w-full" wire:model="state.emergency_contact_email" autocomplete="off" />
+            <x-input-error for="emergency_contact_email" class="mt-2" />
+        </div>
     </x-slot>
 
     <x-slot name="actions">
