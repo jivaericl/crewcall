@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('cue_types', function (Blueprint $table) {
+            $table->foreignId('default_team_role_id')->nullable()->after('icon')->constrained('team_roles')->onDelete('set null');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('cue_types', function (Blueprint $table) {
+            $table->dropForeign(['default_team_role_id']);
+            $table->dropColumn('default_team_role_id');
+        });
+    }
+};

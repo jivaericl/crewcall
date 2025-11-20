@@ -80,6 +80,25 @@
                         @error('sort_order') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
 
+                    <!-- Default Team Role -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Default Team Role (optional)
+                        </label>
+                        <select 
+                            wire:model="default_team_role_id" 
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">-- No default role --</option>
+                            @foreach($teamRoles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            When creating a new cue of this type, this role will be pre-selected as the operator
+                        </p>
+                        @error('default_team_role_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+
                     <!-- Is Active -->
                     <div>
                         <label class="flex items-center">

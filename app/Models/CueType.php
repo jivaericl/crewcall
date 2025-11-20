@@ -19,6 +19,7 @@ class CueType extends Model
         'is_active',
         'event_id',
         'sort_order',
+        'default_team_role_id',
     ];
 
     protected $casts = [
@@ -55,6 +56,11 @@ class CueType extends Model
     public function cues()
     {
         return $this->hasMany(Cue::class);
+    }
+
+    public function defaultTeamRole()
+    {
+        return $this->belongsTo(TeamRole::class, 'default_team_role_id');
     }
 
     // Scopes

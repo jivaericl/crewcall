@@ -116,6 +116,9 @@ Route::middleware([
     Route::get('/events/{eventId}/team-members/{userId}', App\Livewire\TeamMembers\Show::class)->name('events.team-members.show');
     Route::get('/events/{eventId}/team-members/{userId}/edit', App\Livewire\TeamMembers\Edit::class)->name('events.team-members.edit');
 
+    // Team roles routes
+    Route::get('/events/{eventId}/team-roles', App\Livewire\TeamRoles\Index::class)->name('events.team-roles.index');
+
     // Event-specific Tags and Audit routes
     // TODO: Create Tags\Index component
     Route::get('/events/{eventId}/tags', App\Livewire\Tags\Index::class)->name('events.tags.index');

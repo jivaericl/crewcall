@@ -141,7 +141,7 @@
             </div>
         @empty
             <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                No comments yet. Be the first to comment!
+                Be the first to comment on this object.
             </div>
         @endforelse
     </div>
