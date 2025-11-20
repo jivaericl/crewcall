@@ -4,6 +4,8 @@ namespace App\Livewire\TeamRoles;
 
 use App\Models\Event;
 use App\Models\TeamRole;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Index extends Component
@@ -19,6 +21,14 @@ class Index extends Component
     public $description = '';
     public $color = '#3B82F6';
     public $sort_order = 0;
+    
+    // User assignment properties
+    public $showAssignModal = false;
+    public $assigningRoleId = null;
+    public $assigningRole = null;
+    public $availableUsers = [];
+    public $assignedUsers = [];
+    public $selectedUsers = [];
 
     public function mount($eventId)
     {
@@ -100,6 +110,52 @@ class Index extends Component
     public function closeModal()
     {
         $this->showCreateModal = false;
+    }
+    
+    public function openAssignModal($roleId)
+    {
+        $this->assigningRoleId = $roleId;
+        $this->assigningRole = TeamRole::with('users')->findOrFail($roleId);
+        
+        // Get all users assigned to this event
+        $this->availableUsers = $this->event->users()->orderBy('name')->get();
+        
+        // Get currently assigned users for this role
+        $this->assignedUsers = $this->assigningRole->users->pluck('id')->toArray();
+        $this->selectedUsers = $this->assignedUsers;
+        
+        $this->showAssignModal = true;
+    }
+    
+    public function saveAssignments()
+    {
+        $role = TeamRole::findOrFail($this->assigningRoleId);
+        
+        // Remove existing assignments
+        DB::table('event_user_roles')
+            ->where('event_id', $this->eventId)
+            ->where('team_role_id', $this->assigningRoleId)
+            ->delete();
+        
+        // Add new assignments
+        foreach ($this->selectedUsers as $userId) {
+            DB::table('event_user_roles')->insert([
+                'event_id' => $this->eventId,
+                'user_id' => $userId,
+                'team_role_id' => $this->assigningRoleId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+        
+        session()->flash('message', 'Role assignments updated successfully.');
+        $this->showAssignModal = false;
+        $this->loadRoles();
+    }
+    
+    public function closeAssignModal()
+    {
+        $this->showAssignModal = false;
     }
 
     public function render()

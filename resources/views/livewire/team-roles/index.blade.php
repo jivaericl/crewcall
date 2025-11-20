@@ -53,6 +53,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <button 
+                                        wire:click="openAssignModal({{ $role->id }})" 
+                                        class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-3">
+                                        Assign Users
+                                    </button>
+                                    <button 
                                         wire:click="openEditModal({{ $role->id }})" 
                                         class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-3">
                                         Edit
@@ -143,6 +148,52 @@
                                     type="submit" 
                                     class="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 transition-colors">
                                     {{ $editingRoleId ? 'Update Role' : 'Create Role' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <!-- Assign Users Modal -->
+        @if($showAssignModal)
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-75 flex items-center justify-center z-50">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                            Assign Users to {{ $assigningRole ? $assigningRole->name : '' }}
+                        </h3>
+
+                        <form wire:submit.prevent="saveAssignments">
+                            <div class="space-y-3 max-h-96 overflow-y-auto">
+                                @if($availableUsers->count() > 0)
+                                    @foreach($availableUsers as $user)
+                                        <label class="flex items-center p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                                            <input 
+                                                type="checkbox" 
+                                                wire:model="selectedUsers" 
+                                                value="{{ $user->id }}"
+                                                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                            <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">{{ $user->name }}</span>
+                                        </label>
+                                    @endforeach
+                                @else
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">No team members available. Add users to this event first.</p>
+                                @endif
+                            </div>
+
+                            <div class="flex justify-end gap-3 mt-6">
+                                <button 
+                                    type="button" 
+                                    wire:click="closeAssignModal" 
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    class="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 transition-colors">
+                                    Save Assignments
                                 </button>
                             </div>
                         </form>

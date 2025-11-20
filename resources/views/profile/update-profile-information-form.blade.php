@@ -81,6 +81,18 @@
                 @endif
             @endif
         </div>
+
+        <!-- Timezone -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="timezone" value="{{ __('Timezone') }}" />
+            <select id="timezone" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model="state.timezone">
+                @foreach(timezone_identifiers_list() as $tz)
+                    <option value="{{ $tz }}">{{ $tz }}</option>
+                @endforeach
+            </select>
+            <x-input-error for="timezone" class="mt-2" />
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Your personal timezone for viewing event times</p>
+        </div>
     </x-slot>
 
     <x-slot name="actions">

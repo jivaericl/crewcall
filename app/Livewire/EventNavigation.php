@@ -135,6 +135,11 @@ class EventNavigation extends Component
                             'route' => 'events.cue-types.index',
                             'params' => [$this->eventId],
                         ],
+                        [
+                            'label' => 'Team Roles',
+                            'route' => 'events.team-roles.index',
+                            'params' => [$this->eventId],
+                        ],
                     ],
                 ],
                 [

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Tag;
 use App\Models\CustomField;
 use App\Models\ContentFile;
+use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
@@ -75,6 +76,28 @@ class Form extends Component
             // Load custom field values
             foreach ($this->cue->customFields as $field) {
                 $this->customFields[$field->id] = $this->cue->getCustomFieldValue($field->id);
+            }
+        }
+    }
+    
+    public function updatedCueTypeId($value)
+    {
+        // When cue type changes, set default operator if not already set
+        if (!$this->operator_id && $value) {
+            $cueType = CueType::with('defaultTeamRole.users')->find($value);
+            
+            if ($cueType && $cueType->defaultTeamRole) {
+                // Get users assigned to this role for this event
+                $usersWithRole = DB::table('event_user_roles')
+                    ->where('event_id', $this->segment->session->event_id)
+                    ->where('team_role_id', $cueType->default_team_role_id)
+                    ->pluck('user_id')
+                    ->toArray();
+                
+                // Set the first user with this role as the default operator
+                if (!empty($usersWithRole)) {
+                    $this->operator_id = $usersWithRole[0];
+                }
             }
         }
     }
