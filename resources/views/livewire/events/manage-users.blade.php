@@ -45,12 +45,7 @@
                                     @foreach($assignments as $assignment)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             <td class="px-6 py-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                    <a href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" 
-                                                       class="text-blue-600 dark:text-blue-400 hover:underline">
-                                                        {{ $assignment->user_name }}
-                                                    </a>
-                                                </div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $assignment->user_name }}</div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">{{ $assignment->user_email }}</div>
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $assignment->role_name }}</td>
@@ -60,6 +55,14 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 text-right">
+                                                <a href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" 
+                                                   class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mr-3" 
+                                                   title="View Profile">
+                                                    <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                    </svg>
+                                                </a>
                                                 <flux:button wire:click="toggleAdmin({{ $assignment->id }})" variant="ghost" size="sm">
                                                     {{ $assignment->is_admin ? 'Remove Admin' : 'Make Admin' }}
                                                 </flux:button>

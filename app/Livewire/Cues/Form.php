@@ -82,8 +82,8 @@ class Form extends Component
     
     public function updatedCueTypeId($value)
     {
-        // When cue type changes and we're creating a new cue (not editing), set default operator
-        if (!$this->cueId && $value) {
+        // When cue type changes, set default operator based on team role
+        if ($value) {
             $cueType = CueType::with('defaultTeamRole')->find($value);
             
             if ($cueType && $cueType->default_team_role_id) {
