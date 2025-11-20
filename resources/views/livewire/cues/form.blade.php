@@ -40,7 +40,7 @@
 
                         <div>
                             <flux:label for="cue_type_id" required>Cue Type</flux:label>
-                            <flux:select wire:model="cue_type_id" id="cue_type_id" class="w-full">
+                            <flux:select wire:model.live="cue_type_id" id="cue_type_id" class="w-full">
                                 <option value="">Select type...</option>
                                 @foreach($cueTypes as $type)
                                     <option value="{{ $type->id }}">{{ $type->name }}</option>

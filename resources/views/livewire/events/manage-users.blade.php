@@ -45,7 +45,12 @@
                                     @foreach($assignments as $assignment)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             <td class="px-6 py-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $assignment->user_name }}</div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                    <a href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" 
+                                                       class="text-blue-600 dark:text-blue-400 hover:underline">
+                                                        {{ $assignment->user_name }}
+                                                    </a>
+                                                </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">{{ $assignment->user_email }}</div>
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $assignment->role_name }}</td>

@@ -127,13 +127,15 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="flex justify-end gap-2 pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <flux:button href="{{ route('events.team-members.show', [$eventId, $userId]) }}" variant="ghost">
+                <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{{ route('events.team-members.show', [$eventId, $userId]) }}" 
+                       class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                         Cancel
-                    </flux:button>
-                    <flux:button type="submit" variant="primary">
+                    </a>
+                    <button type="submit" 
+                            class="px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-500">
                         Save Changes
-                    </flux:button>
+                    </button>
                 </div>
             </form>
         </div>
