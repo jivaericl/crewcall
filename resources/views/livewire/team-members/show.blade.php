@@ -229,7 +229,7 @@
         <!-- Edit Health & Safety Modal -->
         @if($showEditModal)
             <flux:modal wire:model.live="showEditModal">
-        <flux:modal.content>
+                <flux:modal.content>
             <div class="p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Edit Health & Safety Information</h3>
                 
@@ -280,8 +280,8 @@
                     </flux:button>
                 </div>
             </div>
-            </flux:modal.content>
-        </flux:modal>
+                </flux:modal.content>
+            </flux:modal>
         @endif
     </div>
 </div>
