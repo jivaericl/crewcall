@@ -23,10 +23,39 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <span class="text-4xl">{{ $content->file_type_icon }}</span>
+                            <span class="flex items-center justify-center w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
+                                @switch($content->file_type)
+                                    @case('audio')
+                                        <flux:icon.musical-note class="w-6 h-6" />
+                                        @break
+                                    @case('video')
+                                        <flux:icon.play class="w-6 h-6" />
+                                        @break
+                                    @case('presentation')
+                                        <flux:icon.chart-bar class="w-6 h-6" />
+                                        @break
+                                    @case('document')
+                                        <flux:icon.document-text class="w-6 h-6" />
+                                        @break
+                                    @case('image')
+                                        <flux:icon.photo class="w-6 h-6" />
+                                        @break
+                                    @case('rich_text')
+                                        <flux:icon.pencil-square class="w-6 h-6" />
+                                        @break
+                                    @case('plain_text')
+                                        <flux:icon.document class="w-6 h-6" />
+                                        @break
+                                    @case('url')
+                                        <flux:icon.link class="w-6 h-6" />
+                                        @break
+                                    @default
+                                        <flux:icon.folder class="w-6 h-6" />
+                                @endswitch
+                            </span>
                         </div>
                         <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">File Type</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">File Type</p>
                             <p class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ ucfirst($content->file_type) }}</p>
                         </div>
                     </div>
