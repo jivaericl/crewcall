@@ -26,21 +26,63 @@
                     {{ $user->name }}
                 </h2>
                 
-                <!-- Title/Position (if exists) -->
-                @if($user->title ?? false)
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        {{ $user->title }}
-                    </p>
+                <!-- Professional Info -->
+                @if(($user->title ?? false) || ($user->company ?? false) || ($eventRoleName ?? false))
+                    <div class="space-y-3 text-left mb-6 mt-6">
+                        @if($user->title ?? false)
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422A12.083 12.083 0 0121 9.75C21 16.958 16.075 23 12 23S3 16.958 3 9.75c0-.957.164-1.887.468-2.766L9 11"></path>
+                                </svg>
+                                <div>
+                                    <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Title</p>
+                                    <p class="text-sm text-gray-900 dark:text-gray-100">{{ $user->title }}</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($user->company ?? false)
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4a2 2 0 012-2h2V5a2 2 0 012-2h4a2 2 0 012 2v10h2a2 2 0 012 2v4"></path>
+                                </svg>
+                                <div>
+                                    <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Company</p>
+                                    <p class="text-sm text-gray-900 dark:text-gray-100">{{ $user->company }}</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($eventRoleName ?? false)
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <div>
+                                    <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Show Role</p>
+                                    <p class="text-sm text-gray-900 dark:text-gray-100">{{ $eventRoleName }}</p>
+                                    @if($eventName)
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $eventName }}</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 @endif
-                
+
                 <!-- Contact Info -->
-                <div class="space-y-3 text-left mb-6 mt-6">
+                <div class="space-y-3 text-left mb-6">
                     <!-- Email -->
                     <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
-                        <span class="text-sm text-gray-700 dark:text-gray-300 truncate">{{ $user->email }}</span>
+                        <div>
+                            <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Email</p>
+                            <a href="mailto:{{ $user->email }}" class="text-sm text-gray-700 dark:text-gray-300 truncate hover:text-blue-600 dark:hover:text-blue-400">
+                                {{ $user->email }}
+                            </a>
+                        </div>
                     </div>
                     
                     <!-- Phone (if exists) -->
@@ -49,7 +91,12 @@
                             <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
-                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ $user->phone }}</span>
+                            <div>
+                                <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Phone</p>
+                                <a href="tel:{{ preg_replace('/[^\d\+]/', '', $user->phone) }}" class="text-sm text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                                    {{ $user->phone }}
+                                </a>
+                            </div>
                         </div>
                     @endif
                 </div>

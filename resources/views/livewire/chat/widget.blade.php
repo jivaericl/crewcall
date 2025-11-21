@@ -41,7 +41,7 @@
                     <div class="flex {{ $msg['user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }}">
                         <div class="max-w-[75%]">
                             @if($msg['user_id'] !== auth()->id())
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1 cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $msg['user']['id'] }} })">{{ $msg['user']['name'] }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-1 cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $msg['user']['id'] }}, eventId: @js($eventId) })">{{ $msg['user']['name'] }}</p>
                             @endif
                             <div class="{{ $msg['user_id'] === auth()->id() ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' }} rounded-lg px-3 py-2">
                                 <p class="text-sm break-words">{{ $msg['message'] }}</p>

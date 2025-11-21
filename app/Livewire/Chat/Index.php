@@ -391,4 +391,16 @@ class Index extends Component
         $this->mentionSearch = '';
         $this->mentionMappings = [];
     }
+
+    public function viewPresenceProfile($userId): void
+    {
+        if (!$userId) {
+            return;
+        }
+
+        $this->dispatch('showUserProfile', [
+            'userId' => (int) $userId,
+            'eventId' => $this->eventId,
+        ]);
+    }
 }

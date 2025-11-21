@@ -69,7 +69,7 @@
                 </div>
             </div>
             <button 
-                wire:click="$dispatch('showUserProfile', { userId: {{ $recipient->id }} })"
+                wire:click="$dispatch('showUserProfile', { userId: {{ $recipient->id }}, eventId: @js(session('current_event_id')) })"
                 class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 title="View Profile"
             >

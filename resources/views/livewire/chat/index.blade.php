@@ -121,7 +121,7 @@
                                     <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold">
                                         {{ substr($msg->user->name, 0, 1) }}
                                     </div>
-                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $msg->user->id }} })">{{ $msg->user->name }}</span>
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $msg->user->id }}, eventId: @js($eventId) })">{{ $msg->user->name }}</span>
                                     <span class="text-xs text-gray-500 dark:text-gray-400">{{ $msg->created_at->format('g:i A') }}</span>
                                 </div>
                             @endif
@@ -241,10 +241,18 @@
             <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Online Now ({{ count($onlineUsers) }})</h3>
             <div class="space-y-2">
                 @foreach($onlineUsers as $presence)
+                    @php
+                        $presenceUser = $presence['user'] ?? null;
+                    @endphp
+
+                    @if(!$presenceUser)
+                        @continue
+                    @endif
+
                     <div class="flex items-center gap-2">
                         <div class="relative">
                             <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-                                {{ substr($presence['user']['name'], 0, 1) }}
+                                {{ substr($presenceUser['name'], 0, 1) }}
                             </div>
                             @php
                                 $lastSeen = \Carbon\Carbon::parse($presence['last_seen_at'] ?? $presence['updated_at']);
@@ -257,7 +265,7 @@
                             @endif
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate cursor-pointer hover:underline" wire:click="$dispatch('showUserProfile', { userId: {{ $presence['user']['id'] }} })">{{ $presence['user']['name'] }}</p>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate cursor-pointer hover:underline" wire:click="viewPresenceProfile({{ (int) $presenceUser['id'] }})">{{ $presenceUser['name'] }}</p>
                             @if($isOnline)
                                 <p class="text-xs text-green-500 dark:text-green-400">● Online now</p>
                             @else
