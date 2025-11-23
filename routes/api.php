@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Calendar API routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/events/{eventId}/calendar/events', [\App\Http\Controllers\Api\CalendarController::class, 'getEvents']);
+    Route::put('/events/{eventId}/calendar/{calendarItemId}', [\App\Http\Controllers\Api\CalendarController::class, 'updateEvent']);
+});
