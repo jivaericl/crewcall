@@ -86,6 +86,12 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Calendar',
+                    'icon' => 'calendar',
+                    'route' => 'events.calendar.index',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'People',
                     'icon' => 'users',
                     'children' => [
