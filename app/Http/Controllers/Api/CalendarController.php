@@ -57,8 +57,8 @@ class CalendarController extends Controller
         // Get sessions
         $sessions = Session::where('event_id', $eventId)
             ->when($start && $end, function($query) use ($start, $end) {
-                $query->whereBetween('start_time', [$start, $end])
-                    ->orWhereBetween('end_time', [$start, $end]);
+                $query->whereBetween('start_date', [$start, $end])
+                    ->orWhereBetween('end_date', [$start, $end]);
             })
             ->get();
         
@@ -66,8 +66,8 @@ class CalendarController extends Controller
             $events[] = [
                 'id' => 'session-' . $session->id,
                 'title' => '📅 ' . $session->name,
-                'start' => $session->start_time ? Carbon::parse($session->start_time)->toIso8601String() : null,
-                'end' => $session->end_time ? Carbon::parse($session->end_time)->toIso8601String() : null,
+                'start' => $session->start_date ? Carbon::parse($session->start_date)->toIso8601String() : null,
+                'end' => $session->end_date ? Carbon::parse($session->end_date)->toIso8601String() : null,
                 'backgroundColor' => '#8B5CF6', // Purple for sessions
                 'borderColor' => '#8B5CF6',
                 'textColor' => '#ffffff',

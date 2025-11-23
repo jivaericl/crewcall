@@ -205,8 +205,22 @@
             
             // Listen for filter changes from Livewire
             window.addEventListener('filterChanged', (event) => {
+                if (!calendar) {
+                    return;
+                }
+                
+                // Livewire dispatch sends data as first element of detail array
+                const newFilterStates = event.detail[0] || event.detail;
+                
                 // Update filter states from Livewire component
-                filterStates = event.detail;
+                filterStates = {
+                    showMilestones: newFilterStates.showMilestones,
+                    showOutOfOffice: newFilterStates.showOutOfOffice,
+                    showCalls: newFilterStates.showCalls,
+                    showSessions: newFilterStates.showSessions
+                };
+                
+                // Refetch events from the API with updated filter states
                 calendar.refetchEvents();
             });
         });
