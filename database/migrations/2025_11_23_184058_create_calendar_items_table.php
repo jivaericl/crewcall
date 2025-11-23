@@ -57,15 +57,15 @@ return new class extends Migration
             $table->unique(['calendar_item_id', 'user_id']);
         });
         
-        // Pivot table for calendar item clients
-        Schema::create('calendar_item_client', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('calendar_item_id')->constrained()->onDelete('cascade');
-            $table->foreignId('client_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-            
-            $table->unique(['calendar_item_id', 'client_id']);
-        });
+        // Pivot table for calendar item clients (commented out - clients table not yet implemented)
+        // Schema::create('calendar_item_client', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('calendar_item_id')->constrained()->onDelete('cascade');
+        //     $table->foreignId('client_id')->constrained()->onDelete('cascade');
+        //     $table->timestamps();
+        //     
+        //     $table->unique(['calendar_item_id', 'client_id']);
+        // });
         
         // Pivot table for calendar item speakers
         Schema::create('calendar_item_speaker', function (Blueprint $table) {
@@ -95,7 +95,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('calendar_item_tag');
         Schema::dropIfExists('calendar_item_speaker');
-        Schema::dropIfExists('calendar_item_client');
+        // Schema::dropIfExists('calendar_item_client'); // Commented out - not created
         Schema::dropIfExists('calendar_item_user');
         Schema::dropIfExists('calendar_items');
     }
