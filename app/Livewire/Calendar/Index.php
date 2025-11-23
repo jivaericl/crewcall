@@ -95,7 +95,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = CalendarItem::with(['creator', 'users', 'clients', 'speakers', 'tags'])
+        $query = CalendarItem::with(['creator', 'users', 'speakers', 'tags'])
             ->forEvent($this->eventId)
             ->active();
 
