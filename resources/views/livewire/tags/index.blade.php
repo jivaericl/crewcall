@@ -15,9 +15,28 @@
             </button>
         </div>
 
-        <!-- Search -->
+        <!-- Search and Filters -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4 mb-6">
-            <flux:input wire:model.live.debounce.300ms="search" placeholder="Search tags..." />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Search -->
+                <div>
+                    <flux:input wire:model.live.debounce.300ms="search" placeholder="Search tags..." />
+                </div>
+                
+                <!-- Filter by Type -->
+                <div>
+                    <select wire:model.live="filterType" class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <option value="">All Types</option>
+                        <option value="event">Event</option>
+                        <option value="session">Session</option>
+                        <option value="segment">Segment</option>
+                        <option value="cue">Cue</option>
+                        <option value="content">Content</option>
+                        <option value="contact">Contact</option>
+                        <option value="speaker">Speaker</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <!-- Tags Table -->
@@ -27,7 +46,34 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-900">
                             <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tag</th>
+                        <th wire:click="sortBy('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <div class="flex items-center gap-1">
+                                Tag
+                                @if($sortBy === 'name')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        @if($sortDirection === 'asc')
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                        @else
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        @endif
+                                    </svg>
+                                @endif
+                            </div>
+                        </th>
+                        <th wire:click="sortBy('model_type')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <div class="flex items-center gap-1">
+                                Type
+                                @if($sortBy === 'model_type')
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        @if($sortDirection === 'asc')
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                        @else
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        @endif
+                                    </svg>
+                                @endif
+                            </div>
+                        </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Usage</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
@@ -43,6 +89,11 @@
                                         style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}">
                                         {{ $tag->name }}
                                     </span>
+                                </td>
+
+                                <!-- Type -->
+                                <td class="px-6 py-4">
+                                    <span class="text-sm text-gray-900 dark:text-white capitalize">{{ $tag->model_type ?? 'Event' }}</span>
                                 </td>
 
                                 <!-- Description -->

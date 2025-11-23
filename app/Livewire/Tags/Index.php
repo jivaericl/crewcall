@@ -27,6 +27,7 @@ class Index extends Component
     
     // Search and filter
     public $search = '';
+    public $filterType = '';
     public $sortBy = 'name';
     public $sortDirection = 'asc';
 
@@ -124,6 +125,9 @@ class Index extends Component
         $tags = Tag::where('event_id', $this->eventId)
             ->when($this->search, function($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->filterType, function($query) {
+                $query->where('model_type', $this->filterType);
             })
             ->withCount(['events', 'sessions', 'segments', 'cues', 'speakers', 'contacts'])
             ->orderBy($this->sortBy, $this->sortDirection)
