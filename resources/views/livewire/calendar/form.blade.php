@@ -61,47 +61,57 @@
             {{-- Date and Time --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {{-- Start Date/Time --}}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Start Date & Time <span class="text-red-500">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Start Date <span class="text-red-500">*</span>
+                        </label>
                         <input 
                             type="date" 
                             wire:model="start_date"
-                            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         />
+                        @error('start_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Start Time
+                        </label>
                         <input 
                             type="time" 
                             wire:model="start_time"
-                            :disabled="all_day"
-                            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
+                            @if($all_day) disabled @endif
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         />
+                        @error('start_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    @error('start_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    @error('start_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 {{-- End Date/Time --}}
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        End Date & Time <span class="text-red-500">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            End Date <span class="text-red-500">*</span>
+                        </label>
                         <input 
                             type="date" 
                             wire:model="end_date"
-                            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         />
+                        @error('end_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            End Time
+                        </label>
                         <input 
                             type="time" 
                             wire:model="end_time"
-                            :disabled="all_day"
-                            class="rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
+                            @if($all_day) disabled @endif
+                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         />
+                        @error('end_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-                    @error('end_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                    @error('end_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
