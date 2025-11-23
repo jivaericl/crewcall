@@ -90,8 +90,8 @@ class Form extends Component
     protected function loadAvailableOptions()
     {
         // Get users assigned to this event
-        $this->availableUsers = User::whereHas('eventAssignments', function($query) {
-            $query->where('event_id', $this->eventId);
+        $this->availableUsers = User::whereHas('assignedEvents', function($query) {
+            $query->where('events.id', $this->eventId);
         })->orderBy('name')->get();
 
         // Get speakers for this event
