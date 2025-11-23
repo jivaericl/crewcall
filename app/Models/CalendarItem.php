@@ -53,11 +53,12 @@ class CalendarItem extends Model
             ->withTimestamps();
     }
 
-    public function clients()
-    {
-        return $this->belongsToMany(Client::class, 'calendar_item_client')
-            ->withTimestamps();
-    }
+    // Clients relationship commented out - Client model not yet implemented
+    // public function clients()
+    // {
+    //     return $this->belongsToMany(Client::class, 'calendar_item_client')
+    //         ->withTimestamps();
+    // }
 
     public function speakers()
     {
