@@ -96,10 +96,18 @@
                             <div class="flex items-center justify-between">
                                 <div class="text-gray-600 dark:text-gray-400">{{ $invitation->email }}</div>
 
-                                <div class="flex items-center">
+                                <div class="flex items-center gap-4">
+                                    @if (Gate::check('addTeamMember', $team))
+                                        <!-- Resend Team Invitation -->
+                                        <button class="cursor-pointer text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 focus:outline-none"
+                                                            wire:click="resendTeamInvitation({{ $invitation->id }})">
+                                            {{ __('Resend') }}
+                                        </button>
+                                    @endif
+
                                     @if (Gate::check('removeTeamMember', $team))
                                         <!-- Cancel Team Invitation -->
-                                        <button class="cursor-pointer ms-6 text-sm text-red-500 focus:outline-none"
+                                        <button class="cursor-pointer text-sm text-red-500 focus:outline-none"
                                                             wire:click="cancelTeamInvitation({{ $invitation->id }})">
                                             {{ __('Cancel') }}
                                         </button>
