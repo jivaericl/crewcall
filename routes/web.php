@@ -126,6 +126,7 @@ Route::middleware([
 
     // Calendar routes
     Route::get('/events/{eventId}/calendar', App\Livewire\Calendar\Index::class)->name('events.calendar.index');
+    Route::get('/events/{eventId}/calendar-view', App\Livewire\Calendar\CalendarView::class)->name('events.calendar.view');
     Route::get('/events/{eventId}/calendar/create', App\Livewire\Calendar\Form::class)->name('events.calendar.create');
     Route::get('/events/{eventId}/calendar/{calendarItemId}', App\Livewire\Calendar\Show::class)->name('events.calendar.show');
     Route::get('/events/{eventId}/calendar/{calendarItemId}/edit', App\Livewire\Calendar\Form::class)->name('events.calendar.edit');

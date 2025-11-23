@@ -69,5 +69,7 @@
         @endauth
 
         @livewireScripts
+        
+        @stack('scripts')
     </body>
 </html>
