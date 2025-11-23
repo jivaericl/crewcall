@@ -46,7 +46,7 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead class="bg-gray-50 dark:bg-gray-900">
                             <tr>
-                        <th wire:click="sortBy('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <th wire:click="changeSortField('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
                             <div class="flex items-center gap-1">
                                 Tag
                                 @if($sortBy === 'name')
@@ -60,7 +60,7 @@
                                 @endif
                             </div>
                         </th>
-                        <th wire:click="sortBy('model_type')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <th wire:click="changeSortField('model_type')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800">
                             <div class="flex items-center gap-1">
                                 Type
                                 @if($sortBy === 'model_type')

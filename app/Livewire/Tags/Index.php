@@ -110,7 +110,7 @@ class Index extends Component
         $this->tagToDelete = null;
     }
 
-    public function sortBy($field)
+    public function changeSortField($field)
     {
         if ($this->sortBy === $field) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -127,7 +127,15 @@ class Index extends Component
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->when($this->filterType, function($query) {
-                $query->where('model_type', $this->filterType);
+                if ($this->filterType === 'event') {
+                    // Include both 'event' and NULL values for event filter
+                    $query->where(function($q) {
+                        $q->where('model_type', 'event')
+                          ->orWhereNull('model_type');
+                    });
+                } else {
+                    $query->where('model_type', $this->filterType);
+                }
             })
             ->withCount(['events', 'sessions', 'segments', 'cues', 'speakers', 'contacts'])
             ->orderBy($this->sortBy, $this->sortDirection)

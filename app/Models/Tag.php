@@ -18,6 +18,10 @@ class Tag extends Model
         'model_type', // 'event', 'session', 'segment', 'cue'
     ];
 
+    protected $attributes = [
+        'model_type' => 'event', // Default to 'event' if not specified
+    ];
+
     /**
      * Get the events associated with the tag.
      */
