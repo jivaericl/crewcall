@@ -2,109 +2,132 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
         <!-- Header -->
         <div class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Manage Event Users') }}: {{ $event->name }}</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Manage Event Users') }}
+                : {{ $event->name }}</h2>
         </div>
 
         <div class="mb-4">
             <div class="flex items-center gap-3">
-                <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
+                <button wire:click="openAddModal" type="button"
+                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
                     Assign Existing User
                 </button>
-                <button wire:click="openCreateModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-500 rounded-md hover:bg-green-700 dark:hover:bg-green-600">
+                <button wire:click="openCreateModal" type="button"
+                        class="px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-500 rounded-md hover:bg-green-700 dark:hover:bg-green-600">
                     + Add New User
                 </button>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session()->has('message'))
-                <div class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded">
-                    {{ session('message') }}
-                </div>
-            @endif
 
-            @if (session()->has('error'))
-                <div class="mb-4 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
+        @if (session()->has('message'))
+            <div
+                class="mb-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-200 rounded">
+                {{ session('message') }}
+            </div>
+        @endif
 
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6">
-                    @if($assignments->count() > 0)
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-900">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">User</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Role</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Admin</th>
-                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach($assignments as $assignment)
-                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            <td class="px-6 py-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $assignment->user_name }}</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $assignment->user_email }}</div>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $assignment->role_name }}</td>
-                                            <td class="px-6 py-4">
-                                                @if($assignment->is_admin)
-                                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">Event Admin</span>
-                                                @endif
-                                            </td>
-                                            <td class="px-6 py-4 text-right">
-                                                <a href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" 
-                                                   class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mr-3" 
-                                                   title="View Profile">
-                                                    <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                                    </svg>
-                                                </a>
-                                                <flux:button wire:click="toggleAdmin({{ $assignment->id }})" variant="ghost" size="sm">
-                                                    {{ $assignment->is_admin ? 'Remove Admin' : 'Make Admin' }}
-                                                </flux:button>
-                                                <flux:button wire:click="removeAssignment({{ $assignment->id }})" variant="ghost" size="sm">Remove</flux:button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <div class="text-center py-12">
-                            <p class="text-gray-500 dark:text-gray-400 text-lg mb-4">No users assigned yet.</p>
-                            <button wire:click="openAddModal" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
-                                Assign First User
-                            </button>
-                        </div>
-                    @endif
-                </div>
+        @if (session()->has('error'))
+            <div
+                class="mb-4 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 rounded">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow mb-6 rounded-lg">
+            <div class="p-6">
+                @if($assignments->count() > 0)
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-900">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                    User
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                    Role
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                    Admin
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                                    Actions
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach($assignments as $assignment)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-6 py-4">
+                                        <div
+                                            class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $assignment->user_name }}</div>
+                                        <div
+                                            class="text-sm text-gray-500 dark:text-gray-400">{{ $assignment->user_email }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ $assignment->role_name }}</td>
+                                    <td class="px-6 py-4">
+                                        @if($assignment->is_admin)
+                                            <span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">Event Admin</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}"
+                                           class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mr-3"
+                                           title="View Profile">
+                                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor"
+                                                 viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                      stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                      stroke-width="2"
+                                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </a>
+                                        <flux:button wire:click="toggleAdmin({{ $assignment->id }})" variant="ghost"
+                                                     size="sm">
+                                            {{ $assignment->is_admin ? 'Remove Admin' : 'Make Admin' }}
+                                        </flux:button>
+                                        <flux:button wire:click="removeAssignment({{ $assignment->id }})"
+                                                     variant="ghost" size="sm">Remove
+                                        </flux:button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-12">
+                        <p class="text-gray-500 dark:text-gray-400 text-lg mb-4">No users assigned yet.</p>
+                        <button wire:click="openAddModal" type="button"
+                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
+                            Assign First User
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
     <!-- Alpine.js Modal -->
-    <div x-data="{ show: @entangle('showAddModal') }" 
-         x-show="show" 
+    <div x-data="{ show: @entangle('showAddModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;"
          @keydown.escape.window="show = false">
-        
+
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
              @click="show = false"></div>
-        
+
         <!-- Modal Content -->
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6"
                  @click.stop>
-                
+
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Assign User to Event</h3>
-                
+
                 <div>
                     <div class="mb-4">
                         <flux:field>
@@ -115,7 +138,8 @@
                                     <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
                             </flux:select>
-                            @error('selectedUserId') <flux:error>{{ $message }}</flux:error> @enderror
+                            @error('selectedUserId')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
                     <div class="mb-4">
@@ -127,20 +151,24 @@
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
                             </flux:select>
-                            @error('selectedRoleId') <flux:error>{{ $message }}</flux:error> @enderror
+                            @error('selectedRoleId')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
                     <div class="mb-6">
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" wire:model.live="isAdmin" class="rounded border-gray-300 text-blue-600">
+                            <input type="checkbox" wire:model.live="isAdmin"
+                                   class="rounded border-gray-300 text-blue-600">
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
                         </label>
                     </div>
                     <div class="flex justify-end gap-3">
-                        <button wire:click="closeAddModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <button wire:click="closeAddModal" type="button"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
                             Cancel
                         </button>
-                        <button wire:click="assignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
+                        <button wire:click="assignUser" type="button"
+                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600">
                             Assign User
                         </button>
                     </div>
@@ -150,49 +178,55 @@
     </div>
 
     <!-- Create New User Modal -->
-    <div x-data="{ show: @entangle('showCreateModal') }" 
-         x-show="show" 
+    <div x-data="{ show: @entangle('showCreateModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;"
          @keydown.escape.window="show = false">
-        
+
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
              @click="show = false"></div>
-        
+
         <!-- Modal Content -->
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6"
                  @click.stop>
-                
-                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Add New User & Assign to Event</h3>
-                
+
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Add New User & Assign to
+                    Event</h3>
+
                 <div>
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>Full Name *</flux:label>
-                            <flux:input wire:model.live="newUserName" placeholder="John Doe" required />
-                            @error('newUserName') <flux:error>{{ $message }}</flux:error> @enderror
+                            <flux:input wire:model.live="newUserName" placeholder="John Doe" required/>
+                            @error('newUserName')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
-                    
+
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>Email *</flux:label>
-                            <flux:input wire:model.live="newUserEmail" type="email" placeholder="john@example.com" required />
-                            @error('newUserEmail') <flux:error>{{ $message }}</flux:error> @enderror
+                            <flux:input wire:model.live="newUserEmail" type="email" placeholder="john@example.com"
+                                        required/>
+                            @error('newUserEmail')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
-                    
+
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>Password *</flux:label>
-                            <flux:input wire:model.live="newUserPassword" type="password" placeholder="Minimum 8 characters" required />
-                            @error('newUserPassword') <flux:error>{{ $message }}</flux:error> @enderror
+                            <flux:input wire:model.live="newUserPassword" type="password"
+                                        placeholder="Minimum 8 characters" required/>
+                            @error('newUserPassword')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
-                    
+
                     <div class="mb-4">
                         <flux:field>
                             <flux:label>Role *</flux:label>
@@ -202,22 +236,26 @@
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
                             </flux:select>
-                            @error('newUserRole') <flux:error>{{ $message }}</flux:error> @enderror
+                            @error('newUserRole')
+                            <flux:error>{{ $message }}</flux:error> @enderror
                         </flux:field>
                     </div>
-                    
+
                     <div class="mb-6">
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" wire:model.live="newUserIsAdmin" class="rounded border-gray-300 text-blue-600">
+                            <input type="checkbox" wire:model.live="newUserIsAdmin"
+                                   class="rounded border-gray-300 text-blue-600">
                             <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Make Event Admin</span>
                         </label>
                     </div>
-                    
+
                     <div class="flex justify-end gap-3">
-                        <button wire:click="closeCreateModal" type="button" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <button wire:click="closeCreateModal" type="button"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600">
                             Cancel
                         </button>
-                        <button wire:click="createAndAssignUser" type="button" class="px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-500 rounded-md hover:bg-green-700 dark:hover:bg-green-600">
+                        <button wire:click="createAndAssignUser" type="button"
+                                class="px-4 py-2 text-sm font-medium text-white bg-green-600 dark:bg-green-500 rounded-md hover:bg-green-700 dark:hover:bg-green-600">
                             Create & Assign User
                         </button>
                     </div>
