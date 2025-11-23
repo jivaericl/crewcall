@@ -86,6 +86,36 @@
                     eventDurationEditable: true,
                     eventStartEditable: true,
                     
+                    // Business hours highlighting (8am - 6pm)
+                    businessHours: {
+                        daysOfWeek: [1, 2, 3, 4, 5], // Monday - Friday
+                        startTime: '08:00',
+                        endTime: '18:00'
+                    },
+                    
+                    // Week/Day view settings
+                    slotMinTime: '06:00:00',
+                    slotMaxTime: '22:00:00',
+                    slotDuration: '00:30:00',
+                    slotLabelInterval: '01:00',
+                    
+                    // Start week on Sunday
+                    firstDay: 0,
+                    
+                    // Show week numbers
+                    weekNumbers: false,
+                    
+                    // Event display settings
+                    eventDisplay: 'block',
+                    eventTimeFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        meridiem: 'short'
+                    },
+                    
+                    // Now indicator for current time
+                    nowIndicator: true,
+                    
                     // Fetch events from API
                     events: function(info, successCallback, failureCallback) {
                         fetch(`/api/events/${eventId}/calendar/events?start=${info.startStr}&end=${info.endStr}`, {
