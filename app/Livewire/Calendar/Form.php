@@ -139,6 +139,14 @@ class Form extends Component
         }
     }
 
+    public function updatedStartDate($value)
+    {
+        // Auto-populate end date if it's empty
+        if (empty($this->end_date) && !empty($value)) {
+            $this->end_date = $value;
+        }
+    }
+
     protected function setDefaultColor()
     {
         $this->color = match($this->type) {
