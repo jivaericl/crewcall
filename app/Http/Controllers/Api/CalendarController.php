@@ -35,8 +35,8 @@ class CalendarController extends Controller
             $events[] = [
                 'id' => 'calendar-' . $item->id,
                 'title' => $item->title,
-                'start' => $item->start_date->toIso8601String(),
-                'end' => $item->end_date->toIso8601String(),
+                'start' => $item->start_date->format('Y-m-d\TH:i:s'),
+                'end' => $item->end_date->format('Y-m-d\TH:i:s'),
                 'allDay' => $item->all_day,
                 'backgroundColor' => $item->type_color,
                 'borderColor' => $item->type_color,
@@ -66,8 +66,8 @@ class CalendarController extends Controller
             $events[] = [
                 'id' => 'session-' . $session->id,
                 'title' => '📅 ' . $session->name,
-                'start' => $session->start_date ? Carbon::parse($session->start_date)->toIso8601String() : null,
-                'end' => $session->end_date ? Carbon::parse($session->end_date)->toIso8601String() : null,
+                'start' => $session->start_date ? Carbon::parse($session->start_date)->format('Y-m-d\TH:i:s') : null,
+                'end' => $session->end_date ? Carbon::parse($session->end_date)->format('Y-m-d\TH:i:s') : null,
                 'backgroundColor' => '#8B5CF6', // Purple for sessions
                 'borderColor' => '#8B5CF6',
                 'textColor' => '#ffffff',

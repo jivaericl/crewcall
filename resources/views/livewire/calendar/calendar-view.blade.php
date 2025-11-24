@@ -80,6 +80,10 @@
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
+                    
+                    // Timezone handling - use local timezone
+                    timeZone: 'local',
+                    
                     height: 'auto',
                     editable: true,
                     droppable: true,
