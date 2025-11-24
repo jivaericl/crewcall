@@ -4,6 +4,7 @@ namespace App\Livewire\Calendar;
 
 use App\Models\CalendarItem;
 use App\Models\Event;
+use App\Models\Session;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,6 +21,7 @@ class Index extends Component
     public $showMilestones = true;
     public $showOutOfOffice = true;
     public $showCalls = true;
+    public $showSessions = true;
     public $startDate = '';
     public $endDate = '';
 
@@ -75,6 +77,9 @@ class Index extends Component
             case 'call':
                 $this->showCalls = !$this->showCalls;
                 break;
+            case 'session':
+                $this->showSessions = !$this->showSessions;
+                break;
         }
         $this->resetPage();
     }
@@ -95,22 +100,23 @@ class Index extends Component
 
     public function render()
     {
-        $query = CalendarItem::with(['creator', 'users', 'speakers', 'tags'])
+        // Get calendar items
+        $calendarQuery = CalendarItem::with(['creator', 'users', 'speakers', 'tags'])
             ->forEvent($this->eventId)
             ->active();
 
-        // Apply search
+        // Apply search to calendar items
         if ($this->search) {
-            $query->where(function($q) {
+            $calendarQuery->where(function($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
                   ->orWhere('description', 'like', '%' . $this->search . '%')
                   ->orWhere('location', 'like', '%' . $this->search . '%');
             });
         }
 
-        // Apply type filter
+        // Apply type filter to calendar items
         if ($this->typeFilter) {
-            $query->ofType($this->typeFilter);
+            $calendarQuery->ofType($this->typeFilter);
         } else {
             // Apply show/hide toggles
             $visibleTypes = [];
@@ -119,33 +125,65 @@ class Index extends Component
             if ($this->showCalls) $visibleTypes[] = 'call';
             
             if (!empty($visibleTypes)) {
-                $query->whereIn('type', $visibleTypes);
+                $calendarQuery->whereIn('type', $visibleTypes);
             } else {
-                // If all are hidden, show none
-                $query->whereRaw('1 = 0');
+                // If all calendar types are hidden, show none
+                $calendarQuery->whereRaw('1 = 0');
             }
         }
 
-        // Apply date range filter
+        // Apply date range filter to calendar items
         if ($this->startDate && $this->endDate) {
-            $query->betweenDates($this->startDate, $this->endDate);
+            $calendarQuery->betweenDates($this->startDate, $this->endDate);
         }
 
-        // Apply sorting
-        $query->orderBy($this->sortBy, $this->sortDirection);
+        // Get sessions
+        $sessionsQuery = Session::where('event_id', $this->eventId);
+        
+        // Apply search to sessions
+        if ($this->search) {
+            $sessionsQuery->where(function($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('description', 'like', '%' . $this->search . '%')
+                  ->orWhere('location', 'like', '%' . $this->search . '%');
+            });
+        }
+        
+        // Apply date range filter to sessions
+        if ($this->startDate && $this->endDate) {
+            $sessionsQuery->whereBetween('start_date', [$this->startDate, $this->endDate]);
+        }
 
-        $calendarItems = $query->paginate(20);
+        // Combine calendar items and sessions
+        $calendarItems = $calendarQuery->get();
+        $sessions = $this->showSessions ? $sessionsQuery->get() : collect();
+        
+        // Merge and sort
+        $allItems = $calendarItems->concat($sessions)->sortBy(function($item) {
+            if ($item instanceof CalendarItem) {
+                return $item->start_date;
+            } else {
+                return $item->start_date ?? now();
+            }
+        });
+        
+        // Apply sorting direction
+        if ($this->sortDirection === 'desc') {
+            $allItems = $allItems->reverse();
+        }
 
         // Get counts by type for the toggles
         $milestonesCount = CalendarItem::forEvent($this->eventId)->ofType('milestone')->active()->count();
         $outOfOfficeCount = CalendarItem::forEvent($this->eventId)->ofType('out_of_office')->active()->count();
         $callsCount = CalendarItem::forEvent($this->eventId)->ofType('call')->active()->count();
+        $sessionsCount = Session::where('event_id', $this->eventId)->count();
 
         return view('livewire.calendar.index', [
-            'calendarItems' => $calendarItems,
+            'allItems' => $allItems,
             'milestonesCount' => $milestonesCount,
             'outOfOfficeCount' => $outOfOfficeCount,
             'callsCount' => $callsCount,
+            'sessionsCount' => $sessionsCount,
         ]);
     }
 }
