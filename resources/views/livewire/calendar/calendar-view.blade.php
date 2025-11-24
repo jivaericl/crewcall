@@ -19,44 +19,44 @@
     </div>
 
     {{-- Filter Toggles --}}
-    <div class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div class="mb-6">
         <div class="flex flex-wrap gap-3">
-            <button wire:click="toggleMilestones" 
-                    class="inline-flex items-center px-4 py-2 rounded-md transition-colors {{ $showMilestones ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
-                Production Milestones
-            </button>
-            
-            <button wire:click="toggleOutOfOffice" 
-                    class="inline-flex items-center px-4 py-2 rounded-md transition-colors {{ $showOutOfOffice ? 'bg-amber-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                <span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span>
-                Out of Office
-            </button>
-            
-            <button wire:click="toggleCalls" 
-                    class="inline-flex items-center px-4 py-2 rounded-md transition-colors {{ $showCalls ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
-                Calls
-            </button>
-            
-            <button wire:click="toggleSessions" 
-                    class="inline-flex items-center px-4 py-2 rounded-md transition-colors {{ $showSessions ? 'bg-purple-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
-                <span class="w-3 h-3 rounded-full bg-purple-500 mr-2"></span>
-                Sessions
-            </button>
+        <button wire:click="toggleMilestones" 
+                class="inline-flex items-center px-4 py-2 rounded-lg border-2 transition-all {{ $showMilestones ? 'bg-green-50 dark:bg-green-900/20 border-green-500 dark:border-green-600 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 opacity-50' }}">
+            <span class="w-3 h-3 rounded-full mr-2" style="background-color: #10B981;"></span>
+            <span class="font-medium">Production Milestones</span>
+        </button>
+        
+        <button wire:click="toggleOutOfOffice" 
+                class="inline-flex items-center px-4 py-2 rounded-lg border-2 transition-all {{ $showOutOfOffice ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500 dark:border-amber-600 text-amber-700 dark:text-amber-300' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 opacity-50' }}">
+            <span class="w-3 h-3 rounded-full mr-2" style="background-color: #F59E0B;"></span>
+            <span class="font-medium">Out of Office</span>
+        </button>
+        
+        <button wire:click="toggleCalls" 
+                class="inline-flex items-center px-4 py-2 rounded-lg border-2 transition-all {{ $showCalls ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 dark:border-blue-600 text-blue-700 dark:text-blue-300' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 opacity-50' }}">
+            <span class="w-3 h-3 rounded-full mr-2" style="background-color: #3B82F6;"></span>
+            <span class="font-medium">Calls</span>
+        </button>
+        
+        <button wire:click="toggleSessions" 
+                class="inline-flex items-center px-4 py-2 rounded-lg border-2 transition-all {{ $showSessions ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-500 dark:border-purple-600 text-purple-700 dark:text-purple-300' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 opacity-50' }}">
+            <span class="w-3 h-3 rounded-full mr-2" style="background-color: #8B5CF6;"></span>
+            <span class="font-medium">Sessions</span>
+        </button>
         </div>
     </div>
-
     {{-- Calendar Container --}}
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div id="calendar"></div>
+    <div wire:ignore>
+        <div id="calendar" class="bg-white dark:bg-gray-800 rounded-lg shadow p-4"></div>
     </div>
 
     @push('scripts')
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let calendar;
+        // Initialize calendar immediately
+        let calendar; // Global scope for filter access
+        (function() {
             const calendarEl = document.getElementById('calendar');
             const eventId = {{ $eventId }};
             
@@ -207,9 +207,10 @@
             
             initCalendar();
             
-            // Listen for filter changes from Livewire
-            window.addEventListener('filterChanged', (event) => {
+            // Listen for filter updates from Livewire
+            window.addEventListener('filterChanged', function(event) {
                 if (!calendar) {
+                    console.error('Calendar not initialized');
                     return;
                 }
                 
@@ -224,10 +225,27 @@
                     showSessions: newFilterStates.showSessions
                 };
                 
-                // Refetch events from the API with updated filter states
-                calendar.refetchEvents();
+                    // Update event visibility client-side without refetching
+                    if (calendar) {
+                        const allEvents = calendar.getEvents();
+                        allEvents.forEach(event => {
+                            const eventType = event.extendedProps.type;
+                            let shouldShow = true;
+                            
+                            if (eventType === 'milestone' && !filterStates.showMilestones) shouldShow = false;
+                            if (eventType === 'out_of_office' && !filterStates.showOutOfOffice) shouldShow = false;
+                            if (eventType === 'call' && !filterStates.showCalls) shouldShow = false;
+                            if (eventType === 'session' && !filterStates.showSessions) shouldShow = false;
+                            
+                            // Use setProp to update display property
+                            event.setProp('display', shouldShow ? 'auto' : 'none');
+                        });
+                        
+                        // Re-render calendar to ensure it stays visible
+                        calendar.render();
+                    }
             });
-        });
+        })();
     </script>
     @endpush
 </div>

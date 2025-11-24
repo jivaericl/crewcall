@@ -42,8 +42,7 @@ class CalendarController extends Controller
                 'borderColor' => $item->type_color,
                 'textColor' => '#ffffff',
                 'extendedProps' => [
-                    'type' => 'calendar_item',
-                    'calendar_type' => $item->type,
+                    'type' => $item->type,
                     'description' => $item->description,
                     'location' => $item->location,
                     'attendees' => $item->users->pluck('name')->toArray(),
