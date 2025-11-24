@@ -93,15 +93,9 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex gap-2">
-                                <flux:button size="sm" href="{{ route('events.speakers.show', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" icon="eye" variant="ghost">
-                                    View
-                                </flux:button>
-                                <flux:button size="sm" href="{{ route('events.speakers.edit', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" icon="pencil" variant="ghost">
-                                    Edit
-                                </flux:button>
-                                <flux:button size="sm" wire:click="confirmDelete({{ $speaker->id }})" icon="trash" variant="danger">
-                                    Delete
-                                </flux:button>
+                                <flux:button size="sm" href="{{ route('events.speakers.show', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" icon="eye" variant="ghost" icon-only />
+                                <flux:button size="sm" href="{{ route('events.speakers.edit', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" icon="pencil" variant="ghost" icon-only />
+                                <flux:button size="sm" wire:click="confirmDelete({{ $speaker->id }})" icon="trash" variant="danger" icon-only />
                             </div>
                         </td>
                     </tr>

@@ -52,22 +52,11 @@
                                     <span class="text-sm text-gray-700 dark:text-gray-300">{{ $role->sort_order }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button 
-                                        wire:click="openAssignModal({{ $role->id }})" 
-                                        class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-3">
-                                        Assign Users
-                                    </button>
-                                    <button 
-                                        wire:click="openEditModal({{ $role->id }})" 
-                                        class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 mr-3">
-                                        Edit
-                                    </button>
-                                    <button 
-                                        wire:click="delete({{ $role->id }})" 
-                                        wire:confirm="Are you sure you want to delete this role?"
-                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                        Delete
-                                    </button>
+                                    <div class="flex items-center justify-end gap-2">
+                                        <flux:button size="sm" variant="ghost" wire:click="openAssignModal({{ $role->id }})" icon="user-plus" icon-only />
+                                        <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $role->id }})" icon="pencil" icon-only />
+                                        <flux:button size="sm" variant="danger" wire:click="delete({{ $role->id }})" wire:confirm="Are you sure you want to delete this role?" icon="trash" icon-only />
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

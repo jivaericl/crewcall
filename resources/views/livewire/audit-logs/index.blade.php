@@ -137,17 +137,17 @@
                                                             wire:navigate
                                                             variant="ghost"
                                                             size="sm"
-                                                        >
-                                                            View Record
-                                                        </flux:button>
+                                                            icon="arrow-top-right-on-square"
+                                                            icon-only
+                                                        />
                                                     @endif
                                                     <flux:button
                                                         wire:click="showDetails({{ $log->id }})"
                                                         variant="ghost"
                                                         size="sm"
-                                                    >
-                                                        View Details
-                                                    </flux:button>
+                                                        icon="eye"
+                                                        icon-only
+                                                    />
                                                 </div>
                                             </td>
                                         </tr>
