@@ -38,9 +38,10 @@ class EventNavigation extends Component
             $menuItems = [
                 [
                     'label' => 'Dashboard',
-                    'icon' => 'home',
+                    'icon' => 'layout-9',
                     'route' => 'events.dashboard',
                     'params' => [$this->eventId],
+                    'lineicon' => true,
                 ],
                 [
                     'label' => 'Event Info',

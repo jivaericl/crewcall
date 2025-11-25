@@ -62,7 +62,9 @@
                     href="{{ route($item['route'], $item['params']) }}"
                     class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg {{ request()->routeIs($item['route']) ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                 >
-                    @if($item['icon'] === 'calendar')
+                    @if(isset($item['lineicon']) && $item['lineicon'])
+                        <x-lineicon :name="$item['icon']" class="text-gray-700 dark:text-gray-300" />
+                    @elseif($item['icon'] === 'calendar')
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
