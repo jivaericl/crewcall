@@ -94,7 +94,7 @@ class EventNavigation extends Component
                 [
                     'label' => 'People',
                     'icon' => 'users',
-                    'children' => [
+                    'children' => array_filter([
                         [
                             'label' => 'Speakers',
                             'route' => 'events.speakers.index',
@@ -115,7 +115,12 @@ class EventNavigation extends Component
                             'route' => 'events.travel.index',
                             'params' => [$this->eventId],
                         ],
-                    ],
+                        auth()->user()->isSuperAdmin() ? [
+                            'label' => 'System Access',
+                            'route' => 'roles.index',
+                            'params' => [],
+                        ] : null,
+                    ]),
                 ],
                 [
                     'label' => 'Event Settings',

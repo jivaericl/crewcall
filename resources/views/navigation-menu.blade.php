@@ -16,13 +16,7 @@
                     <div class="flex items-center">
                         @livewire('event-selector')
                     </div>
-                    
-                    
-                    @if(auth()->user()->isSuperAdmin())
-                        <x-nav-link href="{{ route('roles.index') }}" :active="request()->routeIs('roles.*')">
-                            {{ __('Roles') }}
-                        </x-nav-link>
-                    @endif
+
                 </div>
             </div>
 
