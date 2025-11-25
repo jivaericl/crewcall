@@ -77,12 +77,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Start Time
                         </label>
-                        <input 
-                            type="time" 
-                            wire:model="start_time"
-                            @if($all_day) disabled @endif
-                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                        />
+                        <flux:time-picker wire:model="start_time" type="input" :dropdown="false" :disabled="$all_day" />
                         @error('start_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -104,12 +99,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             End Time
                         </label>
-                        <input 
-                            type="time" 
-                            wire:model="end_time"
-                            @if($all_day) disabled @endif
-                            class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                        />
+                        <flux:time-picker wire:model="end_time" type="input" :dropdown="false" :disabled="$all_day" />
                         @error('end_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
                 </div>

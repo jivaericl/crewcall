@@ -113,7 +113,8 @@
                     </div>
                 @endif
                 
-                <flux:input type="file" wire:model="headshot" label="Upload Headshot" accept="image/*" />
+                <flux:label>Upload Headshot</flux:label>
+                <flux:file-upload.dropzone wire:model="headshot" accept="image/*" />
                 
                 @if($headshot)
                     <div class="mt-4">

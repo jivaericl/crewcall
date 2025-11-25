@@ -386,18 +386,8 @@
                 
                 <div class="space-y-4">
                     <div>
-                        <flux:label for="newVersionFile" required>Select File</flux:label>
-                        <input 
-                            wire:model="newVersionFile" 
-                            type="file" 
-                            id="newVersionFile"
-                            class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-400
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-indigo-50 file:text-indigo-700
-                                hover:file:bg-indigo-100"
-                        />
+                        <flux:label required>Select File</flux:label>
+                        <flux:file-upload.dropzone wire:model="newVersionFile" />
                         @error('newVersionFile') <flux:error>{{ $message }}</flux:error> @enderror
                     </div>
 

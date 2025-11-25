@@ -66,13 +66,8 @@
                     <!-- Time, Status, Priority -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <flux:label for="time">Time</flux:label>
-                            <flux:input 
-                                wire:model="time" 
-                                id="time" 
-                                type="time" 
-                                class="w-full"
-                            />
+                            <flux:label>Time</flux:label>
+                            <flux:time-picker wire:model="time" type="input" :dropdown="false" />
                             <flux:description>Cue execution time</flux:description>
                             @error('time') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>

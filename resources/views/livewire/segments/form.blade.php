@@ -40,24 +40,14 @@
                     <!-- Time Fields -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <flux:label for="start_time" required>Start Time</flux:label>
-                            <flux:input 
-                                wire:model.live="start_time" 
-                                id="start_time" 
-                                type="time" 
-                                class="w-full"
-                            />
+                            <flux:label required>Start Time</flux:label>
+                            <flux:time-picker wire:model.live="start_time" type="input" :dropdown="false" />
                             @error('start_time') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
 
                         <div>
-                            <flux:label for="end_time" required>End Time</flux:label>
-                            <flux:input 
-                                wire:model.live="end_time" 
-                                id="end_time" 
-                                type="time" 
-                                class="w-full"
-                            />
+                            <flux:label required>End Time</flux:label>
+                            <flux:time-picker wire:model.live="end_time" type="input" :dropdown="false" />
                             @error('end_time') <flux:error>{{ $message }}</flux:error> @enderror
                         </div>
                     </div>
