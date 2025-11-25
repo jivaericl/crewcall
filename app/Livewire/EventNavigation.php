@@ -38,20 +38,19 @@ class EventNavigation extends Component
             $menuItems = [
                 [
                     'label' => 'Dashboard',
-                    'icon' => 'layout-9',
+                    'icon' => 'navigation.dashboard',
                     'route' => 'events.dashboard',
                     'params' => [$this->eventId],
-                    'lineicon' => true,
                 ],
                 [
                     'label' => 'Event Info',
-                    'icon' => 'info-circle',
+                    'icon' => 'navigation.event-info',
                     'route' => 'events.show',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'Chat',
-                    'icon' => 'chat',
+                    'icon' => 'navigation.chat',
                     'route' => 'chat.index',
                     'params' => [],
                     'badge' => \App\Models\ChatMessage::whereHas('event.assignedUsers', function ($query) {
@@ -64,37 +63,37 @@ class EventNavigation extends Component
                 ],
                 [
                     'label' => 'Sessions',
-                    'icon' => 'calendar',
+                    'icon' => 'navigation.sessions',
                     'route' => 'events.sessions.index',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'Segments',
-                    'icon' => 'collection',
+                    'icon' => 'navigation.segments',
                     'route' => 'events.all-segments',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'Cues',
-                    'icon' => 'clipboard-list',
+                    'icon' => 'navigation.cues',
                     'route' => 'events.all-cues',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'Content',
-                    'icon' => 'folder',
+                    'icon' => 'navigation.content',
                     'route' => 'events.content.index',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'Calendar',
-                    'icon' => 'calendar',
+                    'icon' => 'navigation.calendar',
                     'route' => 'events.calendar.index',
                     'params' => [$this->eventId],
                 ],
                 [
                     'label' => 'People',
-                    'icon' => 'users',
+                    'icon' => 'navigation.people',
                     'children' => array_filter([
                         [
                             'label' => 'Speakers',
@@ -125,7 +124,7 @@ class EventNavigation extends Component
                 ],
                 [
                     'label' => 'Event Settings',
-                    'icon' => 'adjustments',
+                    'icon' => 'navigation.event-settings',
                     'children' => [
                         [
                             'label' => 'Content Categories',
@@ -156,7 +155,7 @@ class EventNavigation extends Component
                 ],
                 [
                     'label' => 'Activity',
-                    'icon' => 'lightning-bolt',
+                    'icon' => 'navigation.activity',
                     'children' => [
                         [
                             'label' => 'Conversations',

@@ -1,10 +1,23 @@
 @props([
     'name',
+    'alias' => null,
     'class' => '',
     'size' => 'w-5 h-5',
 ])
 
 @php
+    // If alias is provided, look up the icon name from config
+    if ($alias) {
+        // Parse alias like 'actions.edit' or 'navigation.dashboard'
+        $parts = explode('.', $alias);
+        $category = $parts[0] ?? null;
+        $key = $parts[1] ?? null;
+        
+        if ($category && $key && isset(config("icons.{$category}.{$key}"))) {
+            $name = config("icons.{$category}.{$key}");
+        }
+    }
+    
     $svgPath = base_path("node_modules/lineicons/assets/svgs/regular/{$name}.svg");
     
     if (!file_exists($svgPath)) {

@@ -90,31 +90,31 @@
                                                     <span class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
                                                         @switch($file->file_type)
                                                             @case('audio')
-                                                                <flux:icon.musical-note class="w-5 h-5" />
+                                                                <x-lineicon alias="content.audio" size="w-5 h-5" />
                                                                 @break
                                                             @case('video')
-                                                                <flux:icon.play class="w-5 h-5" />
+                                                                <x-lineicon alias="content.video" size="w-5 h-5" />
                                                                 @break
                                                             @case('presentation')
-                                                                <flux:icon.chart-bar class="w-5 h-5" />
+                                                                <x-lineicon alias="content.presentation" size="w-5 h-5" />
                                                                 @break
                                                             @case('document')
-                                                                <flux:icon.document-text class="w-5 h-5" />
+                                                                <x-lineicon alias="content.document" size="w-5 h-5" />
                                                                 @break
                                                             @case('image')
-                                                                <flux:icon.photo class="w-5 h-5" />
+                                                                <x-lineicon alias="content.image" size="w-5 h-5" />
                                                                 @break
                                                             @case('rich_text')
-                                                                <flux:icon.pencil-square class="w-5 h-5" />
+                                                                <x-lineicon alias="content.rich_text" size="w-5 h-5" />
                                                                 @break
                                                             @case('plain_text')
-                                                                <flux:icon.document class="w-5 h-5" />
+                                                                <x-lineicon alias="content.text" size="w-5 h-5" />
                                                                 @break
                                                             @case('url')
-                                                                <flux:icon.link class="w-5 h-5" />
+                                                                <x-lineicon alias="content.html" size="w-5 h-5" />
                                                                 @break
                                                             @default
-                                                                <flux:icon.folder class="w-5 h-5" />
+                                                                <x-lineicon alias="content.other" size="w-5 h-5" />
                                                         @endswitch
                                                     </span>
                                                     <div>

@@ -122,8 +122,12 @@
                                 <!-- Actions -->
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
-                                        <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $tag->id }})" icon="pencil" icon-only />
-                                        <flux:button size="sm" variant="danger" wire:click="confirmDelete({{ $tag->id }})" icon="trash" icon-only />
+                                        <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $tag->id }})" square>
+                                            <x-lineicon alias="actions.edit" />
+                                        </flux:button>
+                                        <flux:button size="sm" variant="danger" wire:click="confirmDelete({{ $tag->id }})" square>
+                                            <x-lineicon alias="actions.delete" />
+                                        </flux:button>
                                     </div>
                                 </td>
                             </tr>

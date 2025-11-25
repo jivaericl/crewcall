@@ -53,9 +53,15 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-2">
-                                        <flux:button size="sm" variant="ghost" wire:click="openAssignModal({{ $role->id }})" icon="user-plus" icon-only />
-                                        <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $role->id }})" icon="pencil" icon-only />
-                                        <flux:button size="sm" variant="danger" wire:click="delete({{ $role->id }})" wire:confirm="Are you sure you want to delete this role?" icon="trash" icon-only />
+                                        <flux:button size="sm" variant="ghost" wire:click="openAssignModal({{ $role->id }})" square>
+                                            <x-lineicon alias="actions.assign" />
+                                        </flux:button>
+                                        <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $role->id }})" square>
+                                            <x-lineicon alias="actions.edit" />
+                                        </flux:button>
+                                        <flux:button size="sm" variant="danger" wire:click="delete({{ $role->id }})" wire:confirm="Are you sure you want to delete this role?" square>
+                                            <x-lineicon alias="actions.delete" />
+                                        </flux:button>
                                     </div>
                                 </td>
                             </tr>

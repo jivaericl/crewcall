@@ -135,10 +135,18 @@
                                             </td>
                                             <td class="px-6 py-4 align-top whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-1">
-                                                    <flux:button href="{{ route('segments.cues.show', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" icon="eye" icon-only />
-                                                    <flux:button href="{{ route('segments.cues.edit', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" icon="pencil" icon-only />
-                                                    <flux:button wire:click="duplicateCue({{ $cue->id }})" variant="ghost" size="sm" icon="document-duplicate" icon-only />
-                                                    <flux:button wire:click="confirmDelete({{ $cue->id }})" variant="danger" size="sm" icon="trash" icon-only />
+                                                    <flux:button href="{{ route('segments.cues.show', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" square>
+                                                        <x-lineicon alias="actions.view" />
+                                                    </flux:button>
+                                                    <flux:button href="{{ route('segments.cues.edit', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" square>
+                                                        <x-lineicon alias="actions.edit" />
+                                                    </flux:button>
+                                                    <flux:button wire:click="duplicateCue({{ $cue->id }})" variant="ghost" size="sm" square>
+                                                        <x-lineicon alias="actions.duplicate" />
+                                                    </flux:button>
+                                                    <flux:button wire:click="confirmDelete({{ $cue->id }})" variant="danger" size="sm" square>
+                                                        <x-lineicon alias="actions.delete" />
+                                                    </flux:button>
                                                 </div>
                                             </td>
                                         </tr>

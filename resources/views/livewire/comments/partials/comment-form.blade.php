@@ -40,7 +40,8 @@
     </div>
 
     <div class="flex items-center gap-2 mt-3">
-        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
+        <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
+            <x-lineicon alias="ui.chat_send" size="w-4 h-4" />
             {{ $submitLabel }}
         </button>
         
