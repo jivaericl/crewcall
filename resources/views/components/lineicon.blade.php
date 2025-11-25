@@ -1,5 +1,5 @@
 @props([
-    'name',
+    'name' => null,
     'alias' => null,
     'class' => '',
     'size' => 'w-5 h-5',
@@ -13,12 +13,15 @@
         $category = $parts[0] ?? null;
         $key = $parts[1] ?? null;
         
-        if ($category && $key && isset(config("icons.{$category}.{$key}"))) {
-            $name = config("icons.{$category}.{$key}");
+        if ($category && $key) {
+            $iconName = config("icons.{$category}.{$key}");
+            if ($iconName !== null) {
+                $name = $iconName;
+            }
         }
     }
     
-    $svgPath = base_path("node_modules/lineicons/assets/svgs/regular/{$name}.svg");
+    $svgPath = public_path("vendor/lineicons/{$name}.svg");
     
     if (!file_exists($svgPath)) {
         $svg = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" fill="currentColor" opacity="0.1"/></svg>';
