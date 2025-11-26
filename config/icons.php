@@ -22,7 +22,7 @@ return [
         'people' => 'user-multiple-4',
         'event-settings' => 'sliders-horizontal-square-2',
         'activity' => 'bolt-2',
-        'dashboard' => 'layout-26',
+        'dashboard' => 'dashboard-square-1',
     ],
 
     'actions' => [
