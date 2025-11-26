@@ -267,45 +267,28 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-1">
                                                     <flux:button href="{{ route('events.sessions.index', $event->id) }}" variant="ghost" size="sm" title="Sessions">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="sessions" />
                                                     </flux:button>
                                                     <flux:button href="{{ route('events.content.index', $event->id) }}" variant="ghost" size="sm" title="Content Library">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="content-library" />
                                                     </flux:button>
                                                     <flux:button href="{{ route('events.speakers.index', $event->id) }}" variant="ghost" size="sm" title="Speakers">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="speakers" />
                                                     </flux:button>
                                                     <a href="{{ route('show-call.index', $event->id) }}" title="Show Calling" class="inline-flex items-center justify-center px-2 py-1 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition ease-in-out duration-150">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="show-calling" />
                                                     </a>
                                                     <flux:button href="{{ route('events.users', $event->id) }}" variant="ghost" size="sm" title="Manage Users">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="manage-users" />
                                                     </flux:button>
                                                     <flux:button href="{{ route('events.edit', $event->id) }}" variant="ghost" size="sm" title="Edit">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="edit" />
                                                     </flux:button>
                                                     <flux:button wire:click="duplicateEvent({{ $event->id }})" variant="ghost" size="sm" title="Duplicate">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                                        </svg>
+                                                        <x-action-icon action="duplicate" />
                                                     </flux:button>
                                                     <flux:button wire:click="confirmDelete({{ $event->id }})" variant="danger" size="sm" title="Delete">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                        </svg>
+                                                        <x-action-icon action="delete" />
                                                     </flux:button>
                                                 </div>
                                             </td>

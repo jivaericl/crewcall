@@ -38,6 +38,15 @@ return [
         'assign' => 'user-4',
         'go-to' => 'arrow-angular-top-right',
         'add' => 'plus-circle',
+        'sessions' => 'layout-26',
+        'content-library' => 'folder-1',
+        'speakers' => 'user-4',
+        'show-calling' => 'layout-26',
+        'manage-users' => 'user-multiple-4',
+        'segments' => 'layout-9',
+        'cues' => 'clipboard',
+        'location' => 'map-marker-1',
+        'tag' => 'bookmark-1',
     ],
 
     'content_types' => [
