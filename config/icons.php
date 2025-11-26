@@ -12,9 +12,9 @@ return [
     */
 
     'navigation' => [
-        'event-info' => 'info',
-        'chat' => 'chat-bubble-2',
-        'sessions' => 'layout-26',
+        'event-info' => 'info-circle',
+        'chat' => 'chat1dots',
+        'sessions' => 'presentation1',
         'segments' => 'layout-9',
         'cues' => 'clipboard',
         'content' => 'folder-1',
@@ -22,7 +22,7 @@ return [
         'people' => 'user-multiple-4',
         'event-settings' => 'sliders-horizontal-square-2',
         'activity' => 'bolt-2',
-        'dashboard' => 'dashboard-square-1',
+        'dashboard' => 'dashboard-square10',
     ],
 
     'actions' => [
