@@ -25,8 +25,8 @@
                             </flux:button>
                         </div>
                         <div class="flex gap-2">
-                            <button 
-                                wire:click="openResetModal" 
+                            <button
+                                wire:click="openResetModal"
                                 class="px-4 py-2 bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white text-sm font-medium rounded-md"
                                 type="button">
                                 Reset All Cues
@@ -40,10 +40,10 @@
                     <!-- Search and Filters -->
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                         <div class="md:col-span-2">
-                            <flux:input 
-                                wire:model.live.debounce.300ms="search" 
-                                type="text" 
-                                placeholder="Search cues..." 
+                            <flux:input
+                                wire:model.live.debounce.300ms="search"
+                                type="text"
+                                placeholder="Search cues..."
                                 class="w-full"
                             />
                         </div>
@@ -121,7 +121,7 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 align-top whitespace-nowrap">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                                     @if($cue->priority === 'critical') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200
                                                     @elseif($cue->priority === 'high') bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200
                                                     @elseif($cue->priority === 'normal') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
@@ -136,16 +136,16 @@
                                             <td class="px-6 py-4 align-top whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-1">
                                                     <flux:button href="{{ route('segments.cues.show', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" square>
-                                                        <x-lineicon alias="actions.view" />
+                                                        <x-action-icon action="view" />
                                                     </flux:button>
                                                     <flux:button href="{{ route('segments.cues.edit', [$segmentId, $cue->id]) }}" variant="ghost" size="sm" square>
-                                                        <x-lineicon alias="actions.edit" />
+                                                        <x-action-icon action="edit" />
                                                     </flux:button>
                                                     <flux:button wire:click="duplicateCue({{ $cue->id }})" variant="ghost" size="sm" square>
-                                                        <x-lineicon alias="actions.duplicate" />
+                                                        <x-action-icon action="duplicate" />
                                                     </flux:button>
                                                     <flux:button wire:click="confirmDelete({{ $cue->id }})" variant="danger" size="sm" square>
-                                                        <x-lineicon alias="actions.delete" />
+                                                        <x-action-icon action="delete" />
                                                     </flux:button>
                                                 </div>
                                             </td>
@@ -207,17 +207,17 @@
             </div>
         </div>
     @endif
-    
+
     <!-- Reset Confirmation Modal -->
-    <div x-data="{ show: @entangle('showResetModal') }" 
-         x-show="show" 
+    <div x-data="{ show: @entangle('showResetModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;">
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
              @click="show = false"></div>
-        
+
         <!-- Modal -->
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
@@ -225,34 +225,34 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                     Reset All Cues
                 </h3>
-                
+
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    This action will set all cues in this segment back to the default state. 
+                    This action will set all cues in this segment back to the default state.
                     To confirm, type <strong>RESET</strong> in the box below.
                 </p>
-                
+
                 @if(session('error'))
                     <div class="mb-4 p-3 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-400 rounded text-sm">
                         {{ session('error') }}
                     </div>
                 @endif
-                
-                <input 
-                    type="text" 
-                    wire:model="resetConfirmation" 
+
+                <input
+                    type="text"
+                    wire:model="resetConfirmation"
                     placeholder="Type RESET to confirm"
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-4"
                 />
-                
+
                 <div class="flex gap-2 justify-end">
-                    <button 
-                        wire:click="closeResetModal" 
+                    <button
+                        wire:click="closeResetModal"
                         class="px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-md text-sm font-medium"
                         type="button">
                         Cancel
                     </button>
-                    <button 
-                        wire:click="resetAllCues" 
+                    <button
+                        wire:click="resetAllCues"
                         class="px-4 py-2 bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white rounded-md text-sm font-medium"
                         type="button">
                         Reset All Cues
