@@ -7,65 +7,77 @@ return [
     |--------------------------------------------------------------------------
     |
     | This file contains all icon mappings for the application.
-    | All icons use LineIcons Pro. Change an icon here and it updates everywhere.
+    | Icons are now referenced by their path in the native folder structure.
+    |
+    | Format: 'key' => 'category/rounded/style/icon-name'
+    | Example: 'dashboard' => 'pro/interface/rounded/outlined/dashboard-square-10'
+    |
+    | This allows you to:
+    | - Keep icons in their original folder structure
+    | - Update icons easily by replacing folders
+    | - Mix PRO and free icons
+    | - Commit icons to git without flattening
     |
     */
 
     'navigation' => [
-        'event-info' => 'info-circle',
-        'chat' => 'chat1dots',
-        'sessions' => 'presentation1',
-        'segments' => 'layout1',
-        'cues' => 'clipboard-check',
-        'content' => 'folder5',
-        'calendar' => 'calendar-check-circle',
-        'people' => 'user-multiple1',
-        'event-settings' => 'sliders-triple-horizontal2',
-        'activity' => 'bolt1',
-        'dashboard' => 'dashboard-square10',
+        'event-info' => 'pro/editing/rounded/outlined/info-circle',
+        'chat' => 'pro/communication/rounded/outlined/chat-1-dots',
+        'sessions' => 'pro/marketing/rounded/outlined/presentation-1',
+        'segments' => 'free/interface/rounded/outlined/layout-9',
+        'cues' => 'free/editing/rounded/outlined/clipboard',
+        'content' => 'free/files-folders/rounded/outlined/folder-1',
+        'calendar' => 'free/date-time/rounded/outlined/calendar-days',
+        'people' => 'free/user/rounded/outlined/user-multiple-4',
+        'event-settings' => 'free/interface/rounded/outlined/sliders-horizontal-square-2',
+        'activity' => 'free/energy/rounded/outlined/bolt-2',
+        'dashboard' => 'pro/interface/rounded/outlined/dashboard-square-10',
     ],
 
     'actions' => [
-        'view' => 'eye',
-        'edit' => 'pencil1',
-        'run-of-show' => 'map-marker-1',
-        'duplicate' => 'plus-circle',
-        'delete' => 'trash3',
-        'download' => 'download-circle-1',
-        'versions' => 'refresh-circle-1-clockwise',
-        'make-admin' => 'shield-2-check',
-        'deactivate' => 'trash-3',
-        'assign' => 'user-4',
-        'go-to' => 'arrow-angular-top-right',
-        'add' => 'plus-circle',
-        'sessions' => 'layout-26',
-        'content-library' => 'folder-1',
-        'speakers' => 'user-4',
-        'show-calling' => 'layout-26',
-        'manage-users' => 'user-multiple-4',
-        'segments' => 'layout-9',
-        'cues' => 'clipboard',
-        'location' => 'map-marker-1',
-        'tag' => 'bookmark-1',
+        'view' => 'free/interface/rounded/outlined/eye',
+        'edit' => 'free/editing/rounded/outlined/pencil-1',
+        'delete' => 'free/editing/rounded/outlined/trash-3',
+        'duplicate' => 'free/editing/rounded/outlined/plus-circle',
+        'add' => 'free/editing/rounded/outlined/plus-circle',
+        'download' => 'free/arrows/rounded/outlined/download-1',
+        'sessions' => 'pro/marketing/rounded/outlined/presentation-1',
+        'content-library' => 'free/files-folders/rounded/outlined/folder-1',
+        'speakers' => 'free/user/rounded/outlined/user-4',
+        'show-calling' => 'free/communication/rounded/outlined/phone-1',
+        'manage-users' => 'free/user/rounded/outlined/user-multiple-4',
+        'segments' => 'free/interface/rounded/outlined/layout-9',
+        'cues' => 'free/editing/rounded/outlined/clipboard',
+        'run-of-show' => 'free/editing/rounded/outlined/clipboard',
+        'versions' => 'free/interface/rounded/outlined/refresh-circle-1-clockwise',
+        'make-admin' => 'free/user/rounded/outlined/user-4',
+        'assign' => 'free/user/rounded/outlined/user-4',
+        'location' => 'free/map-marker/rounded/outlined/map-marker-1',
+        'tag' => 'free/interface/rounded/outlined/bookmark',
+        'go-to' => 'free/arrows/rounded/outlined/arrow-angular-top-right',
+        'deactivate' => 'free/editing/rounded/outlined/trash-3',
     ],
 
     'content_types' => [
-        'html' => 'file-pencil',
-        'text' => 'file-pencil',
-        'rich-text' => 'file-pencil',
-        'other' => 'file-question',
-        'image' => 'photos',
-        'document' => 'file-pencil',
-        'presentation' => 'file-multiple',
-        'audio' => 'soundcloud',
-        'video' => 'camera-movie-1',
+        'video' => 'free/multimedia/rounded/outlined/video-camera-1',
+        'audio' => 'free/multimedia/rounded/outlined/soundcloud',
+        'image' => 'free/multimedia/rounded/outlined/photos',
+        'document' => 'free/files-folders/rounded/outlined/file-pencil',
     ],
 
     'ui' => [
-        'chat-bubble' => 'chat-bubble-2',
-        'send' => 'arrow-right',
-        'event-selector' => 'calendar-days',
-        'dark-mode' => 'moon-half-right-5',
-        'light-mode' => 'sun-1',
+        'search' => 'free/search/rounded/outlined/search-1',
+        'filter' => 'free/interface/rounded/outlined/filter-1',
+        'sort' => 'free/interface/rounded/outlined/sort-1',
+        'close' => 'free/interface/rounded/outlined/xmark',
+        'menu' => 'free/interface/rounded/outlined/menu-1',
+        'more' => 'free/interface/rounded/outlined/more-horizontal',
+        'settings' => 'free/interface/rounded/outlined/sliders-horizontal-square-2',
+        'notification' => 'free/alerts-notifications/rounded/outlined/bell-1',
+        'chat-bubble' => 'pro/communication/rounded/outlined/chat-1-dots',
+        'send' => 'free/arrows/rounded/outlined/arrow-right',
+        'event-selector' => 'free/date-time/rounded/outlined/calendar-days',
+        'dark-mode' => 'free/interface/rounded/outlined/moon-half-right-5',
+        'light-mode' => 'free/interface/rounded/outlined/sun-1',
     ],
 ];

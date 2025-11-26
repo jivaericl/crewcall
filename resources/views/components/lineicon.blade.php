@@ -21,6 +21,10 @@
         }
     }
     
+    // Build the full path to the SVG file
+    // The name can now be either:
+    // 1. A flat filename: 'dashboard-square10' -> public/vendor/lineicons/dashboard-square10.svg
+    // 2. A path: 'pro/business/outlined/dashboard-square10' -> public/vendor/lineicons/pro/business/outlined/dashboard-square10.svg
     $svgPath = public_path("vendor/lineicons/{$name}.svg");
     
     if (!file_exists($svgPath)) {
