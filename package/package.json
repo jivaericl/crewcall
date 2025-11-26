@@ -1,0 +1,50 @@
+{
+  "name": "@lineiconshq-pro/core-outlined",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LineIcons Pro outlined style icons - Premium icon collection",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "icons",
+    "lineicons",
+    "pro",
+    "premium",
+    "outlined",
+    "react",
+    "svg",
+    "ui",
+    "components"
+  ],
+  "author": "Lineicons",
+  "license": "Commercial",
+  "homepage": "https://lineicons.com",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build",
+    "generate-icons": "node ./src/script/generate-pro-outlined-icons.js",
+    "create-package": "node ./src/script/create-package.js"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/react": "^19.0.0",
+    "rollup": "^4.9.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.8.1",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "meilisearch": "^0.53.0"
+  }
+}
