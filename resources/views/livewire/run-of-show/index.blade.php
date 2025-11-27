@@ -7,12 +7,12 @@
         
         <div class="flex gap-2">
             @if($activeSegmentId)
-                <flux:button wire:click="clearActiveSegment" variant="ghost"><x-lineicon alias="actions.x-mark" class="mr-1" />Clear Active</flux:button>
+                <flux:button wire:click="clearActiveSegment" variant="ghost"><x-action-icon action="x-mark" />Clear Active</flux:button>
             @endif
             
-            <flux:button wire:click="openColumnModal"><x-lineicon alias="actions.view-columns" class="mr-1" />Columns</flux:button>
+            <flux:button wire:click="openColumnModal"><x-action-icon action="view-columns" />Columns</flux:button>
             
-            <flux:button href="{{ route('sessions.segments.index', $sessionId) }}" variant="ghost"><x-lineicon alias="actions.edit" class="mr-1" />Edit Segments</flux:button>
+            <flux:button href="{{ route('sessions.segments.index', $sessionId) }}" variant="ghost"><x-action-icon action="edit" />Edit Segments</flux:button>
         </div>
     </flux:header>
 

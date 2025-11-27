@@ -186,10 +186,10 @@
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
                                         <flux:button size="sm" variant="ghost" href="{{ route('events.contacts.show', [$eventId, $contact->id]) }}" square>
-                                            <x-lineicon alias="actions.view" />
+                                            <x-action-icon action="view" />
                                         </flux:button>
                                         <flux:button size="sm" variant="ghost" href="{{ route('events.contacts.edit', [$eventId, $contact->id]) }}" square>
-                                            <x-lineicon alias="actions.edit" />
+                                            <x-action-icon action="edit" />
                                         </flux:button>
                                     </div>
                                 </td>

@@ -138,13 +138,13 @@
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
                                             <flux:button size="sm" variant="ghost" href="{{ route('events.team-members.show', [$eventId, $travel->user_id]) }}" square>
-                                            <x-lineicon alias="actions.view" />
+                                            <x-action-icon action="view" />
                                         </flux:button>
                                             <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $travel->id }})" square>
-                                            <x-lineicon alias="actions.edit" />
+                                            <x-action-icon action="edit" />
                                         </flux:button>
                                             <flux:button size="sm" variant="danger" wire:click="delete({{ $travel->id }})" square>
-                                            <x-lineicon alias="actions.delete" />
+                                            <x-action-icon action="delete" />
                                         </flux:button>
                                         </div>
                                     </td>

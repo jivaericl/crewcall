@@ -125,15 +125,17 @@
                                                             href="{{ route('roles.edit', $role->id) }}" 
                                                             variant="ghost" 
                                                             size="sm"
+                                                            title="Edit"
                                                         >
-                                                            Edit
+                                                            <x-action-icon action="edit" />
                                                         </flux:button>
                                                         <flux:button 
                                                             wire:click="toggleActive({{ $role->id }})" 
                                                             variant="ghost" 
                                                             size="sm"
+                                                            title="{{ $role->is_active ? 'Deactivate' : 'Activate' }}"
                                                         >
-                                                            {{ $role->is_active ? 'Deactivate' : 'Activate' }}
+                                                            <x-action-icon action="deactivate" />
                                                         </flux:button>
                                                     @endif
                                                 </div>

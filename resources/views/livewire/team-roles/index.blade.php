@@ -54,13 +54,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-2">
                                         <flux:button size="sm" variant="ghost" wire:click="openAssignModal({{ $role->id }})" square>
-                                            <x-lineicon alias="actions.assign" />
+                                            <x-action-icon action="assign" />
                                         </flux:button>
                                         <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $role->id }})" square>
-                                            <x-lineicon alias="actions.edit" />
+                                            <x-action-icon action="edit" />
                                         </flux:button>
                                         <flux:button size="sm" variant="danger" wire:click="delete({{ $role->id }})" wire:confirm="Are you sure you want to delete this role?" square>
-                                            <x-lineicon alias="actions.delete" />
+                                            <x-action-icon action="delete" />
                                         </flux:button>
                                     </div>
                                 </td>

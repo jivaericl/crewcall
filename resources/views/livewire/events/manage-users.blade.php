@@ -71,13 +71,14 @@
                                         @endif
                                          <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
-                                            <flux:button size="sm" variant="ghost" href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" icon="eye" icon-only />
-                                            <flux:button wire:click="toggleAdmin({{ $assignment->id }})" variant="ghost"
-                                                         size="sm" icon="shield-check">
-                                                {{ $assignment->is_admin ? 'Remove Admin' : 'Make Admin' }}
+                                            <flux:button size="sm" variant="ghost" href="{{ route('events.team-members.show', [$eventId, $assignment->user_id]) }}" title="View">
+                                                <x-action-icon action="view" />
                                             </flux:button>
-                                            <flux:button wire:click="removeAssignment({{ $assignment->id }})"
-                                                         variant="ghost" size="sm" icon="trash">Remove
+                                            <flux:button wire:click="toggleAdmin({{ $assignment->id }})" variant="ghost" size="sm" title="{{ $assignment->is_admin ? 'Remove Admin' : 'Make Admin' }}">
+                                                <x-action-icon :action="$assignment->is_admin ? 'remove-admin' : 'make-admin'" />
+                                            </flux:button>
+                                            <flux:button wire:click="removeAssignment({{ $assignment->id }})" variant="ghost" size="sm" title="Remove">
+                                                <x-action-icon action="delete" />
                                             </flux:button>
                                         </div>
                                     </td>                </tr>

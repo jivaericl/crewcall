@@ -4,7 +4,7 @@
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Speakers - {{ $event->name }}</h2>
         </div>
-        <div><flux:button href="{{ route('events.speakers.create', $eventId) }}"><x-lineicon alias="actions.plus" class="mr-1" />Add Speaker</flux:button></div>
+        <div><flux:button href="{{ route('events.speakers.create', $eventId) }}"><x-action-icon action="plus" />Add Speaker</flux:button></div>
     </div>
 
     @if (session()->has('message'))
@@ -92,13 +92,13 @@
                         <td class="px-6 py-4">
                             <div class="flex gap-2">
                                 <flux:button size="sm" href="{{ route('events.speakers.show', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" variant="ghost" square>
-                                    <x-lineicon alias="actions.view" />
+                                    <x-action-icon action="view" />
                                 </flux:button>
                                 <flux:button size="sm" href="{{ route('events.speakers.edit', ['eventId' => $eventId, 'speakerId' => $speaker->id]) }}" variant="ghost" square>
-                                    <x-lineicon alias="actions.edit" />
+                                    <x-action-icon action="edit" />
                                 </flux:button>
                                 <flux:button size="sm" wire:click="confirmDelete({{ $speaker->id }})" variant="danger" square>
-                                    <x-lineicon alias="actions.delete" />
+                                    <x-action-icon action="delete" />
                                 </flux:button>
                             </div>
                         </td>
