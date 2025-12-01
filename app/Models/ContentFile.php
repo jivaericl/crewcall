@@ -119,7 +119,7 @@ class ContentFile extends Model
 
     /**
      * Restore an old version by creating a new version with the old content.
-     * 
+     *
      * @param int $versionNumber The version number to restore
      * @param string|null $changeNotes Optional notes about the restoration
      * @return ContentFileVersion The newly created version
@@ -128,32 +128,35 @@ class ContentFile extends Model
     {
         // Find the version to restore
         $oldVersion = $this->versions()->where('version_number', $versionNumber)->firstOrFail();
-        
+
         // Get the next version number
         $newVersionNumber = $this->versions()->max('version_number') + 1;
-        
-        // Copy the file to a new location
+
+        // Copy the file to a new location if it's a file-based content
         $oldFilePath = $oldVersion->file_path;
-        
-        // Generate new file path with version suffix
-        $pathInfo = pathinfo($oldFilePath);
-        $newFilePath = $pathInfo['dirname'] . '/' . 
-                      $pathInfo['filename'] . '-v' . $newVersionNumber . 
-                      '.' . $pathInfo['extension'];
-        
-        // Ensure the directory exists
-        $directory = dirname($newFilePath);
-        if (!Storage::disk('public')->exists($directory)) {
-            Storage::disk('public')->makeDirectory($directory);
+        $newFilePath = null;
+
+        if ($oldFilePath) {
+            // Generate new file path with version suffix
+            $pathInfo = pathinfo($oldFilePath);
+            $newFilePath = $pathInfo['dirname'] . '/' .
+                          $pathInfo['filename'] . '-v' . $newVersionNumber .
+                          '.' . $pathInfo['extension'];
+
+            // Ensure the directory exists
+            $directory = dirname($newFilePath);
+            if (!Storage::disk('public')->exists($directory)) {
+                Storage::disk('public')->makeDirectory($directory);
+            }
+
+            // Copy the file
+            if (!Storage::disk('public')->exists($oldFilePath)) {
+                throw new \Exception("Source file not found: {$oldFilePath}");
+            }
+
+            Storage::disk('public')->copy($oldFilePath, $newFilePath);
         }
-        
-        // Copy the file
-        if (!Storage::disk('public')->exists($oldFilePath)) {
-            throw new \Exception("Source file not found: {$oldFilePath}");
-        }
-        
-        Storage::disk('public')->copy($oldFilePath, $newFilePath);
-        
+
         // Create new version record
         $newVersion = $this->versions()->create([
             'version_number' => $newVersionNumber,
@@ -164,14 +167,19 @@ class ContentFile extends Model
             'change_notes' => $changeNotes ?? "Restored from version {$versionNumber}",
             'uploaded_by' => auth()->id(),
         ]);
-        
+
         // Update the content file to use this new version as current
-        $this->update([
+        $updateData = [
             'current_version' => $newVersionNumber,
-            'current_file_path' => $newFilePath,
             'current_file_size' => $oldVersion->file_size,
-        ]);
-        
+        ];
+
+        if ($newFilePath) {
+            $updateData['current_file_path'] = $newFilePath;
+        }
+
+        $this->update($updateData);
+
         return $newVersion;
     }
 
@@ -221,11 +229,11 @@ class ContentFile extends Model
     {
         $bytes = $this->current_file_size;
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        
+
         for ($i = 0; $bytes > 1024; $i++) {
             $bytes /= 1024;
         }
-        
+
         return round($bytes, 2) . ' ' . $units[$i];
     }
 
@@ -235,8 +243,19 @@ class ContentFile extends Model
         if (in_array($this->file_type, ['plain_text', 'rich_text'])) {
             return route('content.download', $this->id);
         }
-        
-        return Storage::url($this->current_file_path);
+
+        // For URL type, return the URL stored in metadata
+        if ($this->file_type === 'url' && isset($this->metadata['content'])) {
+            return $this->metadata['content'];
+        }
+
+        // For file-based content, return the storage URL if file path exists
+        if ($this->current_file_path) {
+            return Storage::url($this->current_file_path);
+        }
+
+        // Fallback for any other case
+        return '#';
     }
 
     public function createNewVersion($filePath, $fileSize, $mimeType, $metadata = [], $changeNotes = null)
@@ -260,12 +279,12 @@ class ContentFile extends Model
             'mime_type' => $mimeType,
             'metadata' => $metadata,
         ];
-        
+
         if ($filePath !== null) {
             $updateData['current_file_path'] = $filePath;
             $updateData['current_file_size'] = $fileSize;
         }
-        
+
         $this->update($updateData);
 
         return $version;

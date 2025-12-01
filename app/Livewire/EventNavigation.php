@@ -86,6 +86,12 @@ class EventNavigation extends Component
                     'params' => [$this->eventId],
                 ],
                 [
+                    'label' => 'Event Resources',
+                    'icon' => 'navigation.resources',
+                    'route' => 'events.resources.index',
+                    'params' => [$this->eventId],
+                ],
+                [
                     'label' => 'Calendar',
                     'icon' => 'navigation.calendar',
                     'route' => 'events.calendar.index',
@@ -130,6 +136,11 @@ class EventNavigation extends Component
                             'label' => 'Content Categories',
                             'route' => 'events.content-categories.index',
                             'params' => [$this->eventId],
+                        ],
+                        [
+                            'label' => 'Resource Categories',
+                            'route' => 'events.content-categories.index',
+                            'params' => [$this->eventId, 'resourceFilter' => 'resources'],
                         ],
                         [
                             'label' => 'Tags',

@@ -88,6 +88,10 @@ Route::middleware([
     Route::get('/events/{eventId}/content/{contentId}', App\Livewire\Content\Show::class)->name('events.content.show');
     Route::get('/events/{eventId}/content/{contentId}/edit', App\Livewire\Content\Edit::class)->name('events.content.edit');
 
+    // Event Resources routes
+    Route::get('/events/{eventId}/resources', App\Livewire\EventResources\Index::class)->name('events.resources.index');
+    Route::get('/events/{eventId}/resources/{contentId}/edit', App\Livewire\EventResources\Edit::class)->name('events.resources.edit');
+
     // Content download routes (for text-based content)
     Route::get('/content/{contentId}/download', [App\Http\Controllers\ContentController::class, 'download'])->name('content.download');
     Route::get('/content/version/{versionId}/download', [App\Http\Controllers\ContentController::class, 'downloadVersion'])->name('content.version.download');
@@ -119,7 +123,7 @@ Route::middleware([
     Route::get('/events/{eventId}/travel/{travelId}/flights', App\Livewire\Travel\Flights::class)->name('events.travel.flights');
     Route::get('/events/{eventId}/travel/{travelId}/hotel-reservations', App\Livewire\Travel\HotelReservations::class)->name('events.travel.hotel-reservations');
     Route::get('/events/{eventId}/hotels', App\Livewire\Travel\Hotels::class)->name('events.travel.hotels');
-    
+
     // Team member routes
     Route::get('/events/{eventId}/team-members/{userId}', App\Livewire\TeamMembers\Show::class)->name('events.team-members.show');
     Route::get('/events/{eventId}/team-members/{userId}/edit', App\Livewire\TeamMembers\Edit::class)->name('events.team-members.edit');

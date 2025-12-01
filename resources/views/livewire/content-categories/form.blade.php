@@ -3,7 +3,13 @@
         <!-- Header -->
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $categoryId ? 'Edit Category' : 'Create Category' }} - {{ $event->name }}</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    @if($categoryId)
+                        Edit {{ $is_resource ? 'Resource' : 'Content' }} Category - {{ $event->name }}
+                    @else
+                        Create {{ $is_resource ? 'Resource' : 'Content' }} Category - {{ $event->name }}
+                    @endif
+                </h2>
             </div>
         </div>
 
@@ -13,10 +19,10 @@
                     <!-- Category Name -->
                     <div>
                         <flux:label for="name" required>Category Name</flux:label>
-                        <flux:input 
-                            wire:model.blur="name" 
-                            id="name" 
-                            type="text" 
+                        <flux:input
+                            wire:model.blur="name"
+                            id="name"
+                            type="text"
                             placeholder="e.g., Presentations, Videos, Graphics"
                             class="w-full"
                         />
@@ -26,9 +32,9 @@
                     <!-- Description -->
                     <div>
                         <flux:label for="description">Description</flux:label>
-                        <flux:textarea 
-                            wire:model.blur="description" 
-                            id="description" 
+                        <flux:textarea
+                            wire:model.blur="description"
+                            id="description"
                             rows="3"
                             placeholder="Optional description of this category..."
                             class="w-full"
@@ -40,15 +46,15 @@
                     <div>
                         <flux:label for="color" required>Color</flux:label>
                         <div class="flex items-center gap-4">
-                            <input 
-                                wire:model.blur="color" 
-                                id="color" 
-                                type="color" 
+                            <input
+                                wire:model.blur="color"
+                                id="color"
+                                type="color"
                                 class="h-10 w-20 rounded border border-gray-300 dark:border-gray-600"
                             />
-                            <flux:input 
-                                wire:model.blur="color" 
-                                type="text" 
+                            <flux:input
+                                wire:model.blur="color"
+                                type="text"
                                 placeholder="#3b82f6"
                                 class="flex-1"
                             />
@@ -60,9 +66,9 @@
                     <!-- Active Status -->
                     <div>
                         <label class="flex items-center gap-2">
-                            <input 
-                                wire:model.blur="is_active" 
-                                type="checkbox" 
+                            <input
+                                wire:model.blur="is_active"
+                                type="checkbox"
                                 class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
                             />
                             <span class="text-sm text-gray-700 dark:text-gray-300">Active</span>
@@ -70,16 +76,33 @@
                         <flux:description>Inactive categories won't be available for new content</flux:description>
                     </div>
 
+                    <!-- Resource Category -->
+                    <div>
+                        <label class="flex items-center gap-2">
+                            <input
+                                wire:model.blur="is_resource"
+                                type="checkbox"
+                                class="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <span class="text-sm text-gray-700 dark:text-gray-300">Resource Category</span>
+                        </label>
+                        <flux:description>Resource categories are used for Event Resources and won't appear in the regular Content Library</flux:description>
+                    </div>
+
                     <!-- Actions -->
                     <div class="flex justify-end gap-3 pt-4">
-                        <flux:button 
-                            href="{{ route('events.content-categories.index', $eventId) }}" 
+                        <flux:button
+                            href="{{ route('events.content-categories.index', $eventId) }}{{ $is_resource ? '?resourceFilter=resources' : '' }}"
                             variant="ghost"
                         >
                             Cancel
                         </flux:button>
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
-                            {{ $categoryId ? 'Update Category' : 'Create Category' }}
+                            @if($categoryId)
+                                Update {{ $is_resource ? 'Resource' : 'Content' }} Category
+                            @else
+                                Create {{ $is_resource ? 'Resource' : 'Content' }} Category
+                            @endif
                         </button>
                     </div>
                 </form>

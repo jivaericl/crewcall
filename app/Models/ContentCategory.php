@@ -17,12 +17,14 @@ class ContentCategory extends Model
         'description',
         'color',
         'is_system',
+        'is_resource',
         'is_active',
         'sort_order',
     ];
 
     protected $casts = [
         'is_system' => 'boolean',
+        'is_resource' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -73,5 +75,15 @@ class ContentCategory extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order')->orderBy('name');
+    }
+
+    public function scopeResource($query)
+    {
+        return $query->where('is_resource', true);
+    }
+
+    public function scopeNotResource($query)
+    {
+        return $query->where('is_resource', false);
     }
 }

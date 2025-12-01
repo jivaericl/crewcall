@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Content;
+namespace App\Livewire\EventResources;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,7 +14,8 @@ use Illuminate\Support\Str;
 
 class Index extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination;
+    use WithFileUploads;
 
     public $eventId;
     public $event;
@@ -36,7 +37,7 @@ class Index extends Component
     public $uploadSegments = [];
     public $uploadCues = [];
 
-    protected $queryString = ['search', 'typeFilter', 'categoryFilter'];
+    protected $listeners = ['refreshEventResources' => '$refresh'];
 
     public function mount($eventId)
     {
@@ -114,26 +115,16 @@ class Index extends Component
 
                 // Generate unique filename
                 $filename = Str::slug($this->uploadName) . '-' . time() . '.' . $extension;
-                $path = $file->storeAs('content/' . $this->eventId, $filename, 'public');
 
-                // Auto-categorize headshots
-                if (empty($categoryId) && $this->uploadType === 'image' &&
-                    (stripos($this->uploadName, 'headshot') !== false ||
-                     stripos($originalName, 'headshot') !== false)) {
-                    // Find or create Headshots category
-                    $headshotCategory = ContentCategory::firstOrCreate(
-                        [
-                            'event_id' => $this->eventId,
-                            'name' => 'Headshots',
-                        ],
-                        [
-                            'description' => 'Speaker and staff headshots',
-                            'color' => '#8B5CF6', // Purple
-                            'is_active' => true,
-                        ]
-                    );
-                    $categoryId = $headshotCategory->id;
-                    $contentData['category_id'] = $categoryId;
+                // Store file in event-specific directory
+                $path = $file->storeAs(
+                    'content/' . $this->eventId,
+                    $filename,
+                    'public'
+                );
+
+                if (!$path) {
+                    throw new \Exception('Failed to store file');
                 }
 
                 $contentData['mime_type'] = $mimeType;
@@ -266,9 +257,9 @@ class Index extends Component
             ->where('event_id', $this->eventId)
             ->where(function($q) {
                 $q->whereHas('category', function($subq) {
-                    $subq->where('is_resource', false);
+                    $subq->where('is_resource', true);
                 })
-                ->orWhereNull('category_id');
+                ->orWhereDoesntHave('category');
             });
 
         if ($this->search) {
@@ -290,7 +281,7 @@ class Index extends Component
 
         $categories = ContentCategory::active()
             ->forEvent($this->eventId)
-            ->notResource()
+            ->resource()
             ->ordered()
             ->get();
 
@@ -320,7 +311,7 @@ class Index extends Component
             ->orderBy('name')
             ->get();
 
-        return view('livewire.content.index', [
+        return view('livewire.event-resources.index', [
             'files' => $files,
             'categories' => $categories,
             'versionedFile' => $versionedFile,

@@ -27,7 +27,7 @@ return [
         'segments' => 'free/design-tools/rounded/outlined/layout-9',
         'cues' => 'pro/health-medical/rounded/outlined/clipboard-check',
         'content' => 'free/files-folders/rounded/outlined/folder-1',
-        'calendar' => 'free/date-time/rounded/outlined/calendar-days',
+        'resources' => 'pro/files-folders/rounded/outlined/folder-zip-1',
         'people' => 'free/user/rounded/outlined/user-multiple-4',
         'event-settings' => 'free/interface/rounded/outlined/sliders-horizontal-square-2',
         'activity' => 'free/energy/rounded/outlined/bolt-2',

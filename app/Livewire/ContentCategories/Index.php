@@ -13,11 +13,16 @@ class Index extends Component
     public $search = '';
     public $showDeleteModal = false;
     public $categoryToDelete;
+    public $resourceFilter = 'all'; // 'all', 'resources', 'content'
 
-    public function mount($eventId)
+    public function mount($eventId, $resourceFilter = null)
     {
         $this->eventId = $eventId;
         $this->event = Event::findOrFail($eventId);
+
+        if ($resourceFilter && in_array($resourceFilter, ['all', 'resources', 'content'])) {
+            $this->resourceFilter = $resourceFilter;
+        }
     }
 
     public function confirmDelete($categoryId)
@@ -49,6 +54,12 @@ class Index extends Component
         $categories = ContentCategory::forEvent($this->eventId)
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->when($this->resourceFilter === 'resources', function ($query) {
+                $query->where('is_resource', true);
+            })
+            ->when($this->resourceFilter === 'content', function ($query) {
+                $query->where('is_resource', false);
             })
             ->ordered()
             ->get();

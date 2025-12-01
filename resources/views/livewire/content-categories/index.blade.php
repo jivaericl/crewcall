@@ -3,16 +3,36 @@
         <!-- Header -->
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Content Categories - {{ $event->name }}</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    @if($resourceFilter === 'resources')
+                        Resource Categories - {{ $event->name }}
+                    @elseif($resourceFilter === 'content')
+                        Content Categories - {{ $event->name }}
+                    @else
+                        All Categories - {{ $event->name }}
+                    @endif
+                </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Organize your content files with custom categories
+                    @if($resourceFilter === 'resources')
+                        Organize your event resources with custom categories
+                    @elseif($resourceFilter === 'content')
+                        Organize your content files with custom categories
+                    @else
+                        Organize your content and resources with custom categories
+                    @endif
                 </p>
             </div>
-            <a href="{{ route('events.content-categories.create', $eventId) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
+            <a href="{{ route('events.content-categories.create', $eventId) }}{{ $resourceFilter === 'resources' ? '?is_resource=1' : '' }}" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md transition">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                Add Category
+                @if($resourceFilter === 'resources')
+                    Add Resource Category
+                @elseif($resourceFilter === 'content')
+                    Add Content Category
+                @else
+                    Add Category
+                @endif
             </a>
         </div>
 
@@ -35,15 +55,42 @@
                 </div>
             @endif
 
-            <!-- Search -->
+            <!-- Search and Filters -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg mb-4">
-                <div class="p-4">
-                    <flux:input 
-                        wire:model.live.debounce.300ms="search" 
-                        type="text" 
+                <div class="p-4 flex flex-col md:flex-row gap-4">
+                    <flux:input
+                        wire:model.live.debounce.300ms="search"
+                        type="text"
                         placeholder="Search categories..."
                         class="w-full md:w-96"
                     />
+
+                    <div class="flex items-center gap-4">
+                        <label class="text-sm text-gray-700 dark:text-gray-300">Filter:</label>
+                        <div class="flex rounded-md shadow-sm">
+                            <button
+                                wire:click="$set('resourceFilter', 'all')"
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium {{ $resourceFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600' }} border border-gray-300 dark:border-gray-600 rounded-l-md"
+                            >
+                                All
+                            </button>
+                            <button
+                                wire:click="$set('resourceFilter', 'content')"
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium {{ $resourceFilter === 'content' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600' }} border-t border-b border-gray-300 dark:border-gray-600"
+                            >
+                                Content
+                            </button>
+                            <button
+                                wire:click="$set('resourceFilter', 'resources')"
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium {{ $resourceFilter === 'resources' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600' }} border border-gray-300 dark:border-gray-600 rounded-r-md"
+                            >
+                                Resources
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -102,15 +149,27 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                @if($category->is_system)
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                                                        System
-                                                    </span>
-                                                @else
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                        Custom
-                                                    </span>
-                                                @endif
+                                                <div class="flex flex-col gap-1">
+                                                    @if($category->is_system)
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                                                            System
+                                                        </span>
+                                                    @else
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                            Custom
+                                                        </span>
+                                                    @endif
+
+                                                    @if($category->is_resource)
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                                                            Resource
+                                                        </span>
+                                                    @else
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                                            Content
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-1">
@@ -156,14 +215,14 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div x-data="{ show: @entangle('showDeleteModal') }" 
-         x-show="show" 
+    <div x-data="{ show: @entangle('showDeleteModal') }"
+         x-show="show"
          x-cloak
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-50 overflow-y-auto"
          style="display: none;">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" @click="show = false"></div>
-            
+
             <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
                 <div class="flex items-center mb-4">
                     <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900">
