@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/telescope": "^5.15",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/flux-pro": "^2.6",
         "livewire/livewire": "^3.0",
         "pusher/pusher-php-server": "^7.2"
