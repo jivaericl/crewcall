@@ -126,11 +126,14 @@
                                     <!-- Actions -->
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
-                                            <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $hotel->id }})">
-                                                Edit
+                                            <flux:button size="sm" variant="ghost" href="{{ route('events.travel.hotel-registrations-list', ['eventId' => $eventId, 'hotelId' => $hotel->id]) }}" title="Manage Registrations">
+                                                <x-action-icon action="view" />
                                             </flux:button>
-                                            <flux:button size="sm" variant="ghost" wire:click="delete({{ $hotel->id }})" class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300">
-                                                Delete
+                                            <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $hotel->id }})" title="Edit">
+                                                <x-action-icon action="edit" />
+                                            </flux:button>
+                                            <flux:button size="sm" variant="ghost" wire:click="delete({{ $hotel->id }})" title="Delete">
+                                                <x-action-icon action="delete" />
                                             </flux:button>
                                         </div>
                                     </td>

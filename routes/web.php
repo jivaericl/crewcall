@@ -123,6 +123,7 @@ Route::middleware([
     Route::get('/events/{eventId}/travel/{travelId}/flights', App\Livewire\Travel\Flights::class)->name('events.travel.flights');
     Route::get('/events/{eventId}/travel/{travelId}/hotel-reservations', App\Livewire\Travel\HotelReservations::class)->name('events.travel.hotel-reservations');
     Route::get('/events/{eventId}/hotels', App\Livewire\Travel\Hotels::class)->name('events.travel.hotels');
+    Route::get('/events/{eventId}/hotels/{hotelId}/registrations', App\Livewire\Travel\HotelRegistrationsList::class)->name('events.travel.hotel-registrations-list');
 
     // Team member routes
     Route::get('/events/{eventId}/team-members/{userId}', App\Livewire\TeamMembers\Show::class)->name('events.team-members.show');
