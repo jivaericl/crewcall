@@ -252,6 +252,12 @@
                                                     <span class="text-gray-600 dark:text-gray-400">Check-out:</span>
                                                     <span class="text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($reservation->check_out_date)->format('M d, Y') }}</span>
                                                 </div>
+                                                @if($reservation->reservation_number)
+                                                    <div class="flex justify-between">
+                                                        <span class="text-gray-600 dark:text-gray-400">Confirmation:</span>
+                                                        <span class="text-gray-900 dark:text-white">{{ $reservation->reservation_number }}</span>
+                                                    </div>
+                                                @endif
                                                 @if($reservation->room_number)
                                                     <div class="flex justify-between">
                                                         <span class="text-gray-600 dark:text-gray-400">Room:</span>

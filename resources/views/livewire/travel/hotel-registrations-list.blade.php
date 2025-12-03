@@ -153,7 +153,7 @@
 
     <!-- Add Modal -->
     @if($showAddModal)
-        <flux:modal wire:model="showAddModal" class="space-y-6">
+        <flux:modal wire:model.live="showAddModal" class="space-y-6">
             <div>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">Add Hotel Reservation</h3>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Add a new reservation for {{ $hotel->name }}</p>
@@ -216,7 +216,7 @@
 
     <!-- Edit Modal -->
     @if($showEditModal)
-        <flux:modal wire:model="showEditModal" class="space-y-6">
+        <flux:modal wire:model.live="showEditModal" class="space-y-6">
             <div>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">Edit Hotel Reservation</h3>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Update reservation details for {{ $hotel->name }}</p>
