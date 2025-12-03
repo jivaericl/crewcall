@@ -32,6 +32,7 @@ return [
         'event-settings' => 'free/interface/rounded/outlined/sliders-horizontal-square-2',
         'activity' => 'free/energy/rounded/outlined/bolt-2',
         'dashboard' => 'pro/interface/rounded/outlined/dashboard-square-10',
+        'calendar' => 'pro/date-time/rounded/outlined/calendar',
     ],
 
     'actions' => [
