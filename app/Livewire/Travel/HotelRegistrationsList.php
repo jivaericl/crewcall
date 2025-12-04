@@ -60,14 +60,18 @@ class HotelRegistrationsList extends Component
 
     public function openEditModal($reservationId)
     {
-        $this->reservationId = $reservationId;
-        $reservation = HotelReservation::with('travel')->findOrFail($reservationId);
-        $this->travelId = $reservation->travel_id;
-        $this->reservationNumber = $reservation->reservation_number;
-        $this->checkInDate = $reservation->check_in_date->format('Y-m-d');
-        $this->checkOutDate = $reservation->check_out_date->format('Y-m-d');
-        $this->notes = $reservation->notes;
-        $this->showEditModal = true;
+        try {
+            $this->reservationId = $reservationId;
+            $reservation = HotelReservation::with('travel')->findOrFail($reservationId);
+            $this->travelId = $reservation->travel_id;
+            $this->reservationNumber = $reservation->reservation_number;
+            $this->checkInDate = $reservation->check_in_date ? $reservation->check_in_date->format('Y-m-d') : '';
+            $this->checkOutDate = $reservation->check_out_date ? $reservation->check_out_date->format('Y-m-d') : '';
+            $this->notes = $reservation->notes;
+            $this->showEditModal = true;
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error loading reservation: ' . $e->getMessage());
+        }
     }
 
     public function closeEditModal()
